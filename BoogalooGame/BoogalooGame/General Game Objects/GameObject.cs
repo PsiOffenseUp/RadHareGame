@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework; //Needed for Rectangle and Vector2 classes
+using Microsoft.Xna.Framework.Graphics; //Needed for Texture2D class
 
 namespace BoogalooGame
 {
@@ -16,15 +18,17 @@ namespace BoogalooGame
         private float weight, fall_speed; //How fast an object will fall
         private bool grounded; //Tells whether or not the object is on the ground
         private Rectangle hitbox;
-        private bool grabbable; //Can the object be grabbed
+        private bool grabbable; //Can the object be grabbed?
 
 
         //Functions (Methods)
 
+
+        //Default constructor
         public GameObject()
         {
             this.position = new Vector2(0.0f, 0.0f);
-            this.sprite_path = "UI/carrot";
+            this.sprite_path = "UI/carrot"; //DEBUG Default sprite for all Gameobjects
 
             this.weight = 0.25f;
             this.fall_speed = 10.0f;
@@ -59,7 +63,7 @@ namespace BoogalooGame
             }
 
             this.position.X += xspeed;
-            this.position.Y += yspeed;
+            this.pwdosition.Y += yspeed;
         }
     }
 

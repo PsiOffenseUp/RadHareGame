@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>F:/Monogame Stuff/BoogalooGame/BoogalooGame/Content/UI/CarrotHealth3v2.png</SourceFile>
+  <SourceFile>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/UI/CarrotHealth3v2.png</SourceFile>
   <SourceTime>2018-01-12T18:23:06.6377461-08:00</SourceTime>
-  <DestFile>F:/Monogame Stuff/BoogalooGame/BoogalooGame/Content/bin/DesktopGL/Content/UI/CarrotHealth3v2.xnb</DestFile>
-  <DestTime>2018-09-27T11:50:45.2555369-07:00</DestTime>
+  <DestFile>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/bin/DesktopGL/Content/UI/CarrotHealth3v2.xnb</DestFile>
+  <DestTime>2018-12-22T18:43:12.3674582-08:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2018-09-23T14:55:52-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
