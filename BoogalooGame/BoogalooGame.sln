@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoogalooGame", "BoogalooGame\BoogalooGame.csproj", "{EF2513EF-8F5E-4ED4-BD1E-14A4C4F0363C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A48CE5BC-2955-4898-AA18-9A1E967B1E1F}"
+	ProjectSection(SolutionItems) = preProject
+		Character.cs = Character.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF2513EF-8F5E-4ED4-BD1E-14A4C4F0363C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF2513EF-8F5E-4ED4-BD1E-14A4C4F0363C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF2513EF-8F5E-4ED4-BD1E-14A4C4F0363C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF2513EF-8F5E-4ED4-BD1E-14A4C4F0363C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7DA892A1-DA0C-41A1-B0DC-EBDDD79C6714}
+	EndGlobalSection
+EndGlobal
