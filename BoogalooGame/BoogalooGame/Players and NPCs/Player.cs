@@ -11,10 +11,11 @@ namespace BoogalooGame
         public int HP;
         private string name;
 
-        public Player()
+       /* public Player()
         {
             this.HP = 4;
         }
+        */
 
         public new string Name
         {

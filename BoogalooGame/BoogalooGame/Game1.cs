@@ -11,6 +11,7 @@ namespace BoogalooGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Collision testCollision;
 
         //New declarations
         SpriteFont font;
@@ -49,7 +50,14 @@ namespace BoogalooGame
             font = Content.Load<SpriteFont>("fonts/Consolas"); //Takes argument of the SpriteFont file name
             player = new Player();
             player.Name = "Rad Hare";
-            player.sprite = Content.Load<Texture2D>(player.sprite_path);
+            player.Load();
+            player.loadSprite(this);
+
+            testCollision = new Collision();
+            testCollision.Load();
+            testCollision.setSprite("tiles/block-192");
+            testCollision.loadSprite(this);
+            testCollision.position.Y = 120.0f;
         }
 
         /// <summary>
@@ -89,7 +97,8 @@ namespace BoogalooGame
             
             //Start drawing things
             spriteBatch.Begin();
-            spriteBatch.Draw(player.sprite, player.position, Color.White);
+            spriteBatch.Draw(player.sprite.texture, player.position, Color.White);
+            spriteBatch.Draw(testCollision.sprite.texture, testCollision.position, Color.White);
             spriteBatch.End();
 
             base.Draw(gameTime);

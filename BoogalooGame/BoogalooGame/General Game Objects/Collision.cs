@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 namespace BoogalooGame
 {
 
-    class Collision
+    class Collision:GameObject
     {
         private Rectangle hitbox;
         private Vector2 position;

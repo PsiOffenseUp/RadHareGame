@@ -42,11 +42,14 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Data Structures\Sprite.cs" />
+    <Compile Include="Data Structures\GameObjectInfo.cs" />
+    <Compile Include="Data Structures\Layer.cs" />
+    <Compile Include="Data Structures\Level.cs" />
     <Compile Include="Players and NPCs\Character.cs" />
     <Compile Include="Players and NPCs\Player.cs" />
     <Compile Include="General Game Objects\GameObject.cs" />
     <Compile Include="Controllers\Regulator.cs" />
-    <Compile Include="Data Structures\ObjectTable.cs" />
     <Compile Include="General Game Objects\Collision.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />

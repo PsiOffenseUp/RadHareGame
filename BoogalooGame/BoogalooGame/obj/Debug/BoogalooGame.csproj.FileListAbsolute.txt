@@ -52,3 +52,4 @@ F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\An
 F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\AnyCPU\Debug\BoogalooGame.pdb
 F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\AnyCPU\Debug\MonoGame.Framework.dll
 F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\obj\Debug\BoogalooGame.csproj.CopyComplete
+F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\AnyCPU\Debug\Content\tiles\block-192.xnb
