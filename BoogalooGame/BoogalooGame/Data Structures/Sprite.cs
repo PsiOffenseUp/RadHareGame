@@ -47,5 +47,7 @@ namespace BoogalooGame
             this.height = this.texture.Height;
         }
 
+        //Add method to rescale DEBUG
+
     }
 }

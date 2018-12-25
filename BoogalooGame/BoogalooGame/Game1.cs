@@ -32,7 +32,8 @@ namespace BoogalooGame
         protected override void Initialize()
         {
             //Added code
-            
+            player = new Player(0.0f, 0.0f);
+            testCollision = new Collision(0.0f, 200.0f);
 
             base.Initialize();
         }
@@ -48,16 +49,15 @@ namespace BoogalooGame
 
             //Added code
             font = Content.Load<SpriteFont>("fonts/Consolas"); //Takes argument of the SpriteFont file name
-            player = new Player();
+           
             player.Name = "Rad Hare";
             player.Load();
             player.loadSprite(this);
 
-            testCollision = new Collision();
+            testCollision.setPosition(0.0f, 360.0f);
             testCollision.Load();
             testCollision.setSprite("tiles/block-192");
             testCollision.loadSprite(this);
-            testCollision.position.Y = 120.0f;
         }
 
         /// <summary>

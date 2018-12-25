@@ -11,40 +11,51 @@ namespace BoogalooGame
 {
     public abstract class GameObject
     {
-        //--------------Variables--------------
+        //--------------Fields--------------
         public Vector2 position; //X and y coordinate of the character
         public Sprite sprite;
+        private Rectangle hitbox;
+
         public float xspeed, yspeed;
         private float weight, fall_speed; //How fast an object will fall
-        private bool grounded; //Tells whether or not the object is on the ground
-        private Rectangle hitbox;
-        private bool grabbable; //Can the object be grabbed?, Does the object have collision?
         public long id;
-        public static long id_count = 0; //How many ids have been created. DEBUG May need to set a cap to avoid future overflow
-        private static IDictionary<long, GameObject> object_dict = new Dictionary<long, GameObject>(); //Holds all active objects
-        public bool collision_left, collision_right, collision_above, collision_below;
+
+        private bool grounded; //Tells whether or not the object is on the ground
+        private bool grabbable; //Can the object be grabbed?
+        public bool collision_left, collision_right, collision_above, collision_below; //Checks for collision with floors and walls
+
+        public static long id_count; //How many ids have been created. DEBUG May need to set a cap to avoid future overflow
+        private static IDictionary<long, GameObject> object_dict; //Holds all active objects
+        public static Regulator controller; //Controls most aspects of the game
+
 
         //---------------Constructors------------
+
+        //Static constructor
+        static GameObject()
+        {
+            object_dict = new Dictionary<long, GameObject>();
+            id_count = 0;
+            controller = new Regulator();
+        }
 
         //Default constructor
         public GameObject()
         {
-            this.position = new Vector2(0.0f, 0.0f);
-            this.sprite.path = "UI/carrot"; //DEBUG Default sprite for all Gameobjects
-
+            position = new Vector2(0.0f, 0.0f);
+            sprite = new Sprite(); // Default sprite for all Gameobjects
             
-            this.weight = 0.25f;
-            this.fall_speed = 10.0f;
-            this.grounded = false;
-            this.xspeed = 0.0f;
-            this.yspeed = 0.0f;
-            this.hitbox = new Rectangle(0, 0, 32, 32);
-            this.grabbable = false;
-            this.collision_left = false;
-            this.collision_right = false;
-            this.collision_above = false;
-            this.collision_below = false;
-            
+            weight = 0.25f;
+            fall_speed = 10.0f;
+            grounded = false;
+            xspeed = 0.0f;
+            yspeed = 0.0f;
+            hitbox = new Rectangle(0, 0, 32, 32);
+            grabbable = false;
+            collision_left = false;
+            collision_right = false;
+            collision_above = false;
+            collision_below = false;
 
             //Add this item to the dictionary of active items
             this.id = id_count; //Set the id to the current id count
@@ -52,8 +63,14 @@ namespace BoogalooGame
 
         }
 
+        public GameObject(float xpos, float ypos)
+        {
+            this.position.X = xpos;
+            this.position.Y = ypos;
+        }
+
         //--------------Gets and sets---------------
-        public bool IsGrounded
+       public bool IsGrounded
         {
             get { return this.grounded; }
         }
@@ -75,6 +92,12 @@ namespace BoogalooGame
         public void Unload()
         {
             object_dict.Remove(this.id);
+        }
+
+        public void setPosition(float xPos, float yPos)
+        {
+            this.position.X = xPos;
+            this.position.Y = yPos;
         }
 
         private GameObject checkCollision()
@@ -126,8 +149,6 @@ namespace BoogalooGame
                     else
                         colliding_object = entry.Value;
                 }
-
-                
             }
 
             return colliding_object; //Return null if not colliding with anything except for normal collision tiles
