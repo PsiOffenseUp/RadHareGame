@@ -10,17 +10,17 @@ namespace BoogalooGame
     public class Player : Character
     {
         public int HP;
-        private string name;
         public float runSpeed, maxRunSpeed; //maxRunSpeed2 is for when the action button is held while running
-        private float jumpHeight;
+        const float jumpHeight = 8.0f;
+        const float air_friction = 2.0f;
+        const float ground_friction = 1.6f;
 
         //---------------------Constructors-----------------
         public Player()
         {
             this.HP = 4;
-            this.runSpeed = 1.2f;
-            this.maxRunSpeed = 300.0f;
-            this.jumpHeight = 400.0f;
+            this.runSpeed = 1.3f;
+            this.maxRunSpeed = 4.4f;
         }
 
         public Player(float xpos, float ypos)
@@ -28,7 +28,7 @@ namespace BoogalooGame
             this.position.X = xpos;
             this.position.Y = ypos;
             this.runSpeed = 0.05f;
-            this.maxRunSpeed = 2.0f;
+            this.maxRunSpeed = 4.2f;
             this.HP = 4;
         }
         
@@ -56,31 +56,32 @@ namespace BoogalooGame
             //Read all of the inputs from the controller and keyboard
             Options cntrl = controller.options;
             cntrl.readInputs(); 
-
+            
             //----------Movement-----------
             //Movement on the ground
             if (cntrl.LEFT)
             {
                 this.xspeed -= runSpeed;
                 if (this.isMovingRight()) //If currently moving to the right, add a little speed boost
-                    this.xspeed -= 1.2f*runSpeed;
+                    this.xspeed -= ground_friction*runSpeed;
             }
 
             if (cntrl.RIGHT)
             {
                 this.xspeed += runSpeed;
                 if(this.isMovingLeft()) //If currently moving to the right, add a little speed boost
-                    this.xspeed += 1.2f*runSpeed;
+                    this.xspeed += ground_friction * runSpeed;
             }
 
             if (!cntrl.RIGHT && !cntrl.LEFT && xspeed != 0) //If neither left or right are being held
             {
+                
                 if (this.isMovingRight())
-                    this.xspeed -= 1.1f*runSpeed;
+                    this.xspeed -= 0.95f*ground_friction * runSpeed;
 
                 else if (this.isMovingLeft())
-                    this.xspeed += 1.1f*runSpeed;
-
+                    this.xspeed += 0.95f * ground_friction * runSpeed;
+                
                 if (xspeed < 0.03f && xspeed > -0.03f) //Stop the player if their movement is too slow so they don't slide
                     xspeed = 0;
             }
@@ -88,7 +89,7 @@ namespace BoogalooGame
             if (cntrl.JUMP && IsGrounded)
             {
                 this.IsGrounded = false;
-                this.yspeed += jumpHeight;
+                this.yspeed = -1*jumpHeight;
             }
 
             if (this.xspeed > maxRunSpeed || this.xspeed < -1*maxRunSpeed)

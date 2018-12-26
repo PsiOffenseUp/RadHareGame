@@ -69,7 +69,7 @@ namespace BoogalooGame
             this.position.Y = ypos;
         }
 
-        //--------------Gets and sets---------------
+        //------------------------------Gets and sets---------------------------
        public bool IsGrounded
         {
             get { return this.grounded; }
@@ -80,6 +80,16 @@ namespace BoogalooGame
         {
             get { return this.weight; }
             set { this.weight = value; }
+        }
+
+        public Rectangle Hitbox
+        {
+            get { return this.hitbox; }
+        }
+
+        public static IDictionary<long, GameObject> ActiveObjects
+        {
+            get { return object_dict; }
         }
 
         //----------------Function implementation-------------
@@ -99,6 +109,10 @@ namespace BoogalooGame
         {
             this.position.X = xPos;
             this.position.Y = yPos;
+
+            //Update the hitbox, too
+            this.hitbox.X = (int)this.position.X;
+            this.hitbox.Y = (int)this.position.Y;
         }
 
         public bool isMovingLeft()
@@ -120,6 +134,8 @@ namespace BoogalooGame
             //Check for any collision
             GameObject colliding_object = null;
 
+            bool wasGrounded = this.grounded; //Used to check if the object was grounded on the previous frame
+
             //Reset all collision before checking
             this.collision_right = false;
             this.collision_left = false;
@@ -128,46 +144,71 @@ namespace BoogalooGame
 
             foreach (KeyValuePair<long, GameObject> entry in object_dict)
             {
-                
-                if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height) //Collision above
+                if (this.hitbox.Intersects(entry.Value.hitbox)) //Only check if they are actually colliding
                 {
-                    if (entry.Value is Collision)
-                        this.collision_above = true;
-                    else
-                        colliding_object = entry.Value;
-
-                }
-
-                if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width) //Collision to the left
-                {
-                    if (entry.Value is Collision)
-                        this.collision_left = true;
-                    else
-                        colliding_object = entry.Value; //Set the colliding object. This may be overwritten later. Make sure not to return, as this will cause floor and wall collisions to turn off
-                }
-
-                if (this.position.X + this.hitbox.Width >= entry.Value.position.X) //Collision to the right
-                {
-                    if (entry.Value is Collision) //If the item collided with is an example of collision, mark collision 
-                        this.collision_right = true;
-                    else
-                        colliding_object = entry.Value;
-                }
-
-                if (this.position.Y + this.hitbox.Height >= entry.Value.position.Y) //Collision below
-                {
-                    if (entry.Value is Collision)
+                    if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height) //Collision above
                     {
-                        this.collision_below = true;
-                        this.grounded = true;
+                        if (entry.Value is Collision)
+                        {
+                            this.collision_above = true;
+
+                            //Check if the objects are pretty close to horizontally aligned. DEBUG May need a better fix for this
+                            if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
+                                this.position.Y = entry.Value.position.Y + entry.Value.hitbox.Height + 0.01f;
+                        }
+                        else
+                            colliding_object = entry.Value;
+
                     }
-                    else
-                        colliding_object = entry.Value;
+
+                    if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width) //Collision to the left
+                    {
+                        if (entry.Value is Collision)
+                        {
+                            this.collision_left = true;
+
+                            if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
+                                this.position.X = entry.Value.position.X + entry.Value.hitbox.Width + 0.01f;
+                        }
+                        else
+                            colliding_object = entry.Value; //Set the colliding object. This may be overwritten later. Make sure not to return, as this will cause floor and wall collisions to turn off
+                    }
+
+                    if (this.position.X + this.hitbox.Width >= entry.Value.position.X) //Collision to the right
+                    {
+                        if (entry.Value is Collision) //If the item collided with is an example of collision, mark collision 
+                        {
+                            this.collision_right = true;
+
+                            if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
+                                this.position.X = entry.Value.position.X - this.hitbox.Width;
+                        }
+                        else
+                            colliding_object = entry.Value;
+                    }
+
+                    if (this.position.Y + this.hitbox.Height >= entry.Value.position.Y) //Collision below
+                    {
+                        if (entry.Value is Collision)
+                        {
+                            this.collision_below = true;
+                            if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
+                                this.position.Y = entry.Value.position.Y - this.hitbox.Height;
+
+                            if (!this.grounded)
+                                this.grounded = true;
+                        }
+                        else
+                            colliding_object = entry.Value;
+                    }
                 }
             }
-
+            
             if (!collision_below) //Set the object to be in the air if it does not have collision directly below it
                 this.grounded = false;
+
+           if (!wasGrounded && this.grounded) //If this is the first frame that the object is hitting the ground, set yspeed to 0
+                this.yspeed = 0;
 
             return colliding_object; //Return null if not colliding with anything except for normal collision tiles
         }
@@ -185,13 +226,13 @@ namespace BoogalooGame
                     this.yspeed = this.fall_speed;
             }
 
-            else if (this.grounded && yspeed != 0)
-                this.yspeed = 0;
-
             //Update position
             this.position.X += xspeed;
             this.position.Y += yspeed;
 
+            //Update the hitbox
+            this.hitbox.X = (int)this.position.X;
+            this.hitbox.Y = (int)this.position.Y;
             //Need to check if an object is on screen to determine if it should be loaded or unloaded DEBUG. 
         }
 

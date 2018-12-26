@@ -22,7 +22,7 @@ namespace BoogalooGame
         public Collision(float x, float y)
         {
             this.position = new Vector2(x, y);
-            this.hitbox = new Rectangle((int)x, (int)y, 0, 0);
+            this.hitbox = new Rectangle((int)x, (int)y, 32, 32);
         }
 
         public Collision(float x, float y, int width, int height)

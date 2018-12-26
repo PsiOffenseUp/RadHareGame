@@ -16,14 +16,10 @@ namespace BoogalooGame
     /// </summary>
     public abstract class Character : GameObject
     {
-        private string name; //Current sprite path for the object and its name
-        private int id;
-        private static int count = 0; //How many characters are on screen
+        public string name; //Current sprite path for the object and its name
         
         public Character()
         {
-            this.id = count; //Set the id to the current count, and then increment
-            count++;
             this.name = "Default";
         }
 

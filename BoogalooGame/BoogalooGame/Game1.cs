@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace BoogalooGame
 {
@@ -11,11 +12,11 @@ namespace BoogalooGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Collision testCollision;
 
         //New declarations
         SpriteFont font;
         Player player;
+        Collision testCollision;
 
         public Game1()
         {
@@ -98,11 +99,13 @@ namespace BoogalooGame
             
             //Start drawing things
             spriteBatch.Begin();
-            //Iterate and draw all things in GameObject.object_dict and all background objects
-            spriteBatch.Draw(player.sprite.texture, player.position, Color.White);
-            spriteBatch.Draw(testCollision.sprite.texture, testCollision.position, Color.White);
 
-            spriteBatch.DrawString(font, player.IsGrounded.ToString(),  player.position, Color.Black);
+            //Iterate and draw all active objects in GameObject.object_dict and all background objects DEBUG Add background objects later
+            foreach (KeyValuePair<long, GameObject> entry in GameObject.ActiveObjects)
+                spriteBatch.Draw(entry.Value.sprite.texture, entry.Value.position, Color.White);
+
+            spriteBatch.DrawString(font, "xspeed: " + player.xspeed.ToString(),  new Vector2(player.position.X, player.position.Y - 40.0f), Color.Black);
+            spriteBatch.DrawString(font, "yspeed: " + player.yspeed.ToString(), new Vector2(player.position.X, player.position.Y - 20.0f), Color.Black);
             spriteBatch.DrawString(font, "Jump pressed " + Player.controller.options.JUMP.ToString(),  new Vector2(10.0f, 100.0f), Color.Black);
             spriteBatch.DrawString(font, "Collison below?: " + player.collision_below.ToString(), new Vector2(10.0f, 150.0f), Color.Black);
             spriteBatch.End();

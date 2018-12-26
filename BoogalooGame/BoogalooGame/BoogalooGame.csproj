@@ -47,6 +47,7 @@
     <Compile Include="Data Structures\GameObjectInfo.cs" />
     <Compile Include="Data Structures\Layer.cs" />
     <Compile Include="Data Structures\Level.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
     <Compile Include="Players and NPCs\Character.cs" />
     <Compile Include="Players and NPCs\Player.cs" />
     <Compile Include="General Game Objects\GameObject.cs" />
