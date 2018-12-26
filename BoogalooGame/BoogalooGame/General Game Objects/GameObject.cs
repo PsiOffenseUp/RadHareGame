@@ -65,12 +65,74 @@ namespace BoogalooGame
 
         public GameObject(float xpos, float ypos)
         {
-            this.position.X = xpos;
-            this.position.Y = ypos;
+            position = new Vector2(xpos, ypos);
+            sprite = new Sprite(); // Default sprite for all Gameobjects
+
+            weight = 0.25f;
+            fall_speed = 10.0f;
+            grounded = false;
+            xspeed = 0.0f;
+            yspeed = 0.0f;
+            hitbox = new Rectangle((int)xpos, (int)ypos, 32, 32);
+            grabbable = false;
+            collision_left = false;
+            collision_right = false;
+            collision_above = false;
+            collision_below = false;
+
+            //Add this item to the dictionary of active items
+            this.id = id_count; //Set the id to the current id count
+            id_count++; //Increase the amount of things which have been spawned
+        }
+
+        public GameObject (string sprite_path)
+        {
+            position = new Vector2(0.0f, 0.0f);
+            sprite = new Sprite();
+            sprite.path = sprite_path;
+
+            weight = 0.25f;
+            fall_speed = 10.0f;
+            grounded = false;
+            xspeed = 0.0f;
+            yspeed = 0.0f;
+            hitbox = new Rectangle(0, 0, sprite.Width, sprite.Height);
+            grabbable = false;
+            collision_left = false;
+            collision_right = false;
+            collision_above = false;
+            collision_below = false;
+
+            //Add this item to the dictionary of active items
+            this.id = id_count; //Set the id to the current id count
+            id_count++; //Increase the amount of things which have been spawned
+        }
+
+        public GameObject(string sprite_path, float xpos, float ypos)
+        {
+            position = new Vector2(xpos, ypos);
+            sprite = new Sprite();
+            sprite.path = sprite_path;
+
+            weight = 0.25f;
+            fall_speed = 10.0f;
+            grounded = false;
+            xspeed = 0.0f;
+            yspeed = 0.0f;
+            hitbox = new Rectangle((int)ypos, (int)xpos, sprite.Width, sprite.Height);
+            grabbable = false;
+            collision_left = false;
+            collision_right = false;
+            collision_above = false;
+            collision_below = false;
+
+            //Add this item to the dictionary of active items
+            this.id = id_count; //Set the id to the current id count
+            id_count++; //Increase the amount of things which have been spawned
         }
 
         //------------------------------Gets and sets---------------------------
-       public bool IsGrounded
+        public bool IsGrounded
         {
             get { return this.grounded; }
             set { this.grounded = value; }
@@ -95,9 +157,12 @@ namespace BoogalooGame
         //----------------Function implementation-------------
 
         //Puts the item into the object dictionary
-        public void Load()
+        public void Load(Game1 game)
         {
             object_dict.Add(new KeyValuePair<long, GameObject>(this.id, this));
+            this.sprite.loadSprite(game);
+            this.hitbox.Width = sprite.Width;
+            this.hitbox.Height = sprite.Height;
         }
 
         public void Unload()
@@ -154,7 +219,7 @@ namespace BoogalooGame
 
                             //Check if the objects are pretty close to horizontally aligned. DEBUG May need a better fix for this
                             if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
-                                this.position.Y = entry.Value.position.Y + entry.Value.hitbox.Height + 0.01f;
+                                this.position.Y = entry.Value.position.Y + entry.Value.hitbox.Height + 0.001f;
                         }
                         else
                             colliding_object = entry.Value;
@@ -168,7 +233,7 @@ namespace BoogalooGame
                             this.collision_left = true;
 
                             if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
-                                this.position.X = entry.Value.position.X + entry.Value.hitbox.Width + 0.01f;
+                                this.position.X = entry.Value.position.X + entry.Value.hitbox.Width;
                         }
                         else
                             colliding_object = entry.Value; //Set the colliding object. This may be overwritten later. Make sure not to return, as this will cause floor and wall collisions to turn off
@@ -215,10 +280,11 @@ namespace BoogalooGame
 
         public void Update(GameTime gameTime)
         {
-
+            bool wasGrounded = this.grounded;
             this.checkCollision(); //May need to do something with the object collided with
 
             //Update the speed
+
             if (!this.grounded)
             {
                 this.yspeed += this.weight; //While not on the ground, make the object affected by gravity.

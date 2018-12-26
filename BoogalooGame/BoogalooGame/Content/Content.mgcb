@@ -20,6 +20,18 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/File.spritefont;fonts/Consolas.spritefont
 
+#begin test/Luigi.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:test/Luigi.png
+
 #begin tiles/block-192.gif
 /importer:TextureImporter
 /processor:TextureProcessor

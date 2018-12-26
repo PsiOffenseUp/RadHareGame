@@ -13,7 +13,7 @@ namespace BoogalooGame
     /// </summary>
     public class Options
     {
-        public bool debug; //Should debug features be used?
+        public static bool debug; //Should debug features be used?
 
         //Related to controls
         public bool RIGHT, LEFT , UP, DOWN, JUMP, ACTION, PAUSE, SELECT, DEBUG;

@@ -13,19 +13,33 @@ namespace BoogalooGame
         private Rectangle hitbox;
         private Vector2 position;
 
-        public Collision()
+        //-------------------------Constructors-------------------
+        //If not provided a sprite path to load, will automatically load the test tile "block-192"
+        public Collision() : base("tiles/block-192")
         {
             this.hitbox = new Rectangle(0, 0, 32, 32);
             this.position = new Vector2(0.0f, 0.0f);
         }
 
-        public Collision(float x, float y)
+        public Collision(float x, float y) : base("tiles/block-192")
         {
             this.position = new Vector2(x, y);
             this.hitbox = new Rectangle((int)x, (int)y, 32, 32);
         }
 
-        public Collision(float x, float y, int width, int height)
+        public Collision(float x, float y, int width, int height) : base("tiles/block-192")
+        {
+            this.position = new Vector2(x, y);
+            this.hitbox = new Rectangle((int)x, (int)y, width, height);
+        }
+
+        public Collision(string sprite_path) : base(sprite_path)
+        {
+            //Just use the parent's constructor
+        }
+
+        //Does the same as the other position and size constructor, but also sets the sprite, too
+        public Collision(float x, float y, int width, int height, string sprite_path) : base(sprite_path)
         {
             this.position = new Vector2(x, y);
             this.hitbox = new Rectangle((int)x, (int)y, width, height);

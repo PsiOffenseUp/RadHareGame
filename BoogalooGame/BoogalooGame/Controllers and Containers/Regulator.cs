@@ -28,16 +28,16 @@ namespace BoogalooGame
         //Is Debug mode activated?
         public bool isDebug()
         {
-            return options.debug;
+            return Options.debug;
         }
 
         //Toggle whether or not debug mode is activated
         public void toggleDebug()
         {
-            if (options.debug)
-                options.debug = false;
+            if (Options.debug)
+                Options.debug = false;
             else
-                options.debug = true;
+                Options.debug = true;
         }
 
         //Draw all object which have been loaded into the game DEBUG

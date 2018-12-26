@@ -18,9 +18,16 @@ namespace BoogalooGame
     {
         public string name; //Current sprite path for the object and its name
         
+
+        //------------------Constructors-----------------
         public Character()
         {
             this.name = "Default";
+        }
+
+        public Character(string sprite_path) : base(sprite_path)
+        {
+            //Just use the super class's constructor that loads the sprite
         }
 
         //Access private fields with weird C# feature. Cannot do with normal functions.

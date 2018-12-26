@@ -12,8 +12,10 @@ namespace BoogalooGame
     {
         public Texture2D texture; //The actual image. DEBUG May change to private later
         public string path = "";
-        int width, height;
+        private int width, height;
         float scale; //Size of the object
+
+        //-------------------Constructors--------------------------------
 
         //Default constructor, make a sprite, but do nothing with it
         public Sprite()
@@ -34,7 +36,18 @@ namespace BoogalooGame
             this.path = spr_path;
         }
 
-        //Methods
+        //------------------Gets and sets-----------------------
+        public int Width
+        {
+            get { return this.width; }
+        }
+
+        public int Height
+        {
+            get { return this.height; }
+        }
+
+        //--------------------------Methods---------------------
 
         /// <summary>
         /// Loads a sprite to the game, which must be passed in

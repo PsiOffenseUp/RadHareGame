@@ -33,7 +33,7 @@ namespace BoogalooGame
         protected override void Initialize()
         {
             //Added code
-            player = new Player(0.0f, 0.0f);
+            player = new Player("test/Luigi");
             testCollision = new Collision(0.0f, 200.0f);
 
             base.Initialize();
@@ -52,13 +52,10 @@ namespace BoogalooGame
             font = Content.Load<SpriteFont>("fonts/Consolas"); //Takes argument of the SpriteFont file name
            
             player.Name = "Rad Hare";
-            player.Load();
-            player.loadSprite(this);
+            player.Load(this);
 
             testCollision.setPosition(0.0f, 360.0f);
-            testCollision.Load();
-            testCollision.setSprite("tiles/block-192");
-            testCollision.loadSprite(this);
+            testCollision.Load(this);
         }
 
         /// <summary>
@@ -102,7 +99,11 @@ namespace BoogalooGame
 
             //Iterate and draw all active objects in GameObject.object_dict and all background objects DEBUG Add background objects later
             foreach (KeyValuePair<long, GameObject> entry in GameObject.ActiveObjects)
+            {
                 spriteBatch.Draw(entry.Value.sprite.texture, entry.Value.position, Color.White);
+                if (Options.debug) //Draw hitboxes if debug mode is turned on
+                    spriteBatch.Draw(entry.Value.sprite.texture, entry.Value.Hitbox, Color.Red*0.3f);
+            }
 
             spriteBatch.DrawString(font, "xspeed: " + player.xspeed.ToString(),  new Vector2(player.position.X, player.position.Y - 40.0f), Color.Black);
             spriteBatch.DrawString(font, "yspeed: " + player.yspeed.ToString(), new Vector2(player.position.X, player.position.Y - 20.0f), Color.Black);

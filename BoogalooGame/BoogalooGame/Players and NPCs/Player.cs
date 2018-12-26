@@ -31,6 +31,11 @@ namespace BoogalooGame
             this.maxRunSpeed = 4.2f;
             this.HP = 4;
         }
+
+        public Player(string sprite_path) : base(sprite_path)
+        {
+            //Just use the super class's constructor that loads the sprite
+        }
         
         //----------------Gets and sets------------------
 
@@ -55,6 +60,8 @@ namespace BoogalooGame
         {
             //Read all of the inputs from the controller and keyboard
             Options cntrl = controller.options;
+            bool debug_before = cntrl.DEBUG;
+
             cntrl.readInputs(); 
             
             //----------Movement-----------
@@ -104,6 +111,10 @@ namespace BoogalooGame
             //Air movement
 
             //Toggle debug mode
+            if (cntrl.DEBUG && !debug_before)
+            {
+                controller.toggleDebug();
+            }
         }
     }
 }
