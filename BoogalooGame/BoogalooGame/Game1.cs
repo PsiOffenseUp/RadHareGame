@@ -81,6 +81,7 @@ namespace BoogalooGame
 
             // Added code
             player.Update(gameTime);
+            player.readControls();
 
             base.Update(gameTime);
         }
@@ -97,8 +98,10 @@ namespace BoogalooGame
             
             //Start drawing things
             spriteBatch.Begin();
+            //Iterate and draw all things in GameObject.object_dict and all background objects
             spriteBatch.Draw(player.sprite.texture, player.position, Color.White);
             spriteBatch.Draw(testCollision.sprite.texture, testCollision.position, Color.White);
+
             spriteBatch.End();
 
             base.Draw(gameTime);

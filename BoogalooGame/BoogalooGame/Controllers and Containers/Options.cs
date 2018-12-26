@@ -247,7 +247,11 @@ namespace BoogalooGame
         /// </summary>
         public void readControlOptions()
         {
-            string path = System.IO.Directory.GetCurrentDirectory() + "/controls.txt";
+            string path = System.IO.Directory.GetCurrentDirectory() + "/options/controls.txt";
+
+            if (!System.IO.Directory.Exists(System.IO.Directory.GetCurrentDirectory() + "/options"))
+            System.IO.Directory.CreateDirectory("options");
+            
 
             if (!File.Exists(path)) //Make sure the options file exists, if not, write a default one
             {

@@ -11,16 +11,22 @@ namespace BoogalooGame
     {
         public int HP;
         private string name;
+        public float runSpeed, maxRunSpeed;
 
         public Player()
         {
             this.HP = 4;
+            this.runSpeed = 0.05f;
+            this.maxRunSpeed = 2.0f;
         }
 
         public Player(float xpos, float ypos)
         {
             this.position.X = xpos;
             this.position.Y = ypos;
+            this.runSpeed = 0.05f;
+            this.maxRunSpeed = 2.0f;
+            this.HP = 4;
         }
         
 
@@ -43,10 +49,20 @@ namespace BoogalooGame
         public void readControls()
         {
             //Read all of the inputs from the controller and keyboard
-            controller.options.readInputs(); 
+            Options cntrl = controller.options;
+            cntrl.readInputs(); 
 
             //----------Movement-----------
             //Movement on the ground
+            if (cntrl.LEFT)
+            {
+                this.xspeed -= runSpeed;
+            }
+
+            if (cntrl.RIGHT)
+            {
+                this.xspeed += runSpeed;
+            }
 
             //Air movement
 
