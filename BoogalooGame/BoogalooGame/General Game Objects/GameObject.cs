@@ -73,6 +73,7 @@ namespace BoogalooGame
        public bool IsGrounded
         {
             get { return this.grounded; }
+            set { this.grounded = value; }
         }
 
         public float Weight
@@ -98,6 +99,20 @@ namespace BoogalooGame
         {
             this.position.X = xPos;
             this.position.Y = yPos;
+        }
+
+        public bool isMovingLeft()
+        {
+            if (xspeed < 0.0f)
+                return true;
+            return false;
+        }
+
+        public bool isMovingRight()
+        {
+            if (xspeed > 0.0f)
+                return true;
+            return false;
         }
 
         private GameObject checkCollision()
@@ -151,11 +166,17 @@ namespace BoogalooGame
                 }
             }
 
+            if (!collision_below) //Set the object to be in the air if it does not have collision directly below it
+                this.grounded = false;
+
             return colliding_object; //Return null if not colliding with anything except for normal collision tiles
         }
 
         public void Update(GameTime gameTime)
         {
+
+            this.checkCollision(); //May need to do something with the object collided with
+
             //Update the speed
             if (!this.grounded)
             {
@@ -164,14 +185,12 @@ namespace BoogalooGame
                     this.yspeed = this.fall_speed;
             }
 
-            else if (this.grounded)
+            else if (this.grounded && yspeed != 0)
                 this.yspeed = 0;
 
-            //Update position, then update the hitbox to be at this position
+            //Update position
             this.position.X += xspeed;
             this.position.Y += yspeed;
-
-            this.checkCollision(); //May need to do something with the object collided with
 
             //Need to check if an object is on screen to determine if it should be loaded or unloaded DEBUG. 
         }

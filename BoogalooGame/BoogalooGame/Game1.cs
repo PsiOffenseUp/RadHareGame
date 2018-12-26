@@ -80,8 +80,8 @@ namespace BoogalooGame
                 Exit();
 
             // Added code
-            player.Update(gameTime);
             player.readControls();
+            player.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -102,6 +102,9 @@ namespace BoogalooGame
             spriteBatch.Draw(player.sprite.texture, player.position, Color.White);
             spriteBatch.Draw(testCollision.sprite.texture, testCollision.position, Color.White);
 
+            spriteBatch.DrawString(font, player.IsGrounded.ToString(),  player.position, Color.Black);
+            spriteBatch.DrawString(font, "Jump pressed " + Player.controller.options.JUMP.ToString(),  new Vector2(10.0f, 100.0f), Color.Black);
+            spriteBatch.DrawString(font, "Collison below?: " + player.collision_below.ToString(), new Vector2(10.0f, 150.0f), Color.Black);
             spriteBatch.End();
 
             base.Draw(gameTime);
