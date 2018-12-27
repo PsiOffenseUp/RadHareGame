@@ -16,9 +16,9 @@ namespace BoogalooGame
         public static bool debug; //Should debug features be used?
 
         //Related to controls
-        public bool RIGHT, LEFT , UP, DOWN, JUMP, ACTION, PAUSE, SELECT, DEBUG;
-        private Keys rKey, lKey, uKey, dKey, jKey, aKey; //Used to figure out what key should be used for right, left, up, down, jump, and action
-        private Buttons rBut, lBut, uBut, dBut, jBut, aBut; //Same as above, but for controller
+        public bool RIGHT, LEFT , UP, DOWN, JUMP, ACTION, PAUSE, SELECT, NEXT, DEBUG;
+        private Keys rKey, lKey, uKey, dKey, jKey, aKey, nKey; //Used to figure out what key should be used for right, left, up, down, jump, and action
+        private Buttons rBut, lBut, uBut, dBut, jBut, aBut, nBut; //Same as above, but for controller
         const float dead_zone = 0.5f; //Dead zone for the controllers. I think it should be between 0 and 1.
 
 
@@ -34,7 +34,11 @@ namespace BoogalooGame
             DOWN = false;
             JUMP = false;
             ACTION = false;
-            DOWN = false;
+            PAUSE = false;
+            SELECT = false;
+            NEXT = false;
+            DEBUG = false;
+
 
             readControlOptions(); //Load controller options from a file
 
@@ -52,6 +56,7 @@ namespace BoogalooGame
             dKey = Keys.S;
             jKey = Keys.Space;
             aKey = Keys.LeftShift;
+            nKey = Keys.Q;
 
             rBut = Buttons.DPadRight;
             lBut = Buttons.DPadLeft;
@@ -59,6 +64,7 @@ namespace BoogalooGame
             dBut = Buttons.DPadDown;
             jBut = Buttons.A;
             aBut = Buttons.X;
+            nBut = Buttons.RightTrigger;
 
             //Overwrite file
             string path = System.IO.Directory.GetCurrentDirectory() + "/controls.txt";
@@ -71,6 +77,7 @@ namespace BoogalooGame
                 w_file.WriteLine("S");
                 w_file.WriteLine("Sp"); //Jump
                 w_file.WriteLine("LS"); //Action
+                w_file.WriteLine("Q"); //Next
 
                 w_file.WriteLine("DR");
                 w_file.WriteLine("DL");
@@ -78,6 +85,7 @@ namespace BoogalooGame
                 w_file.WriteLine("DD");
                 w_file.WriteLine("A");
                 w_file.WriteLine("X");
+                w_file.WriteLine("R"); //Next
             }
         }
 
@@ -263,6 +271,7 @@ namespace BoogalooGame
                     w_file.WriteLine("S");
                     w_file.WriteLine("Sp"); //Jump
                     w_file.WriteLine("LS"); //Action
+                    w_file.WriteLine("Q"); //Next
 
                     w_file.WriteLine("DR");
                     w_file.WriteLine("DL");
@@ -270,6 +279,7 @@ namespace BoogalooGame
                     w_file.WriteLine("DD");
                     w_file.WriteLine("A");
                     w_file.WriteLine("X");
+                    w_file.WriteLine("R"); //Next
                 }
 
             }
@@ -287,6 +297,7 @@ namespace BoogalooGame
                 dKey = getKeyFromString(r_file.ReadLine());
                 jKey = getKeyFromString(r_file.ReadLine());
                 aKey = getKeyFromString(r_file.ReadLine());
+                nKey = getKeyFromString(r_file.ReadLine());
 
                 rBut = getButtonFromString(r_file.ReadLine());
                 lBut = getButtonFromString(r_file.ReadLine());
@@ -294,6 +305,7 @@ namespace BoogalooGame
                 dBut = getButtonFromString(r_file.ReadLine());
                 jBut = getButtonFromString(r_file.ReadLine());
                 aBut = getButtonFromString(r_file.ReadLine());
+                nBut = getButtonFromString(r_file.ReadLine());
             }
         }
 
@@ -314,6 +326,7 @@ namespace BoogalooGame
             ACTION = ks.IsKeyDown(aKey);
             PAUSE = ks.IsKeyDown(Keys.Enter);
             DEBUG = ks.IsKeyDown(Keys.B) && ks.IsKeyDown(Keys.S);
+            NEXT = ks.IsKeyDown(nKey);
 
             //Check if controller inputs should be applied as well
             GamePadCapabilities caps = GamePad.GetCapabilities(Microsoft.Xna.Framework.PlayerIndex.One);
@@ -327,6 +340,7 @@ namespace BoogalooGame
                 DOWN = DOWN || gpState.ThumbSticks.Left.Y > dead_zone || gpState.IsButtonDown(dBut);
                 JUMP = JUMP || gpState.IsButtonDown(jBut);
                 ACTION = ACTION || gpState.IsButtonDown(aBut);
+                NEXT = NEXT || gpState.IsButtonDown(nBut);
             }
         }
     }

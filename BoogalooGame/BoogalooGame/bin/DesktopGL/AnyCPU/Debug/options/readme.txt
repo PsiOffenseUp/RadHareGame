@@ -7,12 +7,14 @@ Keyboard key for up
 Keyboard key for down
 Keyboard key for jump
 Keyboard key for action
+Keyboard key for next enemy
 Button for right on a controller
 Button for left on a controller
 Button for up on a controller
 Button for down on a controller
 Button for jump on a controller
 Button for action on a controller
+Button for next enemy on a controller
 
 I have these set to encode and decode whenever the file is read from
 or saved. Here are the encode for GamePad buttons:

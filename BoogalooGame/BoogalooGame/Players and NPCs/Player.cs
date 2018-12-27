@@ -12,10 +12,11 @@ namespace BoogalooGame
     {
         public int HP;
         const float runSpeed = 0.08f;
-        const float maxRunSpeed = 4.0f; //maxRunSpeed2 is for when the action button is held while running
-        const float jumpHeight = 8.0f;
-        const float air_friction = 1.85f;
+        const float maxRunSpeed = 4.2f; //maxRunSpeed2 is for when the action button is held while running
+        const float jumpHeight = 5.6f;
+        const float air_friction = 1.8f;
         const float ground_friction = 1.65f;
+        const float jumpGain = 0.12f; //How much extra height is gained by holding down jump. Decreases a bit on the way down
 
         //---------------------Constructors-----------------
 
@@ -66,6 +67,7 @@ namespace BoogalooGame
             //Read all of the inputs from the controller and keyboard
             Options cntrl = controller.options;
             bool debug_before = cntrl.DEBUG;
+            bool jumpBefore = cntrl.JUMP;
             float friction;
 
             cntrl.readInputs();
@@ -73,7 +75,12 @@ namespace BoogalooGame
             if (this.IsGrounded)
                 friction = ground_friction;
             else
-                friction = air_friction;
+            {
+                if (this.isMovingDown())
+                    friction = air_friction;
+                else
+                    friction = 0.85f * air_friction;
+            }
 
             //----------Movement-----------
             //Movement on the ground
@@ -105,10 +112,18 @@ namespace BoogalooGame
                     
             }
 
-            if (cntrl.JUMP && IsGrounded)
+            if (cntrl.JUMP && IsGrounded) //&& !jumpBefore) Add back when collision is fixed. DEBUG
             {
                 this.IsGrounded = false;
                 this.yspeed = -1*jumpHeight;
+            }
+
+            if (cntrl.JUMP && !IsGrounded)
+            {
+                if (this.isMovingUp())
+                    this.yspeed -= jumpGain;
+                else
+                    this.yspeed -= 0.2f * jumpGain;
             }
 
             if (this.xspeed > maxRunSpeed || this.xspeed < -1*maxRunSpeed)

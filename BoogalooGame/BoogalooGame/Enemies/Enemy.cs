@@ -9,7 +9,6 @@ namespace BoogalooGame
 {
     class Enemy:Character
     {
-
         public Enemy()
         {
             this.hitboxColor = Color.Red;

@@ -17,6 +17,7 @@ namespace BoogalooGame
         SpriteFont font;
         Player player;
         Collision[] testCollisions;
+        Sprite hitboxSprite;
 
         public Game1()
         {
@@ -53,7 +54,9 @@ namespace BoogalooGame
 
             //Added code
             font = Content.Load<SpriteFont>("fonts/Consolas"); //Takes argument of the SpriteFont file name
-           
+
+            hitboxSprite = new Sprite(this, "test/hitbox");
+
             player.Name = "Rad Hare";
             player.Load(this);
 
@@ -109,13 +112,17 @@ namespace BoogalooGame
             foreach (KeyValuePair<long, GameObject> entry in GameObject.ActiveObjects)
             {
                 spriteBatch.Draw(entry.Value.sprite.texture, entry.Value.position, Color.White);
-                if (Options.debug) //Draw hitboxes if debug mode is turned on
-                    spriteBatch.Draw(entry.Value.sprite.texture, entry.Value.Hitbox, entry.Value.hitboxColor*0.7f);
+                if (Options.debug) //Draw hitboxes and debug info if debug mode is turned on
+                {
+                    spriteBatch.Draw(hitboxSprite.texture, entry.Value.Hitbox, entry.Value.hitboxColor * 0.35f);
+                    spriteBatch.DrawString(font, "xspeed: " + player.xspeed.ToString(), new Vector2(60.0f, 0.0f), Color.Black);
+                    spriteBatch.DrawString(font, "yspeed: " + player.yspeed.ToString(), new Vector2(60.0f, 20.0f), Color.Black);
+                    spriteBatch.DrawString(font, "x: " + player.position.X.ToString(), new Vector2(0.0f, 0.0f), Color.White);
+                    spriteBatch.DrawString(font, "y: " + player.position.Y.ToString(), new Vector2(0.0f, 20.0f), Color.White);
+
+                }
             }
 
-            spriteBatch.DrawString(font, "xspeed: " + player.xspeed.ToString(),  new Vector2(player.position.X, player.position.Y - 40.0f), Color.Black);
-            spriteBatch.DrawString(font, "yspeed: " + player.yspeed.ToString(), new Vector2(player.position.X, player.position.Y - 20.0f), Color.Black);
-            spriteBatch.DrawString(font, "Right pressed " + Player.controller.options.RIGHT.ToString(),  new Vector2(10.0f, 10.0f), Color.Black);
             spriteBatch.DrawString(font, "Collison below?: " + player.collision_below.ToString(), new Vector2(10.0f, 40.0f), Color.Black);
             spriteBatch.End();
 

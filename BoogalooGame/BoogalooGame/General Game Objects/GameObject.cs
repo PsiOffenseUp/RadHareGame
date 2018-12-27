@@ -17,6 +17,7 @@ namespace BoogalooGame
         private Rectangle hitbox;
         public Color hitboxColor;
 
+        public int priority; //Aids in how likely an object is to be grabbed
         public float xspeed, yspeed;
         private float weight, fall_speed; //How fast an object will fall
         public long id;
@@ -195,111 +196,36 @@ namespace BoogalooGame
             return false;
         }
 
-        private GameObject checkCollision()
+        public bool isMovingUp()
+        {
+            if (yspeed < 0.0f)
+                return true;
+            else
+                return false;
+        }
+
+        public bool isMovingDown()
+        {
+            if (yspeed > 0.0f)
+                return true;
+            else
+                return false;
+        }
+
+        private GameObject doPhysics()
         {
             //Check for any collision
-            GameObject colliding_object = null;
+            GameObject collidingObject = null;
 
-            bool wasGrounded = this.grounded; //Used to check if the object was grounded on the previous frame
-
-            //Reset all collision before checking
-            this.collision_right = false;
-            this.collision_left = false;
-            this.collision_above = false;
-            this.collision_below = false;
-
-            foreach (KeyValuePair<long, GameObject> entry in object_dict)
-            {
-                if (this.hitbox.Intersects(entry.Value.hitbox)) //Only check if they are actually colliding
-                {
-                    if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height) //Collision above
-                    {
-                        if (entry.Value is Collision)
-                        {
-                            this.collision_above = true;
-
-                            //Check if the objects are pretty close to horizontally aligned. DEBUG May need a better fix for this
-                            //if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
-                                this.position.Y = entry.Value.position.Y + entry.Value.hitbox.Height;
-                        }
-                        else
-                            colliding_object = entry.Value;
-
-                    }
-
-                    if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width) //Collision to the left
-                    {
-                        if (entry.Value is Collision)
-                        {
-                            this.collision_left = true;
-
-                            //if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
-                                //this.position.X = entry.Value.position.X + entry.Value.hitbox.Width;
-                        }
-                        else
-                            colliding_object = entry.Value; //Set the colliding object. This may be overwritten later. Make sure not to return, as this will cause floor and wall collisions to turn off
-                    }
-
-                    if (this.position.X + this.hitbox.Width >= entry.Value.position.X) //Collision to the right
-                    {
-                        if (entry.Value is Collision) //If the item collided with is an example of collision, mark collision 
-                        {
-                            this.collision_right = true;
-
-                            //if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
-                                //this.position.X = entry.Value.position.X - this.hitbox.Width;
-                        }
-                        else
-                            colliding_object = entry.Value;
-                    }
-
-                    if (this.position.Y + this.hitbox.Height >= entry.Value.position.Y) //Collision below
-                    {
-                        if (entry.Value is Collision)
-                        {
-                            this.collision_below = true;
-                            //if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
-                            this.position.Y = entry.Value.position.Y - this.hitbox.Height;
-
-                            if (!this.grounded)
-                                this.grounded = true;
-                        }
-                        else
-                            colliding_object = entry.Value;
-                    }
-                }
-            }
             
-            if (!collision_below) //Set the object to be in the air if it does not have collision directly below it
-                this.grounded = false;
 
-           if (!wasGrounded && this.grounded) //If this is the first frame that the object is hitting the ground, set yspeed to 0
-                this.yspeed = 0;
-
-            return colliding_object; //Return null if not colliding with anything except for normal collision tiles
+            return collidingObject; //Return null if not colliding with anything except for normal collision tiles
         }
 
         public void Update(GameTime gameTime)
         {
-            bool wasGrounded = this.grounded;
-            this.checkCollision(); //May need to do something with the object collided with
+            doPhysics();
 
-            //Update the speed
-
-            if (!this.grounded && !this.collision_below)
-            {
-                this.yspeed += this.weight; //While not on the ground, make the object affected by gravity.
-                if (this.yspeed > this.fall_speed)
-                    this.yspeed = this.fall_speed;
-            }
-
-            //Update position
-            this.position.X += xspeed;
-            this.position.Y += yspeed;
-
-            //Update the hitbox
-            this.hitbox.X = (int)this.position.X;
-            this.hitbox.Y = (int)this.position.Y;
             //Need to check if an object is on screen to determine if it should be loaded or unloaded DEBUG. 
         }
 
