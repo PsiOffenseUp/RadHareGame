@@ -15,6 +15,7 @@ namespace BoogalooGame
         public Vector2 position; //X and y coordinate of the character
         public Sprite sprite;
         private Rectangle hitbox;
+        public Color hitboxColor;
 
         public float xspeed, yspeed;
         private float weight, fall_speed; //How fast an object will fall
@@ -218,8 +219,8 @@ namespace BoogalooGame
                             this.collision_above = true;
 
                             //Check if the objects are pretty close to horizontally aligned. DEBUG May need a better fix for this
-                            if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
-                                this.position.Y = entry.Value.position.Y + entry.Value.hitbox.Height + 0.001f;
+                            //if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
+                                this.position.Y = entry.Value.position.Y + entry.Value.hitbox.Height;
                         }
                         else
                             colliding_object = entry.Value;
@@ -232,8 +233,8 @@ namespace BoogalooGame
                         {
                             this.collision_left = true;
 
-                            if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
-                                this.position.X = entry.Value.position.X + entry.Value.hitbox.Width;
+                            //if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
+                                //this.position.X = entry.Value.position.X + entry.Value.hitbox.Width;
                         }
                         else
                             colliding_object = entry.Value; //Set the colliding object. This may be overwritten later. Make sure not to return, as this will cause floor and wall collisions to turn off
@@ -245,8 +246,8 @@ namespace BoogalooGame
                         {
                             this.collision_right = true;
 
-                            if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
-                                this.position.X = entry.Value.position.X - this.hitbox.Width;
+                            //if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && this.position.Y >= entry.Value.position.Y)
+                                //this.position.X = entry.Value.position.X - this.hitbox.Width;
                         }
                         else
                             colliding_object = entry.Value;
@@ -257,8 +258,8 @@ namespace BoogalooGame
                         if (entry.Value is Collision)
                         {
                             this.collision_below = true;
-                            if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
-                                this.position.Y = entry.Value.position.Y - this.hitbox.Height;
+                            //if (this.position.X <= entry.Value.position.X + entry.Value.hitbox.Width && this.position.X >= entry.Value.position.X)
+                            this.position.Y = entry.Value.position.Y - this.hitbox.Height;
 
                             if (!this.grounded)
                                 this.grounded = true;
@@ -285,7 +286,7 @@ namespace BoogalooGame
 
             //Update the speed
 
-            if (!this.grounded)
+            if (!this.grounded && !this.collision_below)
             {
                 this.yspeed += this.weight; //While not on the ground, make the object affected by gravity.
                 if (this.yspeed > this.fall_speed)

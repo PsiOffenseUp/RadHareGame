@@ -4,37 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Input; //Needed for the controls
+using Microsoft.Xna.Framework; //Needed for Texture2D and Color classes
 
 namespace BoogalooGame
 {
     public class Player : Character
     {
         public int HP;
-        public float runSpeed, maxRunSpeed; //maxRunSpeed2 is for when the action button is held while running
+        const float runSpeed = 0.08f;
+        const float maxRunSpeed = 4.0f; //maxRunSpeed2 is for when the action button is held while running
         const float jumpHeight = 8.0f;
-        const float air_friction = 2.0f;
-        const float ground_friction = 1.6f;
+        const float air_friction = 1.85f;
+        const float ground_friction = 1.65f;
 
         //---------------------Constructors-----------------
+
+        //Default constructor
         public Player()
         {
             this.HP = 4;
-            this.runSpeed = 1.3f;
-            this.maxRunSpeed = 4.4f;
+            this.hitboxColor = Color.Green;
         }
 
         public Player(float xpos, float ypos)
         {
             this.position.X = xpos;
             this.position.Y = ypos;
-            this.runSpeed = 0.05f;
-            this.maxRunSpeed = 4.2f;
             this.HP = 4;
+            this.hitboxColor = Color.Green;
         }
 
         public Player(string sprite_path) : base(sprite_path)
         {
             //Just use the super class's constructor that loads the sprite
+
+            this.HP = 4;
+            this.hitboxColor = Color.Green;
         }
         
         //----------------Gets and sets------------------
@@ -61,36 +66,43 @@ namespace BoogalooGame
             //Read all of the inputs from the controller and keyboard
             Options cntrl = controller.options;
             bool debug_before = cntrl.DEBUG;
+            float friction;
 
-            cntrl.readInputs(); 
-            
+            cntrl.readInputs();
+
+            if (this.IsGrounded)
+                friction = ground_friction;
+            else
+                friction = air_friction;
+
             //----------Movement-----------
             //Movement on the ground
             if (cntrl.LEFT)
             {
                 this.xspeed -= runSpeed;
                 if (this.isMovingRight()) //If currently moving to the right, add a little speed boost
-                    this.xspeed -= ground_friction*runSpeed;
+                    this.xspeed -= friction*runSpeed;
             }
 
             if (cntrl.RIGHT)
             {
                 this.xspeed += runSpeed;
                 if(this.isMovingLeft()) //If currently moving to the right, add a little speed boost
-                    this.xspeed += ground_friction * runSpeed;
+                    this.xspeed += friction * runSpeed;
             }
 
             if (!cntrl.RIGHT && !cntrl.LEFT && xspeed != 0) //If neither left or right are being held
             {
                 
                 if (this.isMovingRight())
-                    this.xspeed -= 0.95f*ground_friction * runSpeed;
+                    this.xspeed -= 0.95f*friction*runSpeed;
 
                 else if (this.isMovingLeft())
-                    this.xspeed += 0.95f * ground_friction * runSpeed;
+                    this.xspeed += 0.95f * friction*runSpeed;
                 
-                if (xspeed < 0.03f && xspeed > -0.03f) //Stop the player if their movement is too slow so they don't slide
+                if (xspeed < 0.05f && xspeed > -0.05f) //Stop the player if their movement is too slow so they don't slide
                     xspeed = 0;
+                    
             }
 
             if (cntrl.JUMP && IsGrounded)

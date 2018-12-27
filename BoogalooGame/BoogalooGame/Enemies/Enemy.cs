@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace BoogalooGame
 {
     class Enemy:Character
     {
+
+        public Enemy()
+        {
+            this.hitboxColor = Color.Red;
+        }
     }
 }
