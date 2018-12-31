@@ -30,6 +30,7 @@ namespace BoogalooGame
         private static IDictionary<long, GameObject> object_dict; //Holds all active objects
         public static Regulator controller; //Controls most aspects of the game
 
+        public static Rectangle debugVisualizer = new Rectangle();
 
         //---------------Constructors------------
 
@@ -216,10 +217,113 @@ namespace BoogalooGame
         {
             //Check for any collision
             GameObject collidingObject = null;
+            bool wasGrounded = this.grounded;
+            bool willCollide = false;
 
-            
+            float oldX = this.position.X;
+            float oldY = this.position.Y;
+        
+            //Apply gravity
+            //if (!this.collision_below)
+            //{
+                this.yspeed += this.weight; //While not on the ground, make the object affected by gravity.
+                if (this.yspeed > this.fall_speed)
+                    this.yspeed = this.fall_speed;
+            //}
 
-            return collidingObject; //Return null if not colliding with anything except for normal collision tiles
+            this.position.X = (float)Math.Round(this.position.X + xspeed);
+            this.position.Y = (float)Math.Round(this.position.Y + yspeed);
+
+            this.hitbox.X = (int)this.position.X;
+            this.hitbox.Y = (int)this.position.Y;
+
+            //Reset all collision before checking
+            this.collision_below = false;
+            this.collision_above = false;
+            this.collision_left = false;
+            this.collision_right = false;
+
+            float belowFix = oldY;
+            float aboveFix = oldY;
+            float leftFix = oldX;
+            float rightFix = oldX;
+
+            float objectLeft = this.position.X;
+            float objectRight = this.position.X + this.hitbox.Width;
+            float objectTop = this.position.Y;
+            float objectBottom = this.position.Y + this.hitbox.Height;
+
+            foreach (KeyValuePair<long, GameObject> entry in object_dict)
+            {
+                if (this.hitbox.Intersects(entry.Value.hitbox))
+                {
+                    //Possible bug in collision: If character builds up enough speed, they will clip through the collision
+                    if (entry.Value is Collision) //If the object collided with is an instance of a collision object, do some checking
+                    {
+
+                        //Collision above
+                        if (this.position.Y <= entry.Value.position.Y + entry.Value.hitbox.Height && oldY > entry.Value.position.Y)
+                        {
+                            this.collision_above = true;
+                            aboveFix = entry.Value.position.Y + entry.Value.hitbox.Height;
+                        }
+
+                        //Collision to the right
+                        if (objectRight > entry.Value.position.X && objectLeft < entry.Value.position.Y + entry.Value.hitbox.Width - this.hitbox.Width/2.0f && objectBottom > entry.Value.position.Y)
+                        {
+                            this.collision_right = true;
+                            rightFix = entry.Value.position.X - this.hitbox.Width;
+                        }
+
+                        //Collision to the left
+                        if (objectLeft < entry.Value.position.X + entry.Value.hitbox.Width && objectRight > entry.Value.position.X + this.hitbox.Width/2.0f && objectBottom > entry.Value.position.Y)
+                        {
+                            this.collision_left = true;
+                            leftFix = entry.Value.position.X + entry.Value.hitbox.Width;
+                        }
+
+                        //Collision below
+                        if (objectRight - 1 > entry.Value.position.X && objectRight + 5 < entry.Value.position.X + entry.Value.hitbox.Width + this.hitbox.Width && objectBottom >= entry.Value.position.Y && objectTop < entry.Value.position.Y)
+                        {
+                            this.collision_below = true;
+                            belowFix = entry.Value.position.Y - this.hitbox.Height;
+                        }
+
+                    }
+
+                    else
+                        collidingObject = entry.Value;
+                }
+            }
+
+            //Move character out of collision
+            if (this.collision_above && !this.collision_below)
+                this.position.Y = aboveFix;
+
+            else if (!this.collision_above && this.collision_below)
+            {
+                this.position.Y = belowFix;
+                if (!this.grounded)
+                    this.grounded = true;
+            }
+
+            if (this.collision_left && !this.collision_right)
+                this.position.X = leftFix;
+
+            else if (!this.collision_left && this.collision_right)
+                this.position.X = rightFix;
+
+            if (!this.collision_below && this.grounded)
+                this.grounded = false;
+
+            if (!wasGrounded && this.grounded) //If this is the first frame to touch the ground, reset the object's fall speed
+               this.yspeed = this.weight;
+
+            //Now update the hitbox
+            this.hitbox.X = (int)this.position.X;
+            this.hitbox.Y = (int)this.position.Y;
+
+           return collidingObject; //Return null if not colliding with anything except for normal collision tiles
         }
 
         public void Update(GameTime gameTime)

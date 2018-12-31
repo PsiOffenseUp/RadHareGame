@@ -20,6 +20,11 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/File.spritefont;fonts/Consolas.spritefont
 
+#begin levels/test.json
+/importer:
+/processor:
+/build:levels/test.json
+
 #begin test/hitbox.jpg
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -16,7 +16,7 @@ namespace BoogalooGame.Data_Structures
     {
         GameObject obj;
         Vector2 position;
-        Texture2D sprite; //Debug, may want to replace this with Sprite class
+        Sprite sprite; //Debug, may want to replace this with Sprite class
         
         public GameObjectInfo() //Default constructor, if nothing has been specified
         {

@@ -18,6 +18,7 @@ namespace BoogalooGame
         Player player;
         Collision[] testCollisions;
         Sprite hitboxSprite;
+        Level testLevel;
 
         public Game1()
         {
