@@ -24,7 +24,7 @@ namespace BoogalooGame.Data_Structures
             this.position = new Vector2(0.0f, 0.0f); //If nothing has been specified
         }
 
-        public GameObjectInfo(GameObject objct, Vector2 pos, Texture2D spr) //Normal constructor. Should always be used
+        public GameObjectInfo(GameObject objct, Vector2 pos, Sprite spr) //Normal constructor. Should always be used
         {
             this.obj = objct;
             this.position = pos;

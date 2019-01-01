@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Graphics;
 
 namespace BoogalooGame
 {
@@ -19,6 +21,9 @@ namespace BoogalooGame
         Collision[] testCollisions;
         Sprite hitboxSprite;
         Level testLevel;
+
+        TiledMap map;
+        TiledMapRenderer tmr;
 
         public Game1()
         {
@@ -40,6 +45,9 @@ namespace BoogalooGame
             testCollisions = new Collision[20];
             for (int i = 0; i < 20; i++)
                 testCollisions[i] = new Collision();
+
+            map = Level.loadLevel(this, "levels/test");
+            tmr = new TiledMapRenderer(GraphicsDevice);
 
             base.Initialize();
         }
@@ -92,6 +100,7 @@ namespace BoogalooGame
             // Added code
             player.readControls();
             player.Update(gameTime);
+            tmr.Update(map, gameTime);
 
             base.Update(gameTime);
         }
@@ -108,6 +117,8 @@ namespace BoogalooGame
             
             //Start drawing things
             spriteBatch.Begin();
+
+            tmr.Draw(map); //DEBUG need camera
 
             //Iterate and draw all active objects in GameObject.object_dict and all background objects DEBUG Add background objects later
             foreach (KeyValuePair<long, GameObject> entry in GameObject.ActiveObjects)

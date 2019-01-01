@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Graphics;
 
 //using System.Xml;
 
@@ -39,25 +38,27 @@ namespace BoogalooGame
         }
 
         //--------------------Methods---------------------
-        public TiledMapRenderer loadLevel(Game1 game, string level_path)
+        /// <summary>
+        /// Loads the level into game from the file name level_path. This should then be followed by a creation
+        /// of a TiledMapRenderer with the graphics Device as an argument to the constructor. This function also returns the 
+        /// newly created map
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="level_path"></param>
+        /// <returns></returns>
+        static public TiledMap loadLevel(Game1 game, string level_path)
         {
 
-            TiledMap map;
-            TiledMapRenderer tmr = null;
-
-            game.Content.Load<TiledMap>(level_path);
-
-            return tmr;
+            return game.Content.Load<TiledMap>(level_path);
 
         }
 
-        public void loadNextLevel(Game1 game)
+        static public TiledMap loadNextLevel(Game1 game)
         {
             if (id >= number_of_levels - 1) //Bail out so as not to seg-fault when loading on the last level
-                return;
-
+                return null;
             id++;
-            loadLevel(game, level_paths[id]);
+            return loadLevel(game, level_paths[id]);
         }
 
         public void readLevelData(string level_path)
