@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using BoogalooGame.Data_Structures;
 
 namespace BoogalooGame
 {
@@ -19,7 +18,6 @@ namespace BoogalooGame
         private Collision[][] collisionList; //List of all the collision
         private Sprite[][] spriteList; //List of all sprites which should not have any actual code
         private Enemy[][] enemyList;
-
 
     }
 }

@@ -5,6 +5,8 @@
   <Config />
   <SourceFiles>
     <File>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/fonts/File.spritefont</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/levels/test.tmx</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/sprites/Game/textures/GrassLarge.png</File>
     <File>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/test/hitbox.jpg</File>
     <File>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/test/Luigi.png</File>
     <File>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/tiles/block-192.gif</File>
@@ -17,6 +19,8 @@
   </SourceFiles>
   <DestFiles>
     <File>fonts/Consolas.spritefont</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -39,25 +39,20 @@ namespace BoogalooGame
         }
 
         //--------------------Methods---------------------
-        public TiledMapRenderer loadLevel(Game1 game, string level_path)
+        public static TiledMap loadLevel(Game1 game, string level_path)
         {
 
-            TiledMap map;
-            TiledMapRenderer tmr = null;
-
-            game.Content.Load<TiledMap>(level_path);
-
-            return tmr;
+            return game.Content.Load<TiledMap>(level_path);
 
         }
 
-        public void loadNextLevel(Game1 game)
+        public static TiledMap loadNextLevel(Game1 game)
         {
             if (id >= number_of_levels - 1) //Bail out so as not to seg-fault when loading on the last level
-                return;
+                return null;
 
             id++;
-            loadLevel(game, level_paths[id]);
+            return loadLevel(game, level_paths[id]);
         }
 
         public void readLevelData(string level_path)

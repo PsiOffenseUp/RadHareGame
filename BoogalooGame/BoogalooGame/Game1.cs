@@ -2,6 +2,9 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Graphics;
+using MonoGame.Extended.ViewportAdapters;
 
 namespace BoogalooGame
 {
@@ -16,9 +19,12 @@ namespace BoogalooGame
         //New declarations
         SpriteFont font;
         Player player;
-        Collision[] testCollisions;
+        //Collision[] testCollisions;
         Sprite hitboxSprite;
         Level testLevel;
+        TiledMap map;
+        TiledMapRenderer tmr;
+        //Camera2d camera; Need a camera class
 
         public Game1()
         {
@@ -36,10 +42,14 @@ namespace BoogalooGame
         {
             //Added code
             player = new Player("test/Luigi");
+            map = Level.loadLevel(this, "levels/test");
+            tmr = new TiledMapRenderer(GraphicsDevice);
 
+            /*
             testCollisions = new Collision[20];
             for (int i = 0; i < 20; i++)
                 testCollisions[i] = new Collision();
+                */
 
             base.Initialize();
         }
@@ -61,13 +71,13 @@ namespace BoogalooGame
             player.Name = "Rad Hare";
             player.Load(this);
 
-            for (int i = 0; i < 10; i++)
+            /*for (int i = 0; i < 10; i++)
                 testCollisions[i].setPosition(32.0f * i, 200.0f);
             for(int i = 10; i < 20; i++)
                 testCollisions[i].setPosition(32.0f * i, 260.0f);
 
             for (int i = 0; i < 20; i++)
-                testCollisions[i].Load(this);
+                testCollisions[i].Load(this);*/
         }
 
         /// <summary>
@@ -93,6 +103,8 @@ namespace BoogalooGame
             player.readControls();
             player.Update(gameTime);
 
+            tmr.Update(map, gameTime);
+
             base.Update(gameTime);
         }
 
@@ -108,6 +120,8 @@ namespace BoogalooGame
             
             //Start drawing things
             spriteBatch.Begin();
+
+            tmr.Draw(map, viewMatrix: , samplerstate: SamplerState.PointClamp);
 
             //Iterate and draw all active objects in GameObject.object_dict and all background objects DEBUG Add background objects later
             foreach (KeyValuePair<long, GameObject> entry in GameObject.ActiveObjects)
