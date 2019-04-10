@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Graphics;
 using MonoGame.Extended.ViewportAdapters;
+using BoogalooGame.Imports;
 
 namespace BoogalooGame
 {
@@ -24,7 +25,7 @@ namespace BoogalooGame
         Level testLevel;
         TiledMap map;
         TiledMapRenderer tmr;
-        //Camera2d camera; Need a camera class
+        Camera2D camera; //Need a camera class
 
         public Game1()
         {
@@ -44,6 +45,7 @@ namespace BoogalooGame
             player = new Player("test/Luigi");
             map = Level.loadLevel(this, "levels/test");
             tmr = new TiledMapRenderer(GraphicsDevice);
+            camera = new Camera2D();
 
             /*
             testCollisions = new Collision[20];
@@ -105,6 +107,8 @@ namespace BoogalooGame
 
             tmr.Update(map, gameTime);
 
+            camera.setCameraPosition(player.position);
+
             base.Update(gameTime);
         }
 
@@ -121,7 +125,7 @@ namespace BoogalooGame
             //Start drawing things
             spriteBatch.Begin();
 
-            tmr.Draw(map, viewMatrix: , samplerstate: SamplerState.PointClamp);
+            tmr.Draw(map, viewMatrix: camera.getTransformation, samplerstate: SamplerState.PointClamp);
 
             //Iterate and draw all active objects in GameObject.object_dict and all background objects DEBUG Add background objects later
             foreach (KeyValuePair<long, GameObject> entry in GameObject.ActiveObjects)
