@@ -1,7 +1,13 @@
 #include "shape.h"
 
+//Tells if two shapes are colliding using SAT colliision detection.
+bool Shape::isCollision(const Shape& shape1, const Shape& shape2)
+{
+    //Debug, write collision here
+}
+
 //Checks if 2 2D lines intersect. Since this is 2D, just make sure slopes don't match. If they do, check y_int
-bool Line::doIntersect(Line line1, Line line2)
+bool Line::isIntersecting(const Line& line1, const Line& line2)
 {
     if (line1.slope != line2.slope) //Non-parallel lines must always intersect
         return true;
@@ -9,7 +15,7 @@ bool Line::doIntersect(Line line1, Line line2)
 
 //Finds the point of intersection between two lines, assuming they already intersect. 
 //Please use doIntersect() to check for intersection
-point2D Line::findIntersection(Line line1, Line line2)
+point2D Line::findIntersection(const Line& line1, const Line& line2)
 {
     point2D intersection;
 
