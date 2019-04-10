@@ -26,6 +26,7 @@ class Line
 
         //Constructors
         Line(float slope, float y_int) { this->slope = slope; this->y_int = y_int;}
+        Line(const point2D& point1, const point2D& point2); //Constructor with points
 };
 
 class LineSegment : Line
