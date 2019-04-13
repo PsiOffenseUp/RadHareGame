@@ -97,15 +97,16 @@ namespace RRE {
 			float yInt;
 
 			//Public member functions
-			inline pnt_F FindIntersection(const Line line1, const Line line2) {
+			static bool isIntersection(const Line line1, const Line line2) { return line1.slope != line2.slope || line1.yInt == line2.yInt; }
+
+			static pnt_F FindIntersection(const Line line1, const Line line2) {
 				pnt_F intersection; 
-				try
-				{
+				try{
 					intersection.x = (line2.yInt - line1.yInt) / (line1.slope - line2.slope);
 					intersection.y = line1.slope*intersection.x + line1.yInt;
 				}
 
-				catch(...){ std::cout << "No intersection detected";}
+				catch (...) { std::cout << "No intersection detected"; } //Should use checkIntersection function to make sure this catch isn't needed}
 
 				return intersection;
 			}
@@ -124,4 +125,4 @@ namespace RRE {
 		//Constructors
 		LineSegment(const pnt_F p1, const pnt_F p2) : Line(p1, p2) { start = p1; end = p2; }
 	};
-}
+	}
