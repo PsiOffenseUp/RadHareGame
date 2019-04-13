@@ -1,0 +1,4 @@
+﻿  RadRabbitEngine_olc.cpp
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(1672): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(1677): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+  RadRabbitEngine_olc.vcxproj -> C:\Users\cstough\source\repos\RadHareGame\olcPixelGameEngine\RadRabbitEngine_olc\Debug\RadRabbitEngine_olc.exe
