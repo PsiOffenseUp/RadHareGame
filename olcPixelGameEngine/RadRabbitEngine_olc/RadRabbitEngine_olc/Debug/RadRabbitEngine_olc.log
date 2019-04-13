@@ -1,4 +1,7 @@
 ﻿  RadRabbitEngine_olc.cpp
 c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(1672): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
 c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(1677): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(79): warning C4200: nonstandard extension used: zero-sized array in struct/union
+  c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(79): note: This member will be ignored by a defaulted constructor or copy/move assignment operator
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(85): warning C4154: deletion of an array expression; conversion to pointer supplied
   RadRabbitEngine_olc.vcxproj -> C:\Users\cstough\source\repos\RadHareGame\olcPixelGameEngine\RadRabbitEngine_olc\Debug\RadRabbitEngine_olc.exe
