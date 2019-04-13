@@ -85,9 +85,43 @@ namespace RRE {
 			delete[] vertices;
 		}
 
-		static bool ChackCollision(const Shape sh1, const Shape sh2) {
+		static bool CheckCollision(const Shape sh1, const Shape sh2) {
 			//magic
 			return false;
 		}
+	};
+
+	class Line {
+		public:
+			float slope;
+			float yInt;
+
+			//Public member functions
+			inline pnt_F FindIntersection(const Line line1, const Line line2) {
+				pnt_F intersection; 
+				try
+				{
+					intersection.x = (line2.yInt - line1.yInt) / (line1.slope - line2.slope);
+					intersection.y = line1.slope*intersection.x + line1.yInt;
+				}
+
+				catch(...){ std::cout << "No intersection detected";}
+
+				return intersection;
+			}
+
+			//Constructors
+			Line() { this->slope = 0; this->yInt = 0; } //Default constructor
+			Line(const pnt_F p1, const pnt_F p2) { this->slope = pnt_F::GetSlope(p1, p2); this->yInt = p1.y - this->slope*p1.x; } //If we get two points
+			~Line() {}
+	};
+
+	class LineSegment:Line
+	{
+		pnt_F start;
+		pnt_F end;
+
+		//Constructors
+		LineSegment(const pnt_F p1, const pnt_F p2) : Line(p1, p2) { start = p1; end = p2; }
 	};
 }
