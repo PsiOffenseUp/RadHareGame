@@ -1,0 +1,18 @@
+﻿  RadRabbitEngine_olc.cpp
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(1672): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(1677): warning C4244: '=': conversion from 'float' to 'int32_t', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(2174): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned short', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\olcpixelgameengine.h(2175): warning C4244: 'argument': conversion from 'WPARAM' to 'const unsigned short', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(135): error C2027: use of undefined type 'RRE::Shape'
+  c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(15): note: see declaration of 'RRE::Shape'
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(135): error C3078: array size must be specified in new expressions
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(139): error C2027: use of undefined type 'RRE::Shape'
+  c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(15): note: see declaration of 'RRE::Shape'
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(141): error C2027: use of undefined type 'RRE::Shape'
+  c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(15): note: see declaration of 'RRE::Shape'
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(153): error C2027: use of undefined type 'RRE::Shape'
+  c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(15): note: see declaration of 'RRE::Shape'
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(177): error C2027: use of undefined type 'RRE::Shape'
+  c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(15): note: see declaration of 'RRE::Shape'
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(234): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(256): warning C4244: '=': conversion from 'double' to 'float', possible loss of data

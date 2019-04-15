@@ -12,6 +12,8 @@
 
 namespace RRE {
 
+	class Shape;
+
 	template <class T>
 	struct Vector2_generic { //Used for movement/ vector based calculations
 
@@ -74,71 +76,33 @@ namespace RRE {
 		}
 	};
 
-	class Shape {
+	class LineSegment
+	{
+	public:
+		pnt_F start;
+		pnt_F end;
 
-		public:
-			pnt_F* vertices; //Had to change this to a pointer instead of an array because VS was failing to recognize it as a member.
-			int vertexCount; //May need to keep track of this if size() function fails to work
+		//Member functions
+		static bool IsIntersecting(const LineSegment& seg1, const LineSegment& seg2)
+		{
+			//This intersection method find the percent/fraction distance the intersection is away from the start point of each line.
+			//If both percents are elements of [0,1], then it guarantees they intersect. Using this to avoid doing anything too specific.
+			//For an explanation of the formulas, see this link: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
+			float d1, d2; //ta and tb from the link above
 
-			Shape() {
-			}
-			Shape(int vertexCount) { this->vertexCount = vertexCount; vertices = new pnt_F[vertexCount]; }
-			~Shape() {
-				delete[] vertices;
-			}
+			pnt_F p1 = seg1.start, p2 = seg1.end, p3 = seg2.start, p4 = seg2.end;
+			float denominator = ((p4.x - p3.x)*(p1.y - p2.y) - (p1.x - p2.x)*(p4.y - p3.y)); //Both equations share a common denominator, so let's just calculate it once.
 
-			//Checks collision between sh1 and sh2. Does so by checking against one axis at a time; this way, we don't have to compute extra axes
-			//in the event that there is no collision.
-			static bool CheckCollision(const Shape sh1, const Shape sh2) {
-				Line* axis; //Current axis being used
-				LineSegment projection1, projection2; //Used to store 2 projections so we can check if they overlap later
-				pnt_F secondPoint; //Used for getting a second point for each edge of each shape
-				float tempSlope; //Used to temporarily store the perpendicular slope to make things easier.
+			d1 = ((p3.y - p4.y)*(p1.x - p3.x) + (p4.x - p3.x)*(p1.y - p3.y)) / denominator;
+			d2 = ((p1.y - p2.y)*(p1.x - p3.x) + (p2.x - p1.x)*(p1.y - p3.y)) / denominator;
 
-				for (int i = 0; i < sh1.vertexCount; i++ ) //Check collision using the first shape
-				{
-					//Get the point adjacent to this one to come up with the axis
-					if (i != sh1.vertexCount - 1)
-						secondPoint = sh1.vertices[i + 1];
-					else
-						secondPoint = sh1.vertices[0];
+			return 0 <= d1 && d1 <= 1 && 0 <= d2 && d2 <= 1;
+		}
 
-					tempSlope = -1.0 / pnt_F::GetSlope(sh1.vertices[i], secondPoint);
-					axis = new Line(tempSlope, sh1.vertices[i].y - tempSlope*sh1.vertices[i].x); //Construct a perpendicular line with the given slope and yInt
-				
-					//Now that we have an axis to project onto, let's project both shapes
-					projection1 = axis->TakeProjection(sh1); // Project shape1 onto the axis
-					projection2 = axis->TakeProjection(sh2); //Project shape2 onto the axis
+		//Constructors
+		LineSegment() {}
+		LineSegment(const pnt_F p1, const pnt_F p2) { start = p1; end = p2; }
 
-					//Check intersection of the two LineSegment projections
-					//DEBUG, finish writing the functions that do this
-					if (!LineSegment::IsIntersecting(projection1, projection2)) //If projected lines don't intersect, these shapes aren't colliding
-						return false;
-				}
-
-				//Check collision for the second shape
-				for (int i = 0; i < sh2.vertexCount; i++) //Check collision using the first shape
-				{
-					//Get the point adjacent to this one to come up with the axis
-					if (i != sh2.vertexCount - 1)
-						secondPoint = sh2.vertices[i + 1];
-					else
-						secondPoint = sh2.vertices[0];
-
-					tempSlope = -1.0 / pnt_F::GetSlope(sh2.vertices[i], secondPoint);
-					axis = new Line(tempSlope, sh2.vertices[i].y - tempSlope * sh2.vertices[i].x); //Construct a perpendicular line with the given slope and yInt
-
-					//Now that we have an axis to project onto, let's project both shapes
-					projection1 = axis->TakeProjection(sh1); // Project shape1 onto the axis
-					projection2 = axis->TakeProjection(sh2); //Project shape2 onto the axis
-
-					//Check intersection of the two LineSegment projections
-					if (!LineSegment::IsIntersecting(projection1, projection2)) //If projected lines don't intersect, these shapes aren't colliding
-						return false;
-				}
-			
-				return true;
-			}
 	};
 
 	class Line {
@@ -238,33 +202,71 @@ namespace RRE {
 			~Line() {}
 	};
 
-	class LineSegment
-	{
-		public:
-			pnt_F start;
-			pnt_F end; 
+	class Shape {
 
-			//Member functions
-			static bool IsIntersecting(const LineSegment& seg1, const LineSegment& seg2)
+	public:
+		pnt_F* vertices; //Had to change this to a pointer instead of an array because VS was failing to recognize it as a member.
+		int vertexCount; //May need to keep track of this if size() function fails to work
+
+		Shape() {
+		}
+		Shape(int vertexCount) { this->vertexCount = vertexCount; vertices = new pnt_F[vertexCount]; }
+		~Shape() {
+			delete[] vertices;
+		}
+
+		//Checks collision between sh1 and sh2. Does so by checking against one axis at a time; this way, we don't have to compute extra axes
+		//in the event that there is no collision.
+		static bool CheckCollision(const Shape sh1, const Shape sh2) {
+			Line* axis; //Current axis being used
+			LineSegment projection1, projection2; //Used to store 2 projections so we can check if they overlap later
+			pnt_F secondPoint; //Used for getting a second point for each edge of each shape
+			float tempSlope; //Used to temporarily store the perpendicular slope to make things easier.
+
+			for (int i = 0; i < sh1.vertexCount; i++) //Check collision using the first shape
 			{
-				//This intersection method find the percent/fraction distance the intersection is away from the start point of each line.
-				//If both percents are elements of [0,1], then it guarantees they intersect. Using this to avoid doing anything too specific.
-				//For an explanation of the formulas, see this link: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
-				float d1, d2; //ta and tb from the link above
+				//Get the point adjacent to this one to come up with the axis
+				if (i != sh1.vertexCount - 1)
+					secondPoint = sh1.vertices[i + 1];
+				else
+					secondPoint = sh1.vertices[0];
 
-				pnt_F p1 = seg1.start, p2 = seg1.end, p3 = seg2.start, p4 = seg2.end;
-				float denominator = ((p4.x - p3.x)*(p1.y - p2.y) - (p1.x - p2.x)*(p4.y - p3.y)); //Both equations share a common denominator, so let's just calculate it once.
+				tempSlope = -1.0 / pnt_F::GetSlope(sh1.vertices[i], secondPoint);
+				axis = new Line(tempSlope, sh1.vertices[i].y - tempSlope * sh1.vertices[i].x); //Construct a perpendicular line with the given slope and yInt
 
-				d1 = ((p3.y - p4.y)*(p1.x - p3.x) + (p4.x - p3.x)*(p1.y - p3.y)) / denominator;
-				d2 = ((p1.y - p2.y)*(p1.x - p3.x) + (p2.x - p1.x)*(p1.y - p3.y)) / denominator;
+				//Now that we have an axis to project onto, let's project both shapes
+				projection1 = axis->TakeProjection(sh1); // Project shape1 onto the axis
+				projection2 = axis->TakeProjection(sh2); //Project shape2 onto the axis
 
-				return 0 <= d1 && d1 <= 1 && 0 <= d2 && d2 <= 1;
+				//Check intersection of the two LineSegment projections
+				//DEBUG, finish writing the functions that do this
+				if (!LineSegment::IsIntersecting(projection1, projection2)) //If projected lines don't intersect, these shapes aren't colliding
+					return false;
 			}
 
-			//Constructors
-			LineSegment() {}
-			LineSegment(const pnt_F p1, const pnt_F p2) { start = p1; end = p2; }
+			//Check collision for the second shape
+			for (int i = 0; i < sh2.vertexCount; i++) //Check collision using the first shape
+			{
+				//Get the point adjacent to this one to come up with the axis
+				if (i != sh2.vertexCount - 1)
+					secondPoint = sh2.vertices[i + 1];
+				else
+					secondPoint = sh2.vertices[0];
 
+				tempSlope = -1.0 / pnt_F::GetSlope(sh2.vertices[i], secondPoint);
+				axis = new Line(tempSlope, sh2.vertices[i].y - tempSlope * sh2.vertices[i].x); //Construct a perpendicular line with the given slope and yInt
+
+				//Now that we have an axis to project onto, let's project both shapes
+				projection1 = axis->TakeProjection(sh1); // Project shape1 onto the axis
+				projection2 = axis->TakeProjection(sh2); //Project shape2 onto the axis
+
+				//Check intersection of the two LineSegment projections
+				if (!LineSegment::IsIntersecting(projection1, projection2)) //If projected lines don't intersect, these shapes aren't colliding
+					return false;
+			}
+
+			return true;
+		}
 	};
 
 	struct InputScheme { //Control scheme for key bindings.
@@ -277,6 +279,21 @@ namespace RRE {
 		}
 	};
 
-	//Possibly need a state machine
+	//Mostly how the Unity AnimatorController works
+	struct Animation {
+	public:
+		olc::Sprite* Sprites;
 
+		bool Looping, ExitWhenDone; //ExitWhenDone is basically the same as "Has Exit Time" in Unity. When the AnimatorController wants 
+		float FrameDuration;
+
+	};
+
+	class AnimatorController {
+	public:
+		Animation* Animations;
+
+		AnimatorController() {}
+		AnimatorController(Animation* Animations) { this->Animations = Animations; }
+	};
 }
