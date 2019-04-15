@@ -238,7 +238,6 @@ namespace RRE {
 			~Line() {}
 	};
 
-	//Extension of the Line class. For the sake of efficiency, we could actually have this not store the slope or yInt, and calculate them only if we need them.
 	class LineSegment
 	{
 		public:
@@ -248,7 +247,18 @@ namespace RRE {
 			//Member functions
 			static bool IsIntersecting(const LineSegment& seg1, const LineSegment& seg2)
 			{
-				//DEBUG Finish writing this. Can use Line functions to help, possibly
+				//This intersection method find the percent/fraction distance the intersection is away from the start point of each line.
+				//If both percents are elements of [0,1], then it guarantees they intersect. Using this to avoid doing anything too specific.
+				//For an explanation of the formulas, see this link: http://www.cs.swan.ac.uk/~cssimon/line_intersection.html
+				float d1, d2; //ta and tb from the link above
+
+				pnt_F p1 = seg1.start, p2 = seg1.end, p3 = seg2.start, p4 = seg2.end;
+				float denominator = ((p4.x - p3.x)*(p1.y - p2.y) - (p1.x - p2.x)*(p4.y - p3.y)); //Both equations share a common denominator, so let's just calculate it once.
+
+				d1 = ((p3.y - p4.y)*(p1.x - p3.x) + (p4.x - p3.x)*(p1.y - p3.y)) / denominator;
+				d2 = ((p1.y - p2.y)*(p1.x - p3.x) + (p2.x - p1.x)*(p1.y - p3.y)) / denominator;
+
+				return 0 <= d1 && d1 <= 1 && 0 <= d2 && d2 <= 1;
 			}
 
 			//Constructors
