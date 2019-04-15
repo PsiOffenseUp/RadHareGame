@@ -22,8 +22,8 @@ namespace RRE {
 			x = 0; y = 0;
 		}
 
-		Vector2_generic(T X, T Y) {
-			x = X; y = Y;
+		Vector2_generic(T x, T y) {
+			this->x = x; this->y = y;
 		}
 
 		//Operator Overloads
@@ -125,4 +125,17 @@ namespace RRE {
 		//Constructors
 		LineSegment(const pnt_F p1, const pnt_F p2) : Line(p1, p2) { start = p1; end = p2; }
 	};
-	}
+
+	struct InputScheme { //Control scheme for key bindings.
+		olc::HWButton Jump, Left, Right, Up, Down, Start;
+
+		bool RebindKey(olc::HWButton input, olc::HWButton key) {
+			//check to see if key is already used, if true (either unbind key, or dont allow binding of new key)
+			//return true if key was successfully rebound
+			return true;
+		}
+	};
+
+	//Possibly need a state machine
+
+}
