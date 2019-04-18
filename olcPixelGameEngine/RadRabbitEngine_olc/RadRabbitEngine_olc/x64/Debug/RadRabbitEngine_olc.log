@@ -16,3 +16,4 @@ c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc
   c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(15): note: see declaration of 'RRE::Shape'
 c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(234): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(256): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\cstough\source\repos\radharegame\olcpixelgameengine\radrabbitengine_olc\radrabbitengine_olc\radrabbitengine.h(308): warning C4091: 'static ': ignored on left of 'RRE::AnimatorController::AnimationType' when no variable is declared

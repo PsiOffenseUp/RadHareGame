@@ -283,17 +283,36 @@ namespace RRE {
 	struct Animation {
 	public:
 		olc::Sprite* Sprites;
-
+		int Frames, CurrentFrame;
 		bool Looping, ExitWhenDone; //ExitWhenDone is basically the same as "Has Exit Time" in Unity. When the AnimatorController wants 
-		float FrameDuration;
+		float FrameDuration, CurrentTime;
 
+		olc::Sprite GetSprite(float DeltaTime) {
+			CurrentTime += DeltaTime;
+			float OverFlow = 0.0f;
+			if (CurrentTime > FrameDuration) { 
+				OverFlow = CurrentTime - FrameDuration;
+				CurrentFrame = (CurrentFrame + 1 > Frames) ? 0 : CurrentFrame + 1;
+				CurrentTime = OverFlow;
+			}
+
+			return this->Sprites[CurrentFrame];
+		}
+
+		Animation() {}
+		Animation(olc::Sprite Sprites, int Frames) { this->Sprites = new olc::Sprite[Frames]; this->Frames = Frames; this->Sprites = &Sprites; this->CurrentFrame = 0; };
 	};
 
-	class AnimatorController {
+	class AnimationController {
 	public:
+		static enum AnimationType {HUMANOID, OBJECT}; //Humanoids have walking/jumping/attacking/death animations. Objects just have their idle/interaction/etc. animations
+		AnimationType animationType;
 		Animation* Animations;
+		Animation* CurrentAnimation;
 
-		AnimatorController() {}
-		AnimatorController(Animation* Animations) { this->Animations = Animations; }
+		AnimationController() {}
+		AnimationController(Animation* Animations, AnimationType animationType) { this->Animations = Animations; this->animationType = animationType; }
 	};
+	
+	//TODO: create system for using screen dimensions to clip sprites that are outside the viewing box
 }
