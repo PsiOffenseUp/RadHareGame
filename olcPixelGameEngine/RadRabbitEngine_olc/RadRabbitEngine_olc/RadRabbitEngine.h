@@ -13,6 +13,7 @@
 namespace RRE {
 
 	class Shape;
+	class Entity;
 
 	template <class T>
 	struct Vector2_generic { //Used for movement/ vector based calculations
@@ -75,7 +76,9 @@ namespace RRE {
 			return (float)((p2.y - p1.y) / (p2.x - p1.x)); 
 		}
 	};
+	//this section needs fixing
 
+	/*
 	class LineSegment
 	{
 	public:
@@ -104,7 +107,7 @@ namespace RRE {
 		LineSegment(const pnt_F p1, const pnt_F p2) { start = p1; end = p2; }
 
 	};
-
+	 
 	class Line {
 		public:
 			float slope;
@@ -202,6 +205,7 @@ namespace RRE {
 			~Line() {}
 	};
 
+	
 	class Shape {
 
 	public:
@@ -278,8 +282,11 @@ namespace RRE {
 			return true;
 		}
 	};
+	*/
 
 	//Mostly how the Unity AnimatorController works
+//Minor Circular dependency here, will work on it
+/*
 	struct Animation {
 	public:
 		olc::Sprite* Sprites;
@@ -287,7 +294,7 @@ namespace RRE {
 		bool Looping, ExitWhenDone; //ExitWhenDone is basically the same as "Has Exit Time" in Unity. When the AnimatorController wants 
 		float FrameDuration, CurrentTime;
 
-		olc::Sprite GetSprite(float DeltaTime) {
+		void Update(float DeltaTime) {
 			CurrentTime += DeltaTime;
 			float OverFlow = 0.0f;
 			if (CurrentTime > FrameDuration) { 
@@ -295,7 +302,9 @@ namespace RRE {
 				CurrentFrame = (CurrentFrame + 1 > Frames) ? 0 : CurrentFrame + 1;
 				CurrentTime = OverFlow;
 			}
+		}
 
+		olc::Sprite GetSprite() {
 			return this->Sprites[CurrentFrame];
 		}
 
@@ -310,9 +319,70 @@ namespace RRE {
 		Animation* Animations;
 		Animation* CurrentAnimation;
 
+		void Update(Entity* e) {
+			if (animationType == AnimationType::HUMANOID) { //humanoid animation updating
+
+				
+				//0 - IDLE
+				//1 - JUMPING
+				//2 - RUNNING
+				//3 - CROUCHING
+				//4 - DEATH
+				
+
+				if (e->IsJumping) {
+					*CurrentAnimation = Animations[1];
+				}
+				else if (e->IsCrouching) {
+					*CurrentAnimation = Animations[3];
+				}
+				else {
+					if(e->movementVector.x != 0.0f || e->movementVector.y != 0.0f) *CurrentAnimation = Animations[2]; //Moving
+					else *CurrentAnimation = Animations[0]; //Idle
+				}
+			}
+			else { //object animation updating
+
+			}
+		}
+
 		AnimationController() {}
+		AnimationController(AnimationType animType) { animationType = animType; }
 		AnimationController(Animation* Animations, AnimationType animationType) { this->Animations = Animations; this->animationType = animationType; }
 	};
+
+	class Entity {
+	public:
+		AnimationController* animationController;
+		v2d_F movementVector = v2d_F(0.0f, 0.0f);
+		pnt_F position = pnt_F(0.0f, 0.0f);
+		bool IsJumping = false, IsCrouching = false;
+
+		Entity() {
+
+		}
+
+		void EntityUpdate(float ElapsedTime) {
+			animationController->Update(this);
+		}
+
+		olc::Sprite GetSprite() {
+			return animationController->CurrentAnimation->GetSprite();
+		}
+	};
+
+	class Character : public Entity {
+	public:
+
+		Character() {
+			this->animationController->animationType = AnimationController::HUMANOID;
+		}
+
+		void Update(float ElapsedTime) {
+			EntityUpdate(ElapsedTime); //updates the animationController
+		}
+	};
+	*/
 	
 	//TODO: create system for using screen dimensions to clip sprites that are outside the viewing box
 }

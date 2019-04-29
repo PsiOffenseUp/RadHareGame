@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/test/Luigi.png</SourceFile>
-  <SourceTime>2018-12-26T13:50:04.2297711-08:00</SourceTime>
-  <DestFile>F:/Documents/BoogalooGame/RadHareGame/BoogalooGame/BoogalooGame/Content/bin/Windows/Content/test/Luigi.xnb</DestFile>
-  <DestTime>2019-01-01T13:53:27.1127962-08:00</DestTime>
+  <SourceFile>C:/Users/cstough/source/repos/RadHareGame/BoogalooGame/BoogalooGame/Content/test/Luigi.png</SourceFile>
+  <SourceTime>2019-04-12T14:17:21.891449-04:00</SourceTime>
+  <DestFile>C:/Users/cstough/source/repos/RadHareGame/BoogalooGame/BoogalooGame/Content/bin/Windows/Content/test/Luigi.xnb</DestFile>
+  <DestTime>2019-04-18T14:26:16.1310595-04:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2018-08-05T14:17:44-07:00</ImporterTime>
+  <ImporterTime>2019-04-12T14:17:23.1555537-04:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2018-08-05T14:17:44-07:00</ProcessorTime>
+  <ProcessorTime>2019-04-12T14:17:23.1555537-04:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

@@ -26,6 +26,7 @@ namespace BoogalooGame
         TiledMap map;
         TiledMapRenderer tmr;
         Camera2D camera; //Need a camera class
+        SamplerState samplerstate;
 
         public Game1()
         {
@@ -125,7 +126,7 @@ namespace BoogalooGame
             //Start drawing things
             spriteBatch.Begin();
 
-            tmr.Draw(map, viewMatrix: camera.getTransformation, samplerstate: SamplerState.PointClamp);
+            tmr.Draw(map, viewMatrix: camera.getTransformation, SamplerState.PointClamp);
 
             //Iterate and draw all active objects in GameObject.object_dict and all background objects DEBUG Add background objects later
             foreach (KeyValuePair<long, GameObject> entry in GameObject.ActiveObjects)

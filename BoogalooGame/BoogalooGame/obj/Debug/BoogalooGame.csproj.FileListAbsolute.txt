@@ -100,3 +100,7 @@ F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\An
 F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\AnyCPU\Debug\Content\levels\test.tmx
 F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\AnyCPU\Debug\Content\levels\test.xnb
 F:\Documents\BoogalooGame\RadHareGame\BoogalooGame\BoogalooGame\bin\DesktopGL\AnyCPU\Debug\Content\sprites\Game\textures\GrassLarge.xnb
+C:\Users\cstough\source\repos\RadHareGame\BoogalooGame\BoogalooGame\obj\Debug\BoogalooGame.csprojAssemblyReference.cache
+C:\Users\cstough\source\repos\RadHareGame\BoogalooGame\BoogalooGame\obj\Debug\BoogalooGame.csproj.CoreCompileInputs.cache
+C:\Users\cstough\source\repos\RadHareGame\BoogalooGame\BoogalooGame\obj\Debug\BoogalooGame.exe
+C:\Users\cstough\source\repos\RadHareGame\BoogalooGame\BoogalooGame\obj\Debug\BoogalooGame.pdb

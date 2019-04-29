@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/Block.png</File>
+    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/Blue.png</File>
+    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/File.spritefont</File>
+    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/Test_Background_1.png</File>
+  </SourceFiles>
+</SourceFileCollection>
