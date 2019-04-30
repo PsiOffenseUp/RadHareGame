@@ -27,3 +27,31 @@ C:\Users\cstough\Desktop\Small Projects\RHE_V1\RadHareEngine_v1\RadHareEngine_v1
 C:\Users\cstough\Desktop\Small Projects\RHE_V1\RadHareEngine_v1\RadHareEngine_v1\bin\Windows\x86\Debug\Content\Blue.xnb
 C:\Users\cstough\Desktop\Small Projects\RHE_V1\RadHareEngine_v1\RadHareEngine_v1\bin\Windows\x86\Debug\Content\File.xnb
 C:\Users\cstough\Desktop\Small Projects\RHE_V1\RadHareEngine_v1\RadHareEngine_v1\bin\Windows\x86\Debug\Content\Test_Background_1.xnb
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\Content\Block.xnb
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\Content\Blue.xnb
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\Content\File.xnb
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\Content\Test_Background_1.xnb
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\RadHareEngine_v1.exe
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\RadHareEngine_v1.pdb
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.XInput.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\MonoGame.Framework.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.XInput.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\obj\x86\Debug\RadHareEngine_v1.csprojAssemblyReference.cache
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\obj\x86\Debug\RadHareEngine_v1.csproj.CoreCompileInputs.cache
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\obj\x86\Debug\RadHareEngine_v1.csproj.CopyComplete
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\obj\x86\Debug\RadHareEngine_v1.exe
+F:\Documents\BoogalooGame\RadHareGame\TileClippingAndBackgrounds\RadHareEngine_v1\obj\x86\Debug\RadHareEngine_v1.pdb
