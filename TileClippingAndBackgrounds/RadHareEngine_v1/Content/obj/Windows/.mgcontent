@@ -4,9 +4,9 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/Block.png</File>
-    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/Blue.png</File>
-    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/File.spritefont</File>
-    <File>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/Test_Background_1.png</File>
+    <File>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/Block.png</File>
+    <File>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/Blue.png</File>
+    <File>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/File.spritefont</File>
+    <File>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/Test_Background_1.png</File>
   </SourceFiles>
 </SourceFileCollection>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/Blue.png</SourceFile>
+  <SourceFile>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/Blue.png</SourceFile>
   <SourceTime>2019-04-24T15:31:50.7461808-04:00</SourceTime>
-  <DestFile>C:/Users/cstough/Desktop/Small Projects/RHE_V1/RadHareEngine_v1/RadHareEngine_v1/Content/bin/Windows/Blue.xnb</DestFile>
-  <DestTime>2019-04-26T16:09:31.0492546-04:00</DestTime>
+  <DestFile>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/bin/Windows/Blue.xnb</DestFile>
+  <DestTime>2019-04-29T17:56:30.9512456-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

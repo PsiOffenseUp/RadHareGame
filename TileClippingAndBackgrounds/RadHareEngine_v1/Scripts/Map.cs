@@ -77,19 +77,30 @@ namespace RadHareEngine_v1.Scripts
 
         public void Draw(SpriteBatch sb)
         {
-            int tx = (int)position.X / Image.Width;
-            int ty = (int)position.Y / Image.Height;
+            int tx = (int)(position.X / Image.Width);
+            int ty = (int)(position.Y / Image.Height);
 
-            Vector2 offset = GameManager.camera.Position - position;
+            Vector2 offset = position - new Vector2(tx, ty);
 
             sb.Begin();
-            for(int i = -1; i < 2; i++)
+            //sb.Draw(Image, new Vector2(tx, ty) + offset);
+            List<Vector2> vList = new List<Vector2>();
+            for(int i = 0; i < ((VerticalRepeat) ? (/*Enough to fill vertical view*/GameManager.camera.Bounds.Bottom) : 1); i += Image.Height)
             {
-                for(int j = -1; j < 2; j++)
+                if (HorizontalRepeat)
                 {
-                    int posX = (int)(position.X + (i * Image.Width));
-                    int posY = (int)(position.Y + (j * Image.Height));
-                    Console.WriteLine(new Vector2(posX, posY));
+                    for (int j = 0; j < /*Enoguh to fill horizontal view*/GameManager.camera.Bounds.Right; j += Image.Width)
+                    {
+                        Vector2 v = new Vector2(tx + j, ty + i);
+                        if(v.X > GameManager.camera.Position.X &&
+                            v.X < GameManager.camera.Position.X + GameManager.camera.VisibleArea.Width &&
+                            v.Y > GameManager.camera.Position.Y &&
+                            v.Y < GameManager.camera.Position.Y + GameManager.camera.VisibleArea.Height)
+                        {
+                            Console.WriteLine(GameManager.camera.VisibleArea.Intersects(Image.Bounds));
+                            sb.Draw(Image, v + (GameManager.camera.Position - position));
+                        } 
+                    }
                 }
             }
             sb.End();

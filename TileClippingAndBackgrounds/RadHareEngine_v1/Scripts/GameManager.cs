@@ -94,7 +94,7 @@ namespace RadHareEngine_v1.Scripts
                 {
                     if (tx + j < currentMap.MapSize.X && ty + i < currentMap.MapSize.Y && tx + j >= 0 && ty + i >= 0)
                     {
-                        sb.Draw(TileSprites[currentMap.mapData[tx + j, ty + i].ImgID], ((new Vector2((tx + j), (ty + i)) - camera.Position) * 32) + offset);
+                        //sb.Draw(TileSprites[currentMap.mapData[tx + j, ty + i].ImgID], ((new Vector2((tx + j), (ty + i)) - camera.Position) * 32) + offset);
                     }
                 }
             }
