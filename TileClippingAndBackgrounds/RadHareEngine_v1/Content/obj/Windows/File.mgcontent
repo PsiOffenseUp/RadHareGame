@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/File.spritefont</SourceFile>
-  <SourceTime>2017-03-01T10:05:30-05:00</SourceTime>
-  <DestFile>C:/Users/cstough/source/repos/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/bin/Windows/File.xnb</DestFile>
-  <DestTime>2019-04-29T17:56:31.1633964-04:00</DestTime>
+  <SourceFile>F:/Documents/BoogalooGame/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/File.spritefont</SourceFile>
+  <SourceTime>2019-04-29T20:49:37.7494955-07:00</SourceTime>
+  <DestFile>F:/Documents/BoogalooGame/RadHareGame/TileClippingAndBackgrounds/RadHareEngine_v1/Content/bin/Windows/File.xnb</DestFile>
+  <DestTime>2019-04-29T22:22:01.3953026-07:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
-  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
+  <ImporterTime>2018-09-23T14:55:52-07:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>
-  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
+  <ProcessorTime>2018-09-23T14:55:52-07:00</ProcessorTime>
   <Parameters>
     <Key>PremultiplyAlpha</Key>
     <Value>True</Value>

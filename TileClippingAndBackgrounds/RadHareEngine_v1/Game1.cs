@@ -2,6 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using System.Collections.Generic;
+using MonoGame.Extended.Animations;
+using MonoGame.Extended;
+using MonoGame.Extended.TextureAtlases;
+
 namespace RadHareEngine_v1
 {
     /// <summary>
@@ -29,7 +34,9 @@ namespace RadHareEngine_v1
         {
             // TODO: Add your initialization logic here
             gm = new Scripts.GameManager(this);
-            
+
+            //Declarations for animations. Just testing currently. DEBUG
+
             base.Initialize();
         }
 
@@ -43,6 +50,12 @@ namespace RadHareEngine_v1
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            //Test of sprite sheet animation. DEBUG
+            var texture = Content.Load<Texture2D>("sprites/test/test_sheet");
+            var characterMap = Content.Load<Dictionary<string, Rectangle>>("sprites/test/test_sheetMap");
+            var characterAtlas = new TextureAtlas("test", texture, characterMap);
+            var characterAnimationFactory = new SpriteSheetAnimationFactory(characterAtlas);
         }
 
         /// <summary>
