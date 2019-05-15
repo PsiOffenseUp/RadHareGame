@@ -205,8 +205,53 @@ namespace ECS_01
             else Zoom += deltaZoom;
         }
     }
+    //------------------------Physics Stuff-----------------------------
+    /// <summary>
+    /// Component class to handle an object having physics. This includes having gravity and friction, but not collision. Giving
+    /// an object collision can be done with the CollisionComponent class.
+    /// </summary>
+    public class PhysicsManager : Component
+    {
+        //Member variables
+        private float gravity; //How fast the object will fall. Basically, the number of pixels it will fall per frame.
+        public float Gravity { get { return this.gravity; } set { this.gravity = value; } }
 
-    //UI STUFF
+        //Methods
+        public override void Update(GameTime gameTime)
+        {
+            //Adjust the object this component is attached to's position
+            Vector2 newPos = this.gameObject.transform.GetPosition() + new Vector2(0.0f, gravity);
+            this.gameObject.transform.SetPosition(newPos);
+            base.Update(gameTime);
+        }
+
+        //Constructors
+        public PhysicsManager() { this.gravity = 1.0f; }
+    }
+
+    /// <summary>
+    /// Component class that enables and handles collisions for a GameObject. Can use to check for collision between objects. Marking the class
+    /// as solid will make it so that objects cannot pass through one another when they collide.
+    /// </summary>
+    public class CollisionComponent : Component
+    {
+        //Member variables
+        bool isSolid;
+        PhysicsManager physics; //Reference to a PhysicsManager component for the game object
+
+        //Methods
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
+        //Constructors
+        public CollisionComponent() { this.isSolid = false;}
+        public CollisionComponent(PhysicsManager physics) { this.physics = physics; this.isSolid = true; }
+
+    }
+
+    //---------------------------UI STUFF--------------------------------
     public class MouseTracker : Component
     {
         public Vector2 Size { private set; get; }
