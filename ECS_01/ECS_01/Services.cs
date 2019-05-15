@@ -41,6 +41,26 @@ namespace ECS_01
             SpriteRendering(Sprites);
         }
 
+        public void DrawUI(List<GameObject> o)
+        {
+            sb.Begin();
+            foreach(GameObject obj in o)
+            {
+                SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+                sb.Draw(sr.sprite.Image,
+                        obj.transform.GetPosition() + sr.sprite.Image.Bounds.Size.ToVector2() / 2.0f,
+                        null,
+                        null,
+                        sr.GetSpriteCenter(),
+                        (obj.transform.GetRotation() + sr.sprite.Rotation),
+                        (obj.transform.GetScale() * sr.sprite.Scale),
+                        null,
+                        SpriteEffects.None,
+                        sr.sprite.layerDepth);
+            }
+            sb.End();
+        }
+
         public void SpriteRendering(List<GameObject> objects)
         {
             sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, CameraManager.GetMatrix());
@@ -136,7 +156,7 @@ namespace ECS_01
                                Matrix.CreateTranslation(-o.transform.GetPosition().X, -o.transform.GetPosition().Y, 0) *
                                ((o.GetComponent<Camera>().relativeTo == Camera.RelativeTo.GAMEOBJECT)? Matrix.CreateRotationZ(0) : Matrix.CreateRotationZ(-o.transform.GetRotation()))* //0 for object revolve around world, -object rotation for world to revolve around object
                                Matrix.CreateTranslation(Origin.X, Origin.Y, 0) *
-                               Matrix.CreateScale(MainCamera.Zoom);
+                               Matrix.CreateScale(MainCamera.Zoom.X, MainCamera.Zoom.Y, 1.0f);
 
             return Transform;
         }

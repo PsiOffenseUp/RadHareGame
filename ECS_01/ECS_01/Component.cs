@@ -30,20 +30,9 @@ namespace ECS_01
             Enabled = enabled;
         }
 
-        public virtual void Start()
-        {
-
-        }
-
-        public virtual void Update(GameTime gameTime)
-        {
-
-        }
-
-        public virtual void End()
-        {
-
-        }
+        public virtual void Start() { }
+        public virtual void Update(GameTime gameTime) { }
+        public virtual void End() { }
     }
 
     public class SpriteRenderer : Component
@@ -141,14 +130,24 @@ namespace ECS_01
             {
                 gameObject.transform.Scale(new Vector2(0.99f, 0.99f));
             }
-            if (keys.IsKeyDown(Keys.Up) && gameObject.GetComponent<Camera>().Exists())
+            if (keys.IsKeyDown(Keys.Right) && gameObject.GetComponent<Camera>().Exists())
             {
-                gameObject.GetComponent<Camera>().ChangeZoom(0.1f);
+                gameObject.GetComponent<Camera>().ChangeZoom(new Vector2(0.1f, 0.0f));
+                Console.WriteLine(gameObject.GetComponent<Camera>().Zoom);
+            }
+            if (keys.IsKeyDown(Keys.Left) && gameObject.GetComponent<Camera>().Exists())
+            {
+                gameObject.GetComponent<Camera>().ChangeZoom(new Vector2(-0.1f, 0.0f));
                 Console.WriteLine(gameObject.GetComponent<Camera>().Zoom);
             }
             if (keys.IsKeyDown(Keys.Down) && gameObject.GetComponent<Camera>().Exists())
             {
-                gameObject.GetComponent<Camera>().ChangeZoom(-0.1f);
+                gameObject.GetComponent<Camera>().ChangeZoom(new Vector2(0.0f, -0.1f));
+                Console.WriteLine(gameObject.GetComponent<Camera>().Zoom);
+            }
+            if (keys.IsKeyDown(Keys.Up) && gameObject.GetComponent<Camera>().Exists())
+            {
+                gameObject.GetComponent<Camera>().ChangeZoom(new Vector2(0.0f, 0.1f));
                 Console.WriteLine(gameObject.GetComponent<Camera>().Zoom);
             }
             if (keys.IsKeyDown(Keys.X) && gameObject.GetComponent<Camera>().Exists()) //still need to implement a KeyPressed function to prevent excessive cycling.
@@ -173,14 +172,14 @@ namespace ECS_01
     public class Camera : Component
     {
 
-        public float Zoom;
+        public Vector2 Zoom;
         public bool SmoothFollow;
         public enum RelativeTo { WORLD, GAMEOBJECT };
         public RelativeTo relativeTo;
 
         public override void Start()
         {
-            Zoom = 1.0f;
+            Zoom = new Vector2(1.0f, 1.0f);
             SmoothFollow = false;
             relativeTo = RelativeTo.WORLD;
             base.Start();
@@ -197,11 +196,145 @@ namespace ECS_01
             base.End();
         }
 
-        public void ChangeZoom(float deltaZoom)
+        public void ChangeZoom(Vector2 deltaZoom)
         {
-            if (Zoom + deltaZoom < 0.1f) Zoom = 0.1f;
-            else if (Zoom + deltaZoom > 10.0f) Zoom = 10.0f;
+            if (Zoom.X + deltaZoom.X < 0.1f) Zoom.X = 0.1f;
+            else if (Zoom.X + deltaZoom.X > 10.0f) Zoom.X = 10.0f;
+            if (Zoom.Y + deltaZoom.Y < 0.1f) Zoom.Y = 0.1f;
+            else if (Zoom.Y + deltaZoom.Y > 10.0f) Zoom.Y = 10.0f;
             else Zoom += deltaZoom;
+        }
+    }
+
+    //UI STUFF
+    public class MouseTracker : Component
+    {
+        public Vector2 Size { private set; get; }
+        public bool Hovering, Clicked;
+        
+
+        public override void Start()
+        {
+            Size = new Vector2(0, 0);
+            Hovering = Clicked = false;
+            base.Start();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            SetState();
+            base.Update(gameTime);
+        }
+
+        public override void End()
+        {
+            base.End();
+        }
+
+        public void SetSize(Vector2 v)
+        {
+            Size = v;
+        }
+
+        public void SetState()
+        {
+            MouseState mState = Mouse.GetState();
+            if (mState.Position.X >= gameObject.transform.GetPosition().X && mState.Position.X <= gameObject.transform.GetPosition().X + Size.X && mState.Position.Y >= gameObject.transform.GetPosition().Y && mState.Position.Y <= gameObject.transform.GetPosition().Y + Size.Y)
+            {
+                Hovering = true;
+                if (mState.LeftButton == ButtonState.Pressed && !Clicked) Clicked = true;
+                if (mState.LeftButton == ButtonState.Released) Clicked = false;
+            }
+            else Hovering = false;
+        }
+    }
+
+    public delegate void ButtonClicked();
+
+    public class ButtonController : Component
+    {
+        Texture2D[] Sprites; //Holds the Pressed/Unpressed Button Images
+        MouseTracker mTracker; //For checking for mouse position and clicks
+        SpriteRenderer sRenderer; //For setting the button sprite.
+        public event ButtonClicked buttonClicked;
+
+        bool ContinuousAction; //specifies if the button action is continuously called, or just called once.
+        bool ActionPerformed;
+
+        public override void Start()
+        {
+            ContinuousAction = false; ActionPerformed = false;
+            mTracker = (gameObject.GetComponent<MouseTracker>().Exists()) ? gameObject.GetComponent<MouseTracker>() : null;
+            sRenderer = (gameObject.GetComponent<SpriteRenderer>().Exists()) ? gameObject.GetComponent<SpriteRenderer>() : null;
+            base.Start();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            if (mTracker.Clicked)
+            {
+                sRenderer.sprite.Image = Sprites[1];
+                if(!ContinuousAction)
+                {
+                    if(!ActionPerformed)
+                    {
+                        buttonClicked?.Invoke(); //call the buttons function
+                        ActionPerformed = true;
+                    }
+                }
+                else
+                {
+                    buttonClicked?.Invoke(); //call the buttons function
+                }
+            }
+            else sRenderer.sprite.Image = Sprites[0];
+        }
+
+        public override void End()
+        {
+            base.End();
+        }
+
+        public void SetSprites(Texture2D[] sprites)
+        {
+            Sprites = sprites;
+            sRenderer.sprite.Image = Sprites[0];
+        }
+    }
+
+    public class Clickable : Component
+    {
+        private Vector2 Size;
+        private bool Clicked;
+
+        public override void Start()
+        {
+            Size = new Vector2(200, 100);
+            base.Start();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            SetState();
+            base.Update(gameTime);
+        }
+        
+        private void SetState()
+        {
+            MouseState mouseState = Mouse.GetState();
+            Clicked = (mouseState.LeftButton == ButtonState.Pressed);
+        }
+
+        public bool GetClickState()
+        {
+            return Clicked;
+        }
+
+        public override void End()
+        {
+            base.End();
         }
     }
 }

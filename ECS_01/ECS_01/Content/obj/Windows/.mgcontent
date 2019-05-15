@@ -4,6 +4,8 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/cstough/Desktop/Small Projects/ECS_01/ECS_01/Content/Test_CobbleStoneTile.png</File>
+    <File>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/Test_CobbleStoneTile.png</File>
+    <File>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Pressed.png</File>
+    <File>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Unpressed.png</File>
   </SourceFiles>
 </SourceFileCollection>

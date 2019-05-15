@@ -10,7 +10,7 @@ namespace ECS_01
     public static class Extensions
     {
         /// <summary>
-        /// Returns the first Component of type T from the referenced GameObject. The Component.Exists() shouldbe used in conjunction to prevent operating with a null reference.
+        /// Returns the first Component of type T from the referenced GameObject. The Component.Exists() should be used in conjunction to prevent operating with a null reference.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="o"></param>
@@ -37,6 +37,19 @@ namespace ECS_01
             comp.gameObject = o;
             comp.Start();
             o.Components.Add(comp);
+        }
+        /// <summary>
+        /// Adds a component of type T to the referenced GameObject. Returns itself for stringing together component edits.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="o"></param>
+        public static GameObject AttachComponent<T>(this GameObject o) where T : Component, new()
+        {
+            T comp = new T();
+            comp.gameObject = o;
+            comp.Start();
+            o.Components.Add(comp);
+            return o;
         }
         /// <summary>
         /// Adds a pre-made Component to the referenced GameObject.

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -14,12 +15,14 @@ namespace ECS_01
         SpriteBatch spriteBatch;
         Services services;
         public List<GameObject> gameObjects;
+        public List<GameObject> uiObjects;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             gameObjects = new List<GameObject>();
+            uiObjects = new List<GameObject>();
         }
 
         /// <summary>
@@ -46,6 +49,9 @@ namespace ECS_01
             // TODO: use this.Content to load your game content 
             GameObject obj = new GameObject();
             GameObject obj2 = new GameObject();
+            GameObject Box = new GameObject();
+            Box.AddComponent<MouseTracker>();
+            Box.GetComponent<MouseTracker>().SetSize(new Vector2(100, 100));
             //obj.Components.Add(new SpriteRenderer(Content.Load<Texture2D>("Test_CobbleStoneTile")));
             
             obj.AddComponent<SpriteRenderer>();
@@ -63,7 +69,20 @@ namespace ECS_01
             gameObjects.Add(obj);
             gameObjects.Add(obj2);
 
+            //Button Testing
+            Texture2D[] buttonSprites = { Content.Load<Texture2D>("Test_Button_Unpressed"), Content.Load<Texture2D>("Test_Button_Pressed") };
+            ButtonClicked btn = new ButtonClicked(Action);
+            Button button = new Button(buttonSprites, new Vector2(0, 0));
+            button.GetComponent<ButtonController>().buttonClicked += Action;
+
+            uiObjects.Add(button);
+
             services = new Services(spriteBatch, this);
+        }
+
+        public void Action()
+        {
+            Console.WriteLine("Button Clicked!");
         }
 
         /// <summary>
@@ -95,6 +114,14 @@ namespace ECS_01
                 }
             }
 
+            foreach(GameObject obj in uiObjects)
+            {
+                foreach(Component c in obj.Components)
+                {
+                    c.Update(gameTime);
+                }
+            }
+
             //gameObjects[0].transform.Translate(gameObjects[0].transform.Backward());
 
             base.Update(gameTime);
@@ -110,6 +137,7 @@ namespace ECS_01
 
             // TODO: Add your drawing code here
             services.Routing(gameObjects);
+            services.DrawUI(uiObjects);
 
             base.Draw(gameTime);
         }
