@@ -69,6 +69,8 @@ namespace ECS_01
             gameObjects.Add(obj);
             gameObjects.Add(obj2);
 
+            obj.SetChild(obj2);
+
             //Button Testing
             Texture2D[] buttonSprites = { Content.Load<Texture2D>("Test_Button_Unpressed"), Content.Load<Texture2D>("Test_Button_Pressed") };
             ButtonClicked btn = new ButtonClicked(Action);

@@ -28,11 +28,22 @@ namespace ECS_01
             #region Public Member Functions
             public void Translate(Vector2 t, RelativeTo relativeTo = RelativeTo.WORLD)
             {
-                if(relativeTo == RelativeTo.WORLD) position += t;
+                if (relativeTo == RelativeTo.WORLD)
+                {
+                    position += t;
+                    foreach(GameObject o in this.gameObject.Children)
+                    {
+                        o.transform.position += t;
+                    }
+                }
                 else
                 {
                     //Rotational correction code
                     position += t.ToObjectSpace(gameObject);
+                    foreach(GameObject o in this.gameObject.Children)
+                    {
+                        o.transform.position += t.ToObjectSpace(gameObject);
+                    }
                 }
             }
             public void SetPosition(Vector2 p)
@@ -42,6 +53,10 @@ namespace ECS_01
             public void Scale(Vector2 s)
             {
                 scale *= s;
+                foreach(GameObject o in gameObject.Children)
+                {
+                    o.transform.scale *= s;
+                }
             }
             public void SetScale(Vector2 s)
             {
@@ -50,10 +65,20 @@ namespace ECS_01
             public void Rotate(float angle, AngleType aType)
             {
                 if(aType == AngleType.RADIANS)
+                {
                     Rotation += angle;
+                    foreach(GameObject o in gameObject.Children)
+                    {
+                        //transform with a matrix to allow for different rotation point
+                    }
+                }
                 else
                 {
                     Rotation += angle * ((float)Math.PI / 180.0f);
+                    foreach (GameObject o in gameObject.Children)
+                    {
+                        //transform with a matrix to allow for different rotation point
+                    }
                 }
             }
             public void SetRotation(float angle, AngleType aType)
@@ -98,11 +123,15 @@ namespace ECS_01
 
         public Transform transform;
         public List<Component> Components;
+        public List<GameObject> Children;
+        public GameObject Parent;
 
         public GameObject()
         {
             transform = new Transform(this);
             Components = new List<Component>();
+            Children = new List<GameObject>();
+            Parent = null;
         }
     }
 }

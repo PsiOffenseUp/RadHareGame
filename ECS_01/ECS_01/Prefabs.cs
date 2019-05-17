@@ -18,4 +18,41 @@ namespace ECS_01
             transform.SetPosition(pos);
         }
     }
+
+    public class TextRenderer : GameObject
+    {
+        string Text;
+        SpriteFont Font;
+
+        public TextRenderer()
+        {
+
+        }
+    }
+
+    public class TextDisplayer : Component
+    {
+        public string Text { private set; get; }
+        public SpriteFont Font { private set; get; }
+
+        public TextDisplayer()
+        {
+
+        }
+
+        public override void Start()
+        {
+            base.Start();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
+        public override void End()
+        {
+            base.End();
+        }
+    }
 }

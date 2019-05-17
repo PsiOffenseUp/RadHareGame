@@ -154,6 +154,10 @@ namespace ECS_01
             {
                 gameObject.GetComponent<Camera>().relativeTo = (gameObject.GetComponent<Camera>().relativeTo == Camera.RelativeTo.WORLD) ? Camera.RelativeTo.GAMEOBJECT : Camera.RelativeTo.WORLD;
             }
+            if(keys.IsKeyDown(Keys.R) && gameObject.Children.Count > 0)
+            {
+                gameObject.Children.Clear();
+            }
 
             gameObject.transform.Translate(move, RelativeTo.OBJECT);
 
