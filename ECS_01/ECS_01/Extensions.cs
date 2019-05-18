@@ -79,6 +79,32 @@ namespace ECS_01
             o.Components.Remove(component);
         }
         /// <summary>
+        /// Sets the supplied GameObject as a child of the referenced GameObject.
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="child"></param>
+        public static void SetChild(this GameObject o, GameObject child)
+        {
+            if (!o.Children.Contains(child))
+            {
+                child.Parent = o;
+                o.Children.Add(child);
+            }
+        }
+        /// <summary>
+        /// Removes the supplied child GameObject from the referenced GameObjects Children List.
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="child"></param>
+        public static void RemoveChild(this GameObject o, GameObject child)
+        {
+            if (o.Children.Contains(child))
+            {
+                child.Parent = null;
+                o.Children.Remove(child);
+            }
+        }
+        /// <summary>
         /// Transforms the referenced Vector2 from World Space to the supplied GameObject's Object Space.
         /// </summary>
         /// <param name="v"></param>
