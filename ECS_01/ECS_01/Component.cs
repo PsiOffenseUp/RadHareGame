@@ -211,13 +211,16 @@ namespace ECS_01
     }
     //------------------------Physics Stuff-----------------------------
     /// <summary>
-    /// Hitbox for whatever this GameObject is. Used for collision
+    /// Hitbox for whatever this GameObject is. Used for checking collision. Please note that the vertices should be stored in order of connectivity.
+    /// So 0 should be connected to 1, 1 to 2, 2 to 3, but not 3 to 5 or 2 to 6. The last element will be connected to the 0th element
     /// </summary>
     public class Hitbox : Component
     {
         public enum Type { RECTANGLE, TRIANGLE };
         public readonly Vector2[] displacement; //Array of the vertices displacement from its parent's current position. These will be what is set at construction time, and then will be used to update the vertices.
-        public Vector2[] vertices { get; private set; }; //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame
+        public Vector2[] vertices { get; private set; }; //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame. 
+
+        //DEBUG May want to store edges and their normals (Both as Vector2) in order to minimize computation in the collision checking
 
         //Methods
         public override void Update(GameTime gameTime)
@@ -244,6 +247,8 @@ namespace ECS_01
         //Member variables
         private float gravity; //How fast the object will fall. Basically, the number of pixels it will fall per frame.
         public float Gravity { get { return this.gravity; } set { this.gravity = value; } }
+        private float airFriction, groundFriction;
+        private Vector2 velocity;
 
         //Methods
         public override void Update(GameTime gameTime)
@@ -254,8 +259,26 @@ namespace ECS_01
             base.Update(gameTime);
         }
 
+        #region Setting and getting methods
+        void setAirFriction(float airFriction) { this.airFriction = airFriction; }
+        void setGroundFriction(float groundFriction) { this.groundFriction = groundFriction; }
+        void setVelocity(Vector2 velocity) { this.velocity = velocity; }
+        void setVelocity(float Xvelocity, float Yvelocity) { this.velocity = new Vector2(Xvelocity, Yvelocity); }
+        float getAirFriction() { return this.airFriction; }
+        float getGroundFriction() { return this.groundFriction; }
+        Vector2 getVelocity() { return this.velocity; }
+        float getHorizontalVelocity() { return this.velocity.X; }
+        float getVerticalVelocity() { return this.velocity.Y; }
+
+        bool isGoingUp() { return Math.Sign(this.velocity.Y) == -1; }
+        bool isGoingDown() { return Math.Sign(this.velocity.Y) == 1; }
+        bool isGoingLeft() { return Math.Sign(this.velocity.X) == -1; }
+        bool isGoingRight() { return Math.Sign(this.velocity.X) == 1; }
+        #endregion
+
         //Constructors
-        public PhysicsManager() { this.gravity = 1.0f; }
+        public PhysicsManager() { this.gravity = 1.0f; this.airFriction = 1.0f; this.groundFriction = 1.0f; velocity = new Vector2(0.0f, 0.0f); }
+
     }
 
     /// <summary>
@@ -264,18 +287,97 @@ namespace ECS_01
     /// </summary>
     public class CollisionComponent : Component
     {
-        //Member variables
+        //-----------------------------------------Member variables--------------------------------------
         bool isSolid;
         PhysicsManager physics; //Reference to a PhysicsManager component for the game object
-        Hitbox hitbox; //Reference to the hitbox component for this object
 
-        //Methods
+        public static List<Tuple<GameObject, GameObject>> collidingPairs { get; private set; } //List of all object pairs currently colliding on this frame
+
+        //----------------------------------------------Methods------------------------------------------
+        public override void Start()
+        {
+            collidingPairs = new List<Tuple<GameObject, GameObject>>();
+            base.Start();
+        }
+
         public override void Update(GameTime gameTime)
         {
+            collidingPairs.Clear(); //Delete all of the elements in the collidingPairs list. DEBUG May want to optimize this, and instead only remove pairs that are no longer relevant, to avoid causing garbage collection often.
+            updateCollisions();
             base.Update(gameTime);
         }
 
-        //Constructors
+        //***********************Collision checks************************
+
+        /// <summary>
+        /// Goes through the GameObjects currently active, and assigns them to smaller regions. This way, we only have to check collision between objects in the same region. This should significantly
+        /// cut down on the number of comparisons required for collision checks. Could optimize with an R-tree?
+        /// </summary>
+        /// <returns>Returns a list of regions, each containing a list of objects within those regions. </returns>
+        static List<List<GameObject>> getCollisionRegions()
+        {
+            List<List<GameObject>> viableCollisions = new List<List<GameObject>>();
+            List<GameObject> currentRegion = new List<GameObject>(); ;
+
+            //DEBUG, just so this still compiles. Will finish writing later.
+            viableCollisions.Add(currentRegion);
+
+            return viableCollisions;
+        }
+
+        //Checks for collision between hitbox1 and hitbox2, and returns the result. This will use the Separating Axis Theorem (SAT) to check for collision. Basically, we will take the normal to each edge
+        //(Pair of vertices), and then project all the vertices of both shapes onto each normal. We can then check if there is overlap. If a single projection does not overlap, we know that the hitboxes
+        //are not colliding.
+        static bool checkCollision(Hitbox hitbox1, Hitbox hitbox2)
+        {
+            //DEBUG Finish implementing SAT
+            float minProjection1, minProjection2, maxProjection1, maxProjection2; //Used for checking overlap. Taking projection involves taking dot product between vectors, which will return a scalar. These will hold the 4 relevant scalars.
+
+            //Go through each hitbox
+            for (int i = 0; i < hitbox1.vertices.Length; i++) //Project onto all of the sides in the first polygon
+            {
+
+            }
+
+            for (int i = 0; i < hitbox2.vertices.Length; i++) //Project onto all of the sides in the second polygon
+            {
+
+            }
+
+            return true;
+        }
+
+        //Finds any objects which collide with collisionObject, and then returns them. If no collisions are found, returns null. Searches through the collidingPairs list for the collisionObject
+        static List<GameObject> findCollidingObjects(GameObject collisionObject)
+        {
+            return null;
+        }
+
+        //The actual main collision checking function. This should be called in the Update() method every frame.
+        static void updateCollisions()
+        {
+            List<List<GameObject>> collisionRegions = getCollisionRegions(); //Get the viable collision regions to simplify collision checking
+
+            foreach (List<GameObject> region in collisionRegions) //Go through each region, so that we can check the collision between any objects in that region
+            {
+                for (int i = 0; i < region.Count - 1; i++) //Go through each GameObject
+                {
+                    for (int j = i + 1; j < region.Count; j++) //Go through the remaining GameObjects after this one, so that we can compare each pair of GameObjects in this region
+                    {
+                        if(checkCollision(region[i].GetComponent<Hitbox>(), region[j].GetComponent<Hitbox>())) //If these two objects are colliding
+                            collidingPairs.Add(new Tuple<GameObject,GameObject>(region[i], region[j])); //Then we will add it as a pair of colliding objects to the collidingPairs List
+                    }
+                }
+            }
+        }
+
+        //Finds the normal vector between the given two points. The vector is relative to point1 as a starting point.
+        private static Vector2 takeNormal(Vector2 point1, Vector2 point2)
+        {
+            return new Vector2(point1.Y - point2.Y, point2.X - point1.X);
+        }
+
+        //---------------------------------------------------Constructors-----------------------------------------------------
         public CollisionComponent() { this.isSolid = false;}
         public CollisionComponent(PhysicsManager physics, Hitbox hitbox) { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; }
         public CollisionComponent(GameObject parent) { } //This constructor should get relevant component references from its parent
