@@ -25,6 +25,7 @@ namespace ECS_01
             Content.RootDirectory = "Content";
             gameObjects = new List<GameObject>();
             uiObjects = new List<GameObject>();
+            GameObject.game = this; //Set the static reference to the game to be this game
         }
 
         /// <summary>

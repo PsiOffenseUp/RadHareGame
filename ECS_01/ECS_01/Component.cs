@@ -317,7 +317,8 @@ namespace ECS_01
         static List<List<GameObject>> getCollisionRegions()
         {
             List<List<GameObject>> viableCollisions = new List<List<GameObject>>();
-            List<GameObject> currentRegion = new List<GameObject>(); ;
+            List<GameObject> currentRegion = new List<GameObject>();
+            Game1 game = GameObject.game; //Reference to the game, so we can use it to check the currently loaded GameObjects
 
             //DEBUG, just so this still compiles. Will finish writing later.
             viableCollisions.Add(currentRegion);
@@ -331,17 +332,87 @@ namespace ECS_01
         static bool checkCollision(Hitbox hitbox1, Hitbox hitbox2)
         {
             //DEBUG Finish implementing SAT
-            float minProjection1, minProjection2, maxProjection1, maxProjection2; //Used for checking overlap. Taking projection involves taking dot product between vectors, which will return a scalar. These will hold the 4 relevant scalars.
+            float minProjection1, minProjection2, maxProjection1, maxProjection2, tempScalar; //Used for checking overlap. Taking projection involves taking dot product between vectors, which will return a scalar. These will hold the 4 relevant scalars.
+            Vector2 normalVector; //Vector normal to the edge currently being checked
+            Vector2 point2;
 
             //Go through each hitbox
             for (int i = 0; i < hitbox1.vertices.Length; i++) //Project onto all of the sides in the first polygon
             {
 
+                //Find the normal vector to the current edge being checked. All vectors will be relative to the current vertex being checked (Basically, it's like the origin)
+                if (i == hitbox1.vertices.Length - 1) //If we're at the end of the vertices array, loop back around for the last pair
+                    point2 = hitbox1.vertices[0];
+                else
+                    point2 = hitbox1.vertices[i + 1];
+
+                normalVector = takeNormal(hitbox1.vertices[i], point2);
+
+                //Now, project all of the points onto the normal
+                minProjection1 = minProjection2 = 0xFFFFFFFF; //Set min to big number, max to small number, since (as far as I know), we can't operate on a spliced list, so optimization isn't really an option.
+                maxProjection1 = maxProjection2 = -0xFFFFFFFF;
+
+                foreach (Vector2 vertex in hitbox1.vertices) //Project for hitbox1/shape1
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox1.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection1) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox1
+                        minProjection1 = tempScalar;
+                    if (tempScalar > maxProjection1) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox1
+                        maxProjection1 = tempScalar;
+                }
+
+                foreach (Vector2 vertex in hitbox2.vertices) //Project for hitbox2/shape2
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox1.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection2) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox2
+                        minProjection2 = tempScalar;
+                    if (tempScalar > maxProjection2) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox2
+                        maxProjection2 = tempScalar;
+                }
+
+                //Finally, let's make sure the projections overlap. If they don't, we can bail out of the whole function, because these hitboxes don't collide. 
+                //Using negation of logic to check for collision (using DeMorgan's law) to find when it should be false
+                if ((minProjection1 >= maxProjection2 || minProjection2 >= maxProjection1) && (minProjection2 >= maxProjection1 || minProjection1 >= maxProjection2))
+                    return false;
+
             }
 
-            for (int i = 0; i < hitbox2.vertices.Length; i++) //Project onto all of the sides in the second polygon
+            for (int i = 0; i < hitbox2.vertices.Length; i++) //Project onto all of the sides in the second polygon. Copy and pasted from above code
             {
+                //Find the normal vector to the current edge being checked. All vectors will be relative to the current vertex being checked (Basically, it's like the origin)
+                if (i == hitbox2.vertices.Length - 1) //If we're at the end of the vertices array, loop back around for the last pair
+                    point2 = hitbox2.vertices[0];
+                else
+                    point2 = hitbox2.vertices[i + 1];
 
+                normalVector = takeNormal(hitbox2.vertices[i], point2);
+
+                //Now, project all of the points onto the normal
+                minProjection1 = minProjection2 = 0xFFFFFFFF; //Set min to big number, max to small number, since (as far as I know), we can't operate on a spliced list, so optimization isn't really an option.
+                maxProjection1 = maxProjection2 = -0xFFFFFFFF;
+
+                foreach (Vector2 vertex in hitbox1.vertices) //Project for hitbox1/shape1
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox2.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection1) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox1
+                        minProjection1 = tempScalar;
+                    if (tempScalar > maxProjection1) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox1
+                        maxProjection1 = tempScalar;
+                }
+
+                foreach (Vector2 vertex in hitbox2.vertices) //Project for hitbox2/shape2
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox2.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection2) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox2
+                        minProjection2 = tempScalar;
+                    if (tempScalar > maxProjection2) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox2
+                        maxProjection2 = tempScalar;
+                }
+
+                //Finally, let's make sure the projections overlap. If they don't, we can bail out of the whole function, because these hitboxes don't collide. 
+                //Using negation of logic to check for collision (using DeMorgan's law) to find when it should be false
+                if ((minProjection1 >= maxProjection2 || minProjection2 >= maxProjection1) && (minProjection2 >= maxProjection1 || minProjection1 >= maxProjection2))
+                    return false;
             }
 
             return true;

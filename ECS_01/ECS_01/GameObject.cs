@@ -12,6 +12,8 @@ namespace ECS_01
 
     public class GameObject
     {
+        public static Game1 game; //Reference to the game
+
         public class Transform
         {
             Vector2 position, scale;
