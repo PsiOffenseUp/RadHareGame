@@ -8,90 +8,83 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ECS_01
 {
-    class Services
+    //public void DrawUI(List<GameObject> o)
+    //{
+    //    sb.Begin();
+    //    foreach(GameObject obj in o)
+    //    {
+    //        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
+    //        sb.Draw(sr.sprite.Image,
+    //                obj.transform.GetPosition() + sr.sprite.Image.Bounds.Size.ToVector2() / 2.0f,
+    //                null,
+    //                null,
+    //                sr.GetSpriteCenter(),
+    //                (obj.transform.GetRotation() + sr.sprite.Rotation),
+    //                (obj.transform.GetScale() * sr.sprite.Scale),
+    //                null,
+    //                SpriteEffects.None,
+    //                sr.sprite.layerDepth);
+    //    }
+    //    sb.End();
+    //}
+
+    public class ServiceManager //Service Manager "Manager of Managers"
     {
-        //Need to change the services/ systems to be delegates that the individual components can subscribe/unsubscribe to. This would prevent each system from having to search through the entire gameobject list multiple times to find specific components.
-
-
-        SpriteBatch sb;
-        CameraManager cm;
+        public List<ComponentManager> Managers;
         Game1 game;
 
-        public Services(SpriteBatch sb, Game1 game)
+        public ServiceManager(Game1 gameRef)
         {
-            this.sb = sb;
-            cm = new CameraManager(game);
-            cm.SetMainCamera(game.gameObjects[0].GetComponent<Camera>());
+            game = gameRef;
+            Managers = new List<ComponentManager>();
+            this.AddService<SpriteManager>(game);
+            this.AddService<TextManager>(game);
+            this.AddService<CameraManager>(game); this.GetService<CameraManager>().SetScreenSize(new Vector2(game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height));
         }
         /// <summary>
-        /// Recieves all gameObjects and divides them up between all services based on their connected components.
+        /// Returns a list of all gameObjects that contain a Component of type T.
         /// </summary>
-        /// <param name="gameObjects"></param>
-        public void Routing(List<GameObject> gameObjects)
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        List<GameObject> GetObjectComponentList<T>(Component c)
         {
-            List<GameObject> Sprites = new List<GameObject>();
-
-
-            foreach(GameObject o in gameObjects)
-            {
-                if (o.GetComponent<SpriteRenderer>().Exists()) Sprites.Add(o);
-                if(o.GetComponent<Camera>().Exists() && cm.AllCameras.Count > 0) { cm.SetMainCamera(o.GetComponent<Camera>());}
-            }
-
-            SpriteRendering(Sprites);
+            return game.gameObjects.FindAll((x) => x.Components.);
         }
 
-        public void DrawUI(List<GameObject> o)
+        public void PerformService()
         {
-            sb.Begin();
-            foreach(GameObject obj in o)
+            foreach(ComponentManager cm in Managers)
             {
-                SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-                sb.Draw(sr.sprite.Image,
-                        obj.transform.GetPosition() + sr.sprite.Image.Bounds.Size.ToVector2() / 2.0f,
-                        null,
-                        null,
-                        sr.GetSpriteCenter(),
-                        (obj.transform.GetRotation() + sr.sprite.Rotation),
-                        (obj.transform.GetScale() * sr.sprite.Scale),
-                        null,
-                        SpriteEffects.None,
-                        sr.sprite.layerDepth);
+                cm.Update();
             }
-            sb.End();
-        }
-
-        public void SpriteRendering(List<GameObject> objects)
-        {
-            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, CameraManager.GetMatrix());
-            foreach(GameObject o in objects)
-            {
-                SpriteRenderer sr = o.GetComponent<SpriteRenderer>();
-                sb.Draw(sr.sprite.Image,
-                    o.transform.GetPosition(),
-                    null,
-                    null,
-                    sr.GetSpriteCenter(),
-                    (o.transform.GetRotation() + sr.sprite.Rotation),
-                    (o.transform.GetScale() * sr.sprite.Scale),
-                    null,
-                    SpriteEffects.None,
-                    sr.sprite.layerDepth);
-            }
-
-            sb.End();
         }
     }
 
-    public class SpriteManager //beta manager for sprite drawing through event firing
+    public class SpriteManager : ComponentManager
     {
-        SpriteBatch sb;
         List<SpriteRenderer> sprites;
 
-        public SpriteManager(SpriteBatch sb)
+        public SpriteManager()
         {
             sprites = new List<SpriteRenderer>();
-            this.sb = sb;
+        }
+
+        public override void Update(Component c)
+        {
+            foreach(GameObject o in game.gameObjects)
+            {
+                if(o.GetComponent<SpriteRenderer>().Exists())
+                {
+                    sprites.Add(o.GetComponent<SpriteRenderer>());
+                }
+            }
+            base.Update(c);
+        }
+
+        public override void Draw(Component c)
+        {
+            DrawSprite();
+            base.Draw(c);
         }
 
         public void QueueSprite(SpriteRenderer sr)
@@ -99,9 +92,9 @@ namespace ECS_01
             sprites.Add(sr);
         }
 
-        public void Draw()
+        public void DrawSprite()
         {
-            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, CameraManager.GetMatrix());
+            sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, sm.GetService<CameraManager>().GetMatrix());
             for (int i = 0; i < sprites.Count; i++)
             {
                 GameObject o = sprites[i].gameObject;
@@ -117,20 +110,54 @@ namespace ECS_01
                     sprites[i].sprite.layerDepth);
             }
             sb.End();
+            sprites.Clear();
         }
     }
 
-    public class CameraManager
+    public class TextManager : ComponentManager //Displays the Text from a TextDisplayer Component
+    {
+        public TextManager()
+        {
+
+        }
+
+        public override void Update(Component c)
+        {
+            base.Update(c);
+        }
+
+        public override void Draw(Component c)
+        {
+            base.Draw(c);
+        }
+
+        public void DrawText(TextDisplayer td)
+        {
+            sb.Begin();
+            sb.DrawString(td.Font, td.Text, td.gameObject.transform.GetPosition() + td.Offset, td.Color);
+            sb.End();
+        }
+    }
+
+    public class CameraManager : ComponentManager
     {
         public List<Camera> AllCameras;
         public static Camera MainCamera;
+        public Vector2 ScreenSize;
 
-        static Game1 Game;
-
-        public CameraManager(Game1 game)
+        public CameraManager()
         {
             AllCameras = new List<Camera>();
-            Game = game;
+        }
+
+        public override void Update(Component c)
+        {
+            base.Update(c);
+        }
+
+        public override void Draw(Component c)
+        {
+            base.Draw(c);
         }
 
         public void AddCamera(Camera cam)
@@ -148,10 +175,15 @@ namespace ECS_01
             if(cam.Exists())    MainCamera = cam;
         }
 
-        public static Matrix GetMatrix()
+        public void SetScreenSize(Vector2 size)
+        {
+            ScreenSize = size;
+        }
+
+        public Matrix GetMatrix()
         {
             GameObject o = MainCamera.gameObject;
-            Vector2 Origin = new Vector2(Game.GraphicsDevice.Viewport.Width / 2, Game.GraphicsDevice.Viewport.Height / 2) / MainCamera.Zoom;
+            Vector2 Origin = new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2) / MainCamera.Zoom;
             Matrix Transform = Matrix.Identity *
                                Matrix.CreateTranslation(-o.transform.GetPosition().X, -o.transform.GetPosition().Y, 0) *
                                ((o.GetComponent<Camera>().relativeTo == Camera.RelativeTo.GAMEOBJECT)? Matrix.CreateRotationZ(0) : Matrix.CreateRotationZ(-o.transform.GetRotation()))* //0 for object revolve around world, -object rotation for world to revolve around object
@@ -159,6 +191,39 @@ namespace ECS_01
                                Matrix.CreateScale(MainCamera.Zoom.X, MainCamera.Zoom.Y, 1.0f);
 
             return Transform;
+        }
+    }
+
+    public abstract class ComponentManager
+    {
+        protected Game1 game;
+        protected SpriteBatch sb;
+        public ServiceManager sm;
+
+        public ComponentManager()
+        {
+            
+        }
+
+        public virtual void Update(Component c) //used if the manager performs actions during the update loop
+        {
+
+        }
+
+        public virtual void Draw(Component c) //used if the manager performs actions during the draw loop
+        {
+
+        }
+
+        public void SetParent(ServiceManager sm)
+        {
+            this.sm = sm;
+        }
+
+        public void setGameRef(Game1 game)
+        {
+            this.game = game;
+            this.sb = game.GetSpriteBatch();
         }
     }
 }
