@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace ECS_01
 {
@@ -160,6 +161,24 @@ namespace ECS_01
         public static bool Exists(this Component c)
         {
             return (c != null);
+        }
+
+        public static T AddService<T>(this ServiceManager sm, Game1 game) where T : ComponentManager, new()
+        {
+            T manager = new T();
+            manager.setGameRef(game);
+            manager.SetParent(sm);
+            sm.Managers.Add(manager);
+            return manager;
+        }
+
+        public static T GetService<T>(this ServiceManager sm) where T : ComponentManager
+        {
+            foreach(ComponentManager cm in sm.Managers)
+            {
+                if (cm is T) return (cm as T);
+            }
+            return null;
         }
     }
 }

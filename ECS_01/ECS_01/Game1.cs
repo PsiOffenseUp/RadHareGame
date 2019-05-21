@@ -13,7 +13,9 @@ namespace ECS_01
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Services services;
+        /*****BETA*****/
+        ServiceManager serviceManager;
+        /**************/
         public List<GameObject> gameObjects;
         public List<GameObject> uiObjects;
 
@@ -45,14 +47,11 @@ namespace ECS_01
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+            serviceManager = new ServiceManager(this);
+
             // TODO: use this.Content to load your game content 
             GameObject obj = new GameObject();
             GameObject obj2 = new GameObject();
-            GameObject Box = new GameObject();
-            Box.AddComponent<MouseTracker>();
-            Box.GetComponent<MouseTracker>().SetSize(new Vector2(100, 100));
-            //obj.Components.Add(new SpriteRenderer(Content.Load<Texture2D>("Test_CobbleStoneTile")));
             
             obj.AddComponent<SpriteRenderer>();
             obj.GetComponent<SpriteRenderer>().sprite.Image = Content.Load<Texture2D>("Test_CobbleStoneTile");
@@ -76,10 +75,15 @@ namespace ECS_01
             ButtonClicked btn = new ButtonClicked(Action);
             Button button = new Button(buttonSprites, new Vector2(0, 0));
             button.GetComponent<ButtonController>().buttonClicked += Action;
-
             uiObjects.Add(button);
+            ////////////////
 
-            services = new Services(spriteBatch, this);
+            serviceManager.GetService<CameraManager>().SetMainCamera(obj.GetComponent<Camera>());
+        }
+
+        public SpriteBatch GetSpriteBatch()
+        {
+            return spriteBatch;
         }
 
         public void Action()
@@ -104,10 +108,6 @@ namespace ECS_01
         protected override void Update(GameTime gameTime)
         {
 
-            // TODO: Add your update logic here
-            //gameObjects[0].transform.Translate(new Vector2(0.5f, 0.1f));
-            //gameObjects[0].transform.Rotate(0.05f);
-
             for(int i = 0; i < gameObjects.Count; i++)
             {
                 for(int j = 0; j < gameObjects[i].Components.Count; j++)
@@ -124,8 +124,6 @@ namespace ECS_01
                 }
             }
 
-            //gameObjects[0].transform.Translate(gameObjects[0].transform.Backward());
-
             base.Update(gameTime);
         }
 
@@ -137,9 +135,7 @@ namespace ECS_01
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
-            services.Routing(gameObjects);
-            services.DrawUI(uiObjects);
+            serviceManager.PerformService();
 
             base.Draw(gameTime);
         }

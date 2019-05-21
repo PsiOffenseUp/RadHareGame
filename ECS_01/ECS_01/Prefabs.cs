@@ -34,6 +34,8 @@ namespace ECS_01
     {
         public string Text { private set; get; }
         public SpriteFont Font { private set; get; }
+        public Vector2 Offset { private set; get; }
+        public Color Color { private set; get; }
 
         public TextDisplayer()
         {

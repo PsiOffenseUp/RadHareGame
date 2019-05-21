@@ -69,7 +69,7 @@ namespace ECS_01
                     Rotation += angle;
                     foreach(GameObject o in gameObject.Children)
                     {
-                        //transform with a matrix to allow for different rotation point
+                        //some sort of rotation matrix? 
                     }
                 }
                 else
@@ -77,7 +77,7 @@ namespace ECS_01
                     Rotation += angle * ((float)Math.PI / 180.0f);
                     foreach (GameObject o in gameObject.Children)
                     {
-                        //transform with a matrix to allow for different rotation point
+                        //some sort of rotation matrix?
                     }
                 }
             }
