@@ -211,6 +211,31 @@ namespace ECS_01
     }
     //------------------------Physics Stuff-----------------------------
     /// <summary>
+    /// Hitbox for whatever this GameObject is. Used for collision
+    /// </summary>
+    public class Hitbox : Component
+    {
+        public enum Type { RECTANGLE, TRIANGLE };
+        public readonly Vector2[] displacement; //Array of the vertices displacement from its parent's current position. These will be what is set at construction time, and then will be used to update the vertices.
+        public Vector2[] vertices { get; private set; }; //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame
+
+        //Methods
+        public override void Update(GameTime gameTime)
+        {
+            //Update the hitbox coordinates as necessary
+            Vector2 parentPos = gameObject.transform.GetPosition(); //Get the Vector2 for the parent's position, so we don't have to keep doing a reference to it
+            for (int i = 0; i < this.displacement.Length; i++)
+                this.vertices[i] = parentPos + this.displacement[i];
+
+            base.Update(gameTime);
+        }
+
+        //Constructors
+        Hitbox() { displacement = new Vector2[4]; displacement[0] = new Vector2(0, 0); displacement[1] = new Vector2(1, 0); displacement[2] = new Vector2(0, 1); displacement[3] = new Vector2(1, 1); vertices = new Vector2[4]; }
+        Hitbox(Vector2[] vertices) { this.displacement = vertices; this.vertices = new Vector2[vertices.Length]; }
+    }
+
+    /// <summary>
     /// Component class to handle an object having physics. This includes having gravity and friction, but not collision. Giving
     /// an object collision can be done with the CollisionComponent class.
     /// </summary>
@@ -242,6 +267,7 @@ namespace ECS_01
         //Member variables
         bool isSolid;
         PhysicsManager physics; //Reference to a PhysicsManager component for the game object
+        Hitbox hitbox; //Reference to the hitbox component for this object
 
         //Methods
         public override void Update(GameTime gameTime)
@@ -251,7 +277,8 @@ namespace ECS_01
 
         //Constructors
         public CollisionComponent() { this.isSolid = false;}
-        public CollisionComponent(PhysicsManager physics) { this.physics = physics; this.isSolid = true; }
+        public CollisionComponent(PhysicsManager physics, Hitbox hitbox) { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; }
+        public CollisionComponent(GameObject parent) { } //This constructor should get relevant component references from its parent
 
     }
 
