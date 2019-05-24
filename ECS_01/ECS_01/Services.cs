@@ -8,26 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ECS_01
 {
-    //public void DrawUI(List<GameObject> o)
-    //{
-    //    sb.Begin();
-    //    foreach(GameObject obj in o)
-    //    {
-    //        SpriteRenderer sr = obj.GetComponent<SpriteRenderer>();
-    //        sb.Draw(sr.sprite.Image,
-    //                obj.transform.GetPosition() + sr.sprite.Image.Bounds.Size.ToVector2() / 2.0f,
-    //                null,
-    //                null,
-    //                sr.GetSpriteCenter(),
-    //                (obj.transform.GetRotation() + sr.sprite.Rotation),
-    //                (obj.transform.GetScale() * sr.sprite.Scale),
-    //                null,
-    //                SpriteEffects.None,
-    //                sr.sprite.layerDepth);
-    //    }
-    //    sb.End();
-    //}
-
     public class ServiceManager //Service Manager "Manager of Managers"
     {
         public List<ComponentManager> Managers;
@@ -37,24 +17,29 @@ namespace ECS_01
         {
             game = gameRef;
             Managers = new List<ComponentManager>();
+
+            /*******Add Services Here*******/
+
             this.AddService<SpriteManager>(game);
             this.AddService<TextManager>(game);
             this.AddService<CameraManager>(game); this.GetService<CameraManager>().SetScreenSize(new Vector2(game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height));
         }
-        /// <summary>
-        /// Returns a list of all gameObjects that contain a Component of type T.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        List<GameObject> GetObjectComponentList<T>(Component c)
-        {
-            return game.gameObjects.FindAll((x) => x.Components.);
-        }
 
-        public void PerformService()
+        public void Update()
         {
-            foreach(ComponentManager cm in Managers)
+            foreach (ComponentManager cm in Managers)
             {
+                foreach (GameObject go in game.gameObjects)
+                {
+                    foreach (Component c in go.Components)
+                    {
+                        if (cm.compType == c.GetType())
+                        {
+                            cm.Components.Add(c);
+                        }
+                    }
+                }
+
                 cm.Update();
             }
         }
@@ -62,55 +47,37 @@ namespace ECS_01
 
     public class SpriteManager : ComponentManager
     {
-        List<SpriteRenderer> sprites;
-
         public SpriteManager()
         {
-            sprites = new List<SpriteRenderer>();
+            
+            compType = typeof(SpriteRenderer);
         }
 
-        public override void Update(Component c)
-        {
-            foreach(GameObject o in game.gameObjects)
-            {
-                if(o.GetComponent<SpriteRenderer>().Exists())
-                {
-                    sprites.Add(o.GetComponent<SpriteRenderer>());
-                }
-            }
-            base.Update(c);
-        }
-
-        public override void Draw(Component c)
+        public override void Update()
         {
             DrawSprite();
-            base.Draw(c);
-        }
-
-        public void QueueSprite(SpriteRenderer sr)
-        {
-            sprites.Add(sr);
+            base.Update();
         }
 
         public void DrawSprite()
         {
             sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, sm.GetService<CameraManager>().GetMatrix());
-            for (int i = 0; i < sprites.Count; i++)
+            for (int i = 0; i < Components.Count; i++)
             {
-                GameObject o = sprites[i].gameObject;
-                sb.Draw(sprites[i].sprite.Image,
-                    o.transform.GetPosition(),
+                SpriteRenderer sr = Components[i] as SpriteRenderer;
+                sb.Draw(sr.sprite.Image,
+                    sr.gameObject.transform.GetPosition(),
                     null,
                     null,
-                    sprites[i].GetSpriteCenter(),
-                    (o.transform.GetRotation() + sprites[i].sprite.Rotation),
-                    (o.transform.GetScale() * sprites[i].sprite.Scale),
+                    sr.GetSpriteCenter(),
+                    (sr.gameObject.transform.GetRotation() + sr.sprite.Rotation),
+                    (sr.gameObject.transform.GetScale() * sr.sprite.Scale),
                     null,
                     SpriteEffects.None,
-                    sprites[i].sprite.layerDepth);
+                    sr.sprite.layerDepth);
             }
             sb.End();
-            sprites.Clear();
+            Components.Clear();
         }
     }
 
@@ -118,17 +85,12 @@ namespace ECS_01
     {
         public TextManager()
         {
-
+            compType = typeof(TextDisplayer);
         }
 
-        public override void Update(Component c)
+        public override void Update()
         {
-            base.Update(c);
-        }
-
-        public override void Draw(Component c)
-        {
-            base.Draw(c);
+            base.Update();
         }
 
         public void DrawText(TextDisplayer td)
@@ -148,16 +110,12 @@ namespace ECS_01
         public CameraManager()
         {
             AllCameras = new List<Camera>();
+            compType = typeof(Camera);
         }
 
-        public override void Update(Component c)
+        public override void Update()
         {
-            base.Update(c);
-        }
-
-        public override void Draw(Component c)
-        {
-            base.Draw(c);
+            base.Update();
         }
 
         public void AddCamera(Camera cam)
@@ -196,21 +154,18 @@ namespace ECS_01
 
     public abstract class ComponentManager
     {
+        public Type compType;
         protected Game1 game;
         protected SpriteBatch sb;
         public ServiceManager sm;
+        public List<Component> Components;
 
         public ComponentManager()
         {
-            
+            Components = new List<Component>();
         }
 
-        public virtual void Update(Component c) //used if the manager performs actions during the update loop
-        {
-
-        }
-
-        public virtual void Draw(Component c) //used if the manager performs actions during the draw loop
+        public virtual void Update() //used if the manager performs actions during the update loop
         {
 
         }

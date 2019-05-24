@@ -174,7 +174,7 @@ namespace ECS_01
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            serviceManager.PerformService();
+            serviceManager.Update();
 
             base.Draw(gameTime);
         }
