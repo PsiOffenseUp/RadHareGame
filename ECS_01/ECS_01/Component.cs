@@ -211,13 +211,20 @@ namespace ECS_01
     }
     //------------------------Physics Stuff-----------------------------
     /// <summary>
-    /// Hitbox for whatever this GameObject is. Used for collision
+    /// Hitbox for whatever this GameObject is. Used for checking collision. Please note that the vertices should be stored in order of connectivity.
+    /// So 0 should be connected to 1, 1 to 2, 2 to 3, but not 3 to 5 or 2 to 6. The last element will be connected to the 0th element
     /// </summary>
     public class Hitbox : Component
     {
         public enum Type { RECTANGLE, TRIANGLE };
         public readonly Vector2[] displacement; //Array of the vertices displacement from its parent's current position. These will be what is set at construction time, and then will be used to update the vertices.
+<<<<<<< HEAD
         public Vector2[] vertices { get; private set; } //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame
+=======
+        public Vector2[] vertices { get; private set; } //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame. 
+
+        //DEBUG May want to store edges and their normals (Both as Vector2) in order to minimize computation in the collision checking
+>>>>>>> f6d85407e7bd2c06422bdbec590dcdfa8237f185
 
         //Methods
         public override void Update(GameTime gameTime)
@@ -244,6 +251,8 @@ namespace ECS_01
         //Member variables
         private float gravity; //How fast the object will fall. Basically, the number of pixels it will fall per frame.
         public float Gravity { get { return this.gravity; } set { this.gravity = value; } }
+        private float airFriction, groundFriction;
+        private Vector2 velocity;
 
         //Methods
         public override void Update(GameTime gameTime)
@@ -254,8 +263,26 @@ namespace ECS_01
             base.Update(gameTime);
         }
 
+        #region Setting and getting methods
+        void setAirFriction(float airFriction) { this.airFriction = airFriction; }
+        void setGroundFriction(float groundFriction) { this.groundFriction = groundFriction; }
+        void setVelocity(Vector2 velocity) { this.velocity = velocity; }
+        void setVelocity(float Xvelocity, float Yvelocity) { this.velocity = new Vector2(Xvelocity, Yvelocity); }
+        float getAirFriction() { return this.airFriction; }
+        float getGroundFriction() { return this.groundFriction; }
+        Vector2 getVelocity() { return this.velocity; }
+        float getHorizontalVelocity() { return this.velocity.X; }
+        float getVerticalVelocity() { return this.velocity.Y; }
+
+        bool isGoingUp() { return Math.Sign(this.velocity.Y) == -1; }
+        bool isGoingDown() { return Math.Sign(this.velocity.Y) == 1; }
+        bool isGoingLeft() { return Math.Sign(this.velocity.X) == -1; }
+        bool isGoingRight() { return Math.Sign(this.velocity.X) == 1; }
+        #endregion
+
         //Constructors
-        public PhysicsManager() { this.gravity = 1.0f; }
+        public PhysicsManager() { this.gravity = 1.0f; this.airFriction = 1.0f; this.groundFriction = 1.0f; velocity = new Vector2(0.0f, 0.0f); }
+
     }
 
     /// <summary>
@@ -264,21 +291,186 @@ namespace ECS_01
     /// </summary>
     public class CollisionComponent : Component
     {
-        //Member variables
+        //-----------------------------------------Member variables--------------------------------------
         bool isSolid;
         PhysicsManager physics; //Reference to a PhysicsManager component for the game object
-        Hitbox hitbox; //Reference to the hitbox component for this object
+        Hitbox hitbox;
 
-        //Methods
+        public List<GameObject> collidingObjects{ get; private set; } //List of all objects currently with this component's parent colliding on this frame
+
+        //----------------------------------------------Methods------------------------------------------
+        public override void Start()
+        {
+            collidingObjects = new List<GameObject>();
+            base.Start();
+        }
+
         public override void Update(GameTime gameTime)
         {
+            collidingObjects.Clear(); //Delete all of the elements in the collidingPairs list. DEBUG May want to optimize this, and instead only remove objects that are no longer relevant, to avoid causing garbage collection often.
+            updateCollisions();
+            this.gameObject.handleCollisions(this.collidingObjects);
             base.Update(gameTime);
         }
 
-        //Constructors
+        //***********************Collision checks************************
+
+        /*
+        /// <summary>
+        /// Goes through the GameObjects currently active, and assigns them to smaller regions. This way, we only have to check collision between objects in the same region. This should significantly
+        /// cut down on the number of comparisons required for collision checks. Since we want to save time, and shouldn't have many objects, this shall partition the screen into rectangular regions.
+        /// Shouldn't be able to use an R-tree, since that usually uses objects with a static location. 
+        /// Can be passed H_REGIONS and R_REGIONS, which are the number of horizontal and vertical regions to split the screen into. By default, these are set to 1, which means we get one big region (The whole screen)
+        /// </summary>
+        /// <returns>Returns a list of regions, each containing a list of objects within those regions. </returns>
+        static List<List<GameObject>> getCollisionRegions(int H_REGIONS = 1, int V_REGIONS = 1)
+        {
+            List<List<GameObject>> viableCollisions = new List<List<GameObject>>();
+            List<GameObject> currentRegion = new List<GameObject>();
+
+            if (H_REGIONS == 1 && V_REGIONS == 1) //If the whole screen is the only region, let's just bail out, so we don't do any extra checks
+            {
+                viableCollisions.Add(GameObject.game.gameObjects);
+                return viableCollisions;
+            }
+
+            float screenWidth = GameObject.game.Window.ClientBounds.Width;
+
+            foreach (GameObject gameObject in GameObject.game.gameObjects) //Go through all of the currently active GameObjects, so we can figure out what objects may be colliding
+            {
+
+                foreach (Vector2 vertex in gameObject.GetComponent<Hitbox>().vertices) //Use the vertices to figure out where 
+                {
+                    //DEBUG, Can consider modding all of the vertices. The x by (screenWidth/H_REGIONS) and y by (screenWidth/V_REGIONS).
+                    //However, this may miss out on objects that have sides that are too long
+                }
+            }
+
+            return viableCollisions;
+        }*/
+
+        //Checks for collision between hitbox1 and hitbox2, and returns the result. This will use the Separating Axis Theorem (SAT) to check for collision. Basically, we will take the normal to each edge
+        //(Pair of vertices), and then project all the vertices of both shapes onto each normal. We can then check if there is overlap. If a single projection does not overlap, we know that the hitboxes
+        //are not colliding.
+        static bool checkCollision(Hitbox hitbox1, Hitbox hitbox2)
+        {
+            //DEBUG Finish implementing SAT
+            float minProjection1, minProjection2, maxProjection1, maxProjection2, tempScalar; //Used for checking overlap. Taking projection involves taking dot product between vectors, which will return a scalar. These will hold the 4 relevant scalars.
+            Vector2 normalVector; //Vector normal to the edge currently being checked
+            Vector2 point2;
+
+            //Go through each hitbox
+            for (int i = 0; i < hitbox1.vertices.Length; i++) //Project onto all of the sides in the first polygon
+            {
+                //Find the normal vector to the current edge being checked. All vectors will be relative to the current vertex being checked (Basically, it's like the origin)
+                if (i == hitbox1.vertices.Length - 1) //If we're at the end of the vertices array, loop back around for the last pair
+                    point2 = hitbox1.vertices[0];
+                else
+                    point2 = hitbox1.vertices[i + 1];
+
+                normalVector = takeNormal(hitbox1.vertices[i], point2);
+
+                //Now, project all of the points onto the normal
+                minProjection1 = minProjection2 = 0xFFFFFFFF; //Set min to big number, max to small number, since (as far as I know), we can't operate on a spliced list, so optimization isn't really an option.
+                maxProjection1 = maxProjection2 = -0xFFFFFFFF;
+
+                foreach (Vector2 vertex in hitbox1.vertices) //Project for hitbox1/shape1
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox1.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection1) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox1
+                        minProjection1 = tempScalar;
+                    if (tempScalar > maxProjection1) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox1
+                        maxProjection1 = tempScalar;
+                }
+
+                foreach (Vector2 vertex in hitbox2.vertices) //Project for hitbox2/shape2
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox1.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection2) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox2
+                        minProjection2 = tempScalar;
+                    if (tempScalar > maxProjection2) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox2
+                        maxProjection2 = tempScalar;
+                }
+
+                //Finally, let's make sure the projections overlap. If they don't, we can bail out of the whole function, because these hitboxes don't collide. 
+                //Using negation of logic to check for collision (using DeMorgan's law) to find when it should be false
+                if ((minProjection1 >= maxProjection2 || minProjection2 >= maxProjection1) && (minProjection2 >= maxProjection1 || minProjection1 >= maxProjection2))
+                    return false;
+
+            }
+
+            for (int i = 0; i < hitbox2.vertices.Length; i++) //Project onto all of the sides in the second polygon. Copy and pasted from above code
+            {
+                //Find the normal vector to the current edge being checked. All vectors will be relative to the current vertex being checked (Basically, it's like the origin)
+                if (i == hitbox2.vertices.Length - 1) //If we're at the end of the vertices array, loop back around for the last pair
+                    point2 = hitbox2.vertices[0];
+                else
+                    point2 = hitbox2.vertices[i + 1];
+
+                normalVector = takeNormal(hitbox2.vertices[i], point2);
+
+                //Now, project all of the points onto the normal
+                minProjection1 = minProjection2 = 0xFFFFFFFF; //Set min to big number, max to small number, since (as far as I know), we can't operate on a spliced list, so optimization isn't really an option.
+                maxProjection1 = maxProjection2 = -0xFFFFFFFF;
+
+                foreach (Vector2 vertex in hitbox1.vertices) //Project for hitbox1/shape1
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox2.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection1) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox1
+                        minProjection1 = tempScalar;
+                    if (tempScalar > maxProjection1) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox1
+                        maxProjection1 = tempScalar;
+                }
+
+                foreach (Vector2 vertex in hitbox2.vertices) //Project for hitbox2/shape2
+                {
+                    tempScalar = Vector2.Dot(vertex - hitbox2.vertices[i], normalVector); //Taking dot product between vertex and normalVector should return projection length from origin (hitbox.vertices[i], for this)
+                    if (tempScalar < minProjection2) //If the scalar computed is the smallest one yet, set it to be the min of the projections for hitbox2
+                        minProjection2 = tempScalar;
+                    if (tempScalar > maxProjection2) //If the scalar computed is the greatest one yet, set it to be the max of the projections for hitbox2
+                        maxProjection2 = tempScalar;
+                }
+
+                //Finally, let's make sure the projections overlap. If they don't, we can bail out of the whole function, because these hitboxes don't collide. 
+                //Using negation of logic to check for collision (using DeMorgan's law) to find when it should be false
+                if ((minProjection1 >= maxProjection2 || minProjection2 >= maxProjection1) && (minProjection2 >= maxProjection1 || minProjection1 >= maxProjection2))
+                    return false;
+            }
+
+            return true;
+        }
+
+        //The actual main collision checking function. This should be called in the Update() method every frame. Updates the collidingObjects List to contain all of the obvjects that collide with the one that has this component.
+        void updateCollisions()
+        {
+            List<GameObject> objects = GameObject.game.gameObjects;
+
+            for (int i = 0; i < objects.Count; i++) //Go through the remaining GameObjects after this one, so that we can compare each pair of GameObjects in this region
+            {
+                try
+                {
+                    if ((objects[i] != this.gameObject) && checkCollision(this.gameObject.GetComponent<Hitbox>(), objects[i].GetComponent<Hitbox>())) //If these two objects are colliding. Also make sure we don't check for collision with the object itself
+                        collidingObjects.Add(objects[i]); //Then we will add it as a pair of colliding objects to the collidingPairs List
+                }
+                        
+                catch (NullReferenceException) //Likely will get here if there object does not have a hitbox
+                {
+                    Console.WriteLine("Object encountered without a hitbox.");
+                }
+            }
+
+        }
+
+        //Finds the normal vector between the given two points. The vector is relative to point1 as a starting point.
+        private static Vector2 takeNormal(Vector2 point1, Vector2 point2)
+        {
+            return new Vector2(point1.Y - point2.Y, point2.X - point1.X);
+        }
+
+        //---------------------------------------------------Constructors-----------------------------------------------------
         public CollisionComponent() { this.isSolid = false;}
         public CollisionComponent(PhysicsManager physics, Hitbox hitbox) { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; }
-        public CollisionComponent(GameObject parent) { } //This constructor should get relevant component references from its parent
+        public CollisionComponent(GameObject parent, bool isSolid = false) { this.physics = parent.GetComponent<PhysicsManager>(); this.hitbox = parent.GetComponent<Hitbox>(); this.isSolid = isSolid; } //This constructor should get relevant component references from its parent
 
     }
 
