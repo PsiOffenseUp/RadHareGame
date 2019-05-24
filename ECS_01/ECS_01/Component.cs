@@ -217,7 +217,7 @@ namespace ECS_01
     {
         public enum Type { RECTANGLE, TRIANGLE };
         public readonly Vector2[] displacement; //Array of the vertices displacement from its parent's current position. These will be what is set at construction time, and then will be used to update the vertices.
-        public Vector2[] vertices { get; private set; }; //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame
+        public Vector2[] vertices { get; private set; } //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame
 
         //Methods
         public override void Update(GameTime gameTime)
