@@ -218,7 +218,7 @@ namespace ECS_01
     {
         public enum Type { RECTANGLE, TRIANGLE };
         public readonly Vector2[] displacement; //Array of the vertices displacement from its parent's current position. These will be what is set at construction time, and then will be used to update the vertices.
-        public Vector2[] vertices { get; private set; }; //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame. 
+        public Vector2[] vertices { get; private set; } //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame. 
 
         //DEBUG May want to store edges and their normals (Both as Vector2) in order to minimize computation in the collision checking
 
@@ -290,41 +290,60 @@ namespace ECS_01
         //-----------------------------------------Member variables--------------------------------------
         bool isSolid;
         PhysicsManager physics; //Reference to a PhysicsManager component for the game object
+        Hitbox hitbox;
 
-        public static List<Tuple<GameObject, GameObject>> collidingPairs { get; private set; } //List of all object pairs currently colliding on this frame
+        public List<GameObject> collidingObjects{ get; private set; } //List of all objects currently with this component's parent colliding on this frame
 
         //----------------------------------------------Methods------------------------------------------
         public override void Start()
         {
-            collidingPairs = new List<Tuple<GameObject, GameObject>>();
+            collidingObjects = new List<GameObject>();
             base.Start();
         }
 
         public override void Update(GameTime gameTime)
         {
-            collidingPairs.Clear(); //Delete all of the elements in the collidingPairs list. DEBUG May want to optimize this, and instead only remove pairs that are no longer relevant, to avoid causing garbage collection often.
+            collidingObjects.Clear(); //Delete all of the elements in the collidingPairs list. DEBUG May want to optimize this, and instead only remove objects that are no longer relevant, to avoid causing garbage collection often.
             updateCollisions();
+            this.gameObject.handleCollisions(this.collidingObjects);
             base.Update(gameTime);
         }
 
         //***********************Collision checks************************
 
+        /*
         /// <summary>
         /// Goes through the GameObjects currently active, and assigns them to smaller regions. This way, we only have to check collision between objects in the same region. This should significantly
-        /// cut down on the number of comparisons required for collision checks. Could optimize with an R-tree?
+        /// cut down on the number of comparisons required for collision checks. Since we want to save time, and shouldn't have many objects, this shall partition the screen into rectangular regions.
+        /// Shouldn't be able to use an R-tree, since that usually uses objects with a static location. 
+        /// Can be passed H_REGIONS and R_REGIONS, which are the number of horizontal and vertical regions to split the screen into. By default, these are set to 1, which means we get one big region (The whole screen)
         /// </summary>
         /// <returns>Returns a list of regions, each containing a list of objects within those regions. </returns>
-        static List<List<GameObject>> getCollisionRegions()
+        static List<List<GameObject>> getCollisionRegions(int H_REGIONS = 1, int V_REGIONS = 1)
         {
             List<List<GameObject>> viableCollisions = new List<List<GameObject>>();
             List<GameObject> currentRegion = new List<GameObject>();
-            Game1 game = GameObject.game; //Reference to the game, so we can use it to check the currently loaded GameObjects
 
-            //DEBUG, just so this still compiles. Will finish writing later.
-            viableCollisions.Add(currentRegion);
+            if (H_REGIONS == 1 && V_REGIONS == 1) //If the whole screen is the only region, let's just bail out, so we don't do any extra checks
+            {
+                viableCollisions.Add(GameObject.game.gameObjects);
+                return viableCollisions;
+            }
+
+            float screenWidth = GameObject.game.Window.ClientBounds.Width;
+
+            foreach (GameObject gameObject in GameObject.game.gameObjects) //Go through all of the currently active GameObjects, so we can figure out what objects may be colliding
+            {
+
+                foreach (Vector2 vertex in gameObject.GetComponent<Hitbox>().vertices) //Use the vertices to figure out where 
+                {
+                    //DEBUG, Can consider modding all of the vertices. The x by (screenWidth/H_REGIONS) and y by (screenWidth/V_REGIONS).
+                    //However, this may miss out on objects that have sides that are too long
+                }
+            }
 
             return viableCollisions;
-        }
+        }*/
 
         //Checks for collision between hitbox1 and hitbox2, and returns the result. This will use the Separating Axis Theorem (SAT) to check for collision. Basically, we will take the normal to each edge
         //(Pair of vertices), and then project all the vertices of both shapes onto each normal. We can then check if there is overlap. If a single projection does not overlap, we know that the hitboxes
@@ -339,7 +358,6 @@ namespace ECS_01
             //Go through each hitbox
             for (int i = 0; i < hitbox1.vertices.Length; i++) //Project onto all of the sides in the first polygon
             {
-
                 //Find the normal vector to the current edge being checked. All vectors will be relative to the current vertex being checked (Basically, it's like the origin)
                 if (i == hitbox1.vertices.Length - 1) //If we're at the end of the vertices array, loop back around for the last pair
                     point2 = hitbox1.vertices[0];
@@ -418,28 +436,25 @@ namespace ECS_01
             return true;
         }
 
-        //Finds any objects which collide with collisionObject, and then returns them. If no collisions are found, returns null. Searches through the collidingPairs list for the collisionObject
-        static List<GameObject> findCollidingObjects(GameObject collisionObject)
+        //The actual main collision checking function. This should be called in the Update() method every frame. Updates the collidingObjects List to contain all of the obvjects that collide with the one that has this component.
+        void updateCollisions()
         {
-            return null;
-        }
+            List<GameObject> objects = GameObject.game.gameObjects;
 
-        //The actual main collision checking function. This should be called in the Update() method every frame.
-        static void updateCollisions()
-        {
-            List<List<GameObject>> collisionRegions = getCollisionRegions(); //Get the viable collision regions to simplify collision checking
-
-            foreach (List<GameObject> region in collisionRegions) //Go through each region, so that we can check the collision between any objects in that region
+            for (int i = 0; i < objects.Count; i++) //Go through the remaining GameObjects after this one, so that we can compare each pair of GameObjects in this region
             {
-                for (int i = 0; i < region.Count - 1; i++) //Go through each GameObject
+                try
                 {
-                    for (int j = i + 1; j < region.Count; j++) //Go through the remaining GameObjects after this one, so that we can compare each pair of GameObjects in this region
-                    {
-                        if(checkCollision(region[i].GetComponent<Hitbox>(), region[j].GetComponent<Hitbox>())) //If these two objects are colliding
-                            collidingPairs.Add(new Tuple<GameObject,GameObject>(region[i], region[j])); //Then we will add it as a pair of colliding objects to the collidingPairs List
-                    }
+                    if ((objects[i] != this.gameObject) && checkCollision(this.gameObject.GetComponent<Hitbox>(), objects[i].GetComponent<Hitbox>())) //If these two objects are colliding. Also make sure we don't check for collision with the object itself
+                        collidingObjects.Add(objects[i]); //Then we will add it as a pair of colliding objects to the collidingPairs List
+                }
+                        
+                catch (NullReferenceException) //Likely will get here if there object does not have a hitbox
+                {
+                    Console.WriteLine("Object encountered without a hitbox.");
                 }
             }
+
         }
 
         //Finds the normal vector between the given two points. The vector is relative to point1 as a starting point.
@@ -451,7 +466,7 @@ namespace ECS_01
         //---------------------------------------------------Constructors-----------------------------------------------------
         public CollisionComponent() { this.isSolid = false;}
         public CollisionComponent(PhysicsManager physics, Hitbox hitbox) { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; }
-        public CollisionComponent(GameObject parent) { } //This constructor should get relevant component references from its parent
+        public CollisionComponent(GameObject parent, bool isSolid = false) { this.physics = parent.GetComponent<PhysicsManager>(); this.hitbox = parent.GetComponent<Hitbox>(); this.isSolid = isSolid; } //This constructor should get relevant component references from its parent
 
     }
 

@@ -135,5 +135,16 @@ namespace ECS_01
             Children = new List<GameObject>();
             Parent = null;
         }
+
+        //-----------------------------------------Methods---------------------------------------
+        #region Methods that should be called every frame
+        /// <summary>
+        /// Method that should handle collisions for this specific gameObject. Is given a list of objects with which this GameObject is colliding with on this frame.
+        /// </summary>
+        public virtual void handleCollisions(List<GameObject> collidingObjects)
+        {
+
+        }
+        #endregion
     }
 }
