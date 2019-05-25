@@ -19,6 +19,10 @@ namespace ECS_01
         public List<GameObject> gameObjects;
         public List<GameObject> uiObjects;
 
+        //DEBUG Testing collision, delete later
+        GameObject object1;
+        GameObject floor;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -78,6 +82,40 @@ namespace ECS_01
             button.GetComponent<ButtonController>().buttonClicked += Action;
             uiObjects.Add(button);
             ////////////////
+            ///
+
+            //*****DEBUG: Collision Testing*****
+            
+            floor = new GameObject();
+            object1 = new GameObject();
+
+            Vector2[] floorVertices = new Vector2[3];
+            Vector2[] objectVertices = new Vector2[4];
+
+            floorVertices[0] = new Vector2(0, 0);
+            floorVertices[1] = new Vector2(15, 0);
+            floorVertices[2] = new Vector2(15, 15);
+            //floorVertices[3] = new Vector2(0, 15);
+
+            objectVertices[0] = new Vector2(0, 0);
+            objectVertices[1] = new Vector2(4, 0);
+            objectVertices[2] = new Vector2(4, 4);
+            objectVertices[3] = new Vector2(0, 4);
+
+            object1.Components.Add(new Hitbox(objectVertices, object1));
+            object1.Components.Add(new CollisionComponent(object1));
+            object1.Components.Add(new SpriteRenderer());
+            object1.transform.SetPosition(new Vector2(0.0f, 0.0f));
+
+            floor.Components.Add(new Hitbox(floorVertices, floor));
+            floor.Components.Add(new CollisionComponent(floor, true));
+            floor.Components.Add(new SpriteRenderer());
+            floor.transform.SetPosition(new Vector2(2.0f, 2.0f));
+
+            object1.Load();
+            floor.Load();
+            
+            //******************End collision testing*****************
 
             serviceManager.GetService<CameraManager>().SetMainCamera(obj.GetComponent<Camera>());
         }

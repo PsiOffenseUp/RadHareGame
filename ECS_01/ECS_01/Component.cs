@@ -209,6 +209,7 @@ namespace ECS_01
             else Zoom += deltaZoom;
         }
     }
+    #region Physics/Collision
     //------------------------Physics Stuff-----------------------------
     /// <summary>
     /// Hitbox for whatever this GameObject is. Used for checking collision. Please note that the vertices should be stored in order of connectivity.
@@ -226,7 +227,7 @@ namespace ECS_01
         public override void Update(GameTime gameTime)
         {
             //Update the hitbox coordinates as necessary
-            Vector2 parentPos = gameObject.transform.GetPosition(); //Get the Vector2 for the parent's position, so we don't have to keep doing a reference to it
+            Vector2 parentPos = gameObject.transform.GetPosition(); //Get the Vector2 for the parent's position, so we don't have to keep doing a call for it
             for (int i = 0; i < this.displacement.Length; i++)
                 this.vertices[i] = parentPos + this.displacement[i];
 
@@ -234,8 +235,8 @@ namespace ECS_01
         }
 
         //Constructors
-        Hitbox() { displacement = new Vector2[4]; displacement[0] = new Vector2(0, 0); displacement[1] = new Vector2(1, 0); displacement[2] = new Vector2(0, 1); displacement[3] = new Vector2(1, 1); vertices = new Vector2[4]; }
-        Hitbox(Vector2[] vertices) { this.displacement = vertices; this.vertices = new Vector2[vertices.Length]; }
+        public Hitbox() : base() { displacement = new Vector2[4]; displacement[0] = new Vector2(0, 0); displacement[1] = new Vector2(1, 0); displacement[2] = new Vector2(0, 1); displacement[3] = new Vector2(1, 1); vertices = new Vector2[4]; }
+        public Hitbox(Vector2[] vertices, GameObject gameObject = null) : base() { this.displacement = vertices; this.vertices = new Vector2[vertices.Length]; this.gameObject = gameObject; }
     }
 
     /// <summary>
@@ -277,7 +278,7 @@ namespace ECS_01
         #endregion
 
         //Constructors
-        public PhysicsManager() { this.gravity = 1.0f; this.airFriction = 1.0f; this.groundFriction = 1.0f; velocity = new Vector2(0.0f, 0.0f); }
+        public PhysicsManager() : base() { this.gravity = 1.0f; this.airFriction = 1.0f; this.groundFriction = 1.0f; velocity = new Vector2(0.0f, 0.0f); }
 
     }
 
@@ -297,7 +298,6 @@ namespace ECS_01
         //----------------------------------------------Methods------------------------------------------
         public override void Start()
         {
-            collidingObjects = new List<GameObject>();
             base.Start();
         }
 
@@ -305,45 +305,11 @@ namespace ECS_01
         {
             collidingObjects.Clear(); //Delete all of the elements in the collidingPairs list. DEBUG May want to optimize this, and instead only remove objects that are no longer relevant, to avoid causing garbage collection often.
             updateCollisions();
-            this.gameObject.handleCollisions(this.collidingObjects);
+            handleCollisions();
             base.Update(gameTime);
         }
 
         //***********************Collision checks************************
-
-        /*
-        /// <summary>
-        /// Goes through the GameObjects currently active, and assigns them to smaller regions. This way, we only have to check collision between objects in the same region. This should significantly
-        /// cut down on the number of comparisons required for collision checks. Since we want to save time, and shouldn't have many objects, this shall partition the screen into rectangular regions.
-        /// Shouldn't be able to use an R-tree, since that usually uses objects with a static location. 
-        /// Can be passed H_REGIONS and R_REGIONS, which are the number of horizontal and vertical regions to split the screen into. By default, these are set to 1, which means we get one big region (The whole screen)
-        /// </summary>
-        /// <returns>Returns a list of regions, each containing a list of objects within those regions. </returns>
-        static List<List<GameObject>> getCollisionRegions(int H_REGIONS = 1, int V_REGIONS = 1)
-        {
-            List<List<GameObject>> viableCollisions = new List<List<GameObject>>();
-            List<GameObject> currentRegion = new List<GameObject>();
-
-            if (H_REGIONS == 1 && V_REGIONS == 1) //If the whole screen is the only region, let's just bail out, so we don't do any extra checks
-            {
-                viableCollisions.Add(GameObject.game.gameObjects);
-                return viableCollisions;
-            }
-
-            float screenWidth = GameObject.game.Window.ClientBounds.Width;
-
-            foreach (GameObject gameObject in GameObject.game.gameObjects) //Go through all of the currently active GameObjects, so we can figure out what objects may be colliding
-            {
-
-                foreach (Vector2 vertex in gameObject.GetComponent<Hitbox>().vertices) //Use the vertices to figure out where 
-                {
-                    //DEBUG, Can consider modding all of the vertices. The x by (screenWidth/H_REGIONS) and y by (screenWidth/V_REGIONS).
-                    //However, this may miss out on objects that have sides that are too long
-                }
-            }
-
-            return viableCollisions;
-        }*/
 
         //Checks for collision between hitbox1 and hitbox2, and returns the result. This will use the Separating Axis Theorem (SAT) to check for collision. Basically, we will take the normal to each edge
         //(Pair of vertices), and then project all the vertices of both shapes onto each normal. We can then check if there is overlap. If a single projection does not overlap, we know that the hitboxes
@@ -457,6 +423,16 @@ namespace ECS_01
 
         }
 
+        //Things that all game objects that have collision should do. For instance, solid objects should not pass through each other
+        void handleCollisions()
+        {
+            foreach (GameObject collision in collidingObjects)
+            {
+                //DEBUg, let's just make sure it picks up on collisions
+                Console.WriteLine(collision.ToString());
+            }
+        }
+
         //Finds the normal vector between the given two points. The vector is relative to point1 as a starting point.
         private static Vector2 takeNormal(Vector2 point1, Vector2 point2)
         {
@@ -464,11 +440,12 @@ namespace ECS_01
         }
 
         //---------------------------------------------------Constructors-----------------------------------------------------
-        public CollisionComponent() { this.isSolid = false;}
-        public CollisionComponent(PhysicsManager physics, Hitbox hitbox) { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; }
-        public CollisionComponent(GameObject parent, bool isSolid = false) { this.physics = parent.GetComponent<PhysicsManager>(); this.hitbox = parent.GetComponent<Hitbox>(); this.isSolid = isSolid; } //This constructor should get relevant component references from its parent
+        public CollisionComponent() : base() { this.isSolid = false; collidingObjects = new List<GameObject>(); }
+        public CollisionComponent (PhysicsManager physics, Hitbox hitbox) : base() { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; collidingObjects = new List<GameObject>(); }
+        public CollisionComponent(GameObject parent, bool isSolid = false) : base() { this.physics = parent.GetComponent<PhysicsManager>(); this.hitbox = parent.GetComponent<Hitbox>(); this.isSolid = isSolid; gameObject = parent; collidingObjects = new List<GameObject>(); } //This constructor should get relevant component references from its parent
 
     }
+    #endregion
 
     //---------------------------UI STUFF--------------------------------
     public class MouseTracker : Component
