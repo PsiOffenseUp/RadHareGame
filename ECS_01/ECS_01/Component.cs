@@ -218,13 +218,9 @@ namespace ECS_01
     {
         public enum Type { RECTANGLE, TRIANGLE };
         public readonly Vector2[] displacement; //Array of the vertices displacement from its parent's current position. These will be what is set at construction time, and then will be used to update the vertices.
-<<<<<<< HEAD
         public Vector2[] vertices { get; private set; } //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame
-=======
-        public Vector2[] vertices { get; private set; } //Array of the vertices for this hitbox. This will be represented as as it's actual coordinates, and should be updated every frame. 
 
         //DEBUG May want to store edges and their normals (Both as Vector2) in order to minimize computation in the collision checking
->>>>>>> f6d85407e7bd2c06422bdbec590dcdfa8237f185
 
         //Methods
         public override void Update(GameTime gameTime)
