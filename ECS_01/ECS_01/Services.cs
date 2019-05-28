@@ -11,11 +11,10 @@ namespace ECS_01
     public class ServiceManager //Service Manager "Manager of Managers"
     {
         public List<ComponentManager> Managers;
-        Game1 game;
+        public static Game1 game;
 
-        public ServiceManager(Game1 gameRef)
+        public ServiceManager()
         {
-            game = gameRef;
             Managers = new List<ComponentManager>();
 
             /*******Add Services Here*******/
@@ -41,6 +40,7 @@ namespace ECS_01
                 }
 
                 cm.Update();
+                cm.Components.Clear();
             }
         }
     }
@@ -62,6 +62,7 @@ namespace ECS_01
         public void DrawSprite()
         {
             sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, sm.GetService<CameraManager>().GetMatrix());
+
             for (int i = 0; i < Components.Count; i++)
             {
                 SpriteRenderer sr = Components[i] as SpriteRenderer;

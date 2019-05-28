@@ -30,6 +30,7 @@ namespace ECS_01
             gameObjects = new List<GameObject>();
             uiObjects = new List<GameObject>();
             GameObject.game = this; //Set the static reference to the game to be this game
+            ServiceManager.game = this;
         }
 
         /// <summary>
@@ -52,9 +53,10 @@ namespace ECS_01
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            serviceManager = new ServiceManager(this);
+            serviceManager = new ServiceManager();
 
             // TODO: use this.Content to load your game content 
+            
             GameObject obj = new GameObject();
             GameObject obj2 = new GameObject();
             
@@ -70,19 +72,20 @@ namespace ECS_01
             obj2.AddComponent<SpriteRenderer>();
             obj2.GetComponent<SpriteRenderer>().sprite.Image = Content.Load<Texture2D>("Test_CobbleStoneTile");
 
-            gameObjects.Add(obj);
-            gameObjects.Add(obj2);
+            obj.Load();
+            obj2.Load();
 
-            obj.SetChild(obj2);
+            //obj.SetChild(obj2);
 
             //Button Testing
-            Texture2D[] buttonSprites = { Content.Load<Texture2D>("Test_Button_Unpressed"), Content.Load<Texture2D>("Test_Button_Pressed") };
-            ButtonClicked btn = new ButtonClicked(Action);
-            Button button = new Button(buttonSprites, new Vector2(0, 0));
-            button.GetComponent<ButtonController>().buttonClicked += Action;
-            uiObjects.Add(button);
+            //Texture2D[] buttonSprites = { Content.Load<Texture2D>("Test_Button_Unpressed"), Content.Load<Texture2D>("Test_Button_Pressed") };
+            //ButtonClicked btn = new ButtonClicked(Action);
+            //Button button = new Button(buttonSprites, new Vector2(0, 0));
+            //button.GetComponent<ButtonController>().buttonClicked += Action;
+            //uiObjects.Add(button);
             ////////////////
             ///
+            
 
             //*****DEBUG: Collision Testing*****
             
@@ -104,12 +107,12 @@ namespace ECS_01
 
             object1.Components.Add(new Hitbox(objectVertices, object1));
             object1.Components.Add(new CollisionComponent(object1));
-            object1.Components.Add(new SpriteRenderer());
+            //object1.AddComponent<SpriteRenderer>();
             object1.transform.SetPosition(new Vector2(0.0f, 0.0f));
 
             floor.Components.Add(new Hitbox(floorVertices, floor));
             floor.Components.Add(new CollisionComponent(floor, true));
-            floor.Components.Add(new SpriteRenderer());
+            floor.AddComponent<SpriteRenderer>();
             floor.transform.SetPosition(new Vector2(2.0f, 2.0f));
 
             object1.Load();

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Unpressed.png</SourceFile>
-  <SourceTime>2019-05-14T20:01:37.513991-04:00</SourceTime>
-  <DestFile>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/Test_Button_Unpressed.xnb</DestFile>
-  <DestTime>2019-05-28T14:13:56.0242844-04:00</DestTime>
+  <SourceFile>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/MissingTexture.png</SourceFile>
+  <SourceTime>2019-05-28T14:13:47.7884377-04:00</SourceTime>
+  <DestFile>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/MissingTexture.xnb</DestFile>
+  <DestTime>2019-05-28T14:13:56.0353052-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

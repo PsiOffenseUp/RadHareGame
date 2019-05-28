@@ -39,6 +39,7 @@ namespace ECS_01
     {
         public SpriteRenderer()
         {
+            sprite.Image = GameObject.game.Content.Load<Texture2D>("MissingTexture");
             
         }
 
@@ -54,7 +55,6 @@ namespace ECS_01
 
         public override void Start()
         {
-            sprite.Image = null;
             sprite.Scale = Vector2.One;
             sprite.Rotation = 0.0f;
             sprite.layerDepth = 0;
