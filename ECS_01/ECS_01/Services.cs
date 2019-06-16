@@ -196,11 +196,11 @@ namespace ECS_01
         static CameraManager cameraManager;
 
         //--------------------Constructors------------------------
-        public MapManager(Game1 game, string mapPath = "maps/test.tmx")
+        public MapManager(Game1 game, string mapPath = "maps/test")
         {
             currentMap = game.Content.Load<TiledMap>(mapPath); //Load the map path given to start the game 
             mapRenderer = new TiledMapRenderer(game.GraphicsDevice); //Create a renderer to render this map
-            cameraManager = game.Services.GetService<CameraManager>(); //Get the camera
+            cameraManager = new CameraManager(); //game.Services.GetService<CameraManager>(); //Get the camera
         }
 
         //-----------------------Methods--------------------------
@@ -210,7 +210,15 @@ namespace ECS_01
         }
         public void drawMap(Game1 game)
         {
-            mapRenderer.Draw(currentMap, cameraManager.GetMatrix());
+            //try
+            //{
+                mapRenderer.Draw(currentMap, cameraManager.GetMatrix());
+            /*}
+
+            catch(Exception e)
+            {
+                mapRenderer.Draw(currentMap, new Matrix());
+            }*/
         }
 
         public void loadMap(Game1 game, string path)

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/MissingTexture.png</SourceFile>
-  <SourceTime>2019-05-28T14:13:47.7884377-04:00</SourceTime>
-  <DestFile>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/MissingTexture.xnb</DestFile>
-  <DestTime>2019-05-28T14:13:56.0353052-04:00</DestTime>
+  <SourceFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/MissingTexture.png</SourceFile>
+  <SourceTime>2019-06-16T11:18:35.119636-07:00</SourceTime>
+  <DestFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/MissingTexture.xnb</DestFile>
+  <DestTime>2019-06-16T12:38:39.7223465-07:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
+  <ImporterTime>2018-09-23T14:55:52-07:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2017-03-01T10:05:36-05:00</ProcessorTime>
+  <ProcessorTime>2018-09-23T14:55:52-07:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

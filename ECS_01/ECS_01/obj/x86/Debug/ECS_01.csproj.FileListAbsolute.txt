@@ -82,3 +82,17 @@ F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\obj\x86\Debug\ECS_01.pdb
 C:\Users\cstough\source\repos\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\Content\Test_Button_Pressed.xnb
 C:\Users\cstough\source\repos\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\Content\Test_Button_Unpressed.xnb
 C:\Users\cstough\source\repos\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\Content\Test_CobbleStoneTile.xnb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\MissingTexture.xnb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.dll
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Graphics.dll
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Tiled.dll
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Newtonsoft.Json.dll
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.pdb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.xml
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Graphics.pdb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Graphics.xml
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Tiled.pdb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Tiled.xml
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Newtonsoft.Json.xml
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\maps\test.xnb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\P6yozhP.xnb

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/maps/test.tmx</SourceFile>
+  <SourceTime>2019-06-07T14:16:59.8934758-07:00</SourceTime>
+  <DestFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/maps/test.xnb</DestFile>
+  <DestTime>2019-06-16T12:38:39.657348-07:00</DestTime>
+  <Importer>TiledMapImporter</Importer>
+  <ImporterTime>2018-05-23T11:26:24-07:00</ImporterTime>
+  <Processor>TiledMapProcessor</Processor>
+  <ProcessorTime>2018-05-23T11:26:24-07:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

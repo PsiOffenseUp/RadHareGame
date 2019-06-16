@@ -4,8 +4,19 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/Test_CobbleStoneTile.png</File>
-    <File>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Pressed.png</File>
-    <File>C:/Users/cstough/source/repos/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Unpressed.png</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/maps/test.tmx</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/MissingTexture.png</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/P6yozhP.png</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Pressed.png</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Unpressed.png</File>
+    <File>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/Test_CobbleStoneTile.png</File>
   </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
 </SourceFileCollection>
