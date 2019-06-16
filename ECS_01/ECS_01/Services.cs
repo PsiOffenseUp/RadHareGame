@@ -6,16 +6,18 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Graphics;
+
 namespace ECS_01
 {
     public class ServiceManager //Service Manager "Manager of Managers"
     {
         public List<ComponentManager> Managers;
-        Game1 game;
+        public static Game1 game;
 
-        public ServiceManager(Game1 gameRef)
+        public ServiceManager()
         {
-            game = gameRef;
             Managers = new List<ComponentManager>();
 
             /*******Add Services Here*******/
@@ -41,6 +43,7 @@ namespace ECS_01
                 }
 
                 cm.Update();
+                cm.Components.Clear();
             }
         }
     }
@@ -62,6 +65,7 @@ namespace ECS_01
         public void DrawSprite()
         {
             sb.Begin(SpriteSortMode.Deferred, null, null, null, null, null, sm.GetService<CameraManager>().GetMatrix());
+
             for (int i = 0; i < Components.Count; i++)
             {
                 SpriteRenderer sr = Components[i] as SpriteRenderer;
@@ -180,5 +184,55 @@ namespace ECS_01
             this.game = game;
             this.sb = game.GetSpriteBatch();
         }
+    }
+
+    /// <summary>
+    /// Methods for loading and getting the next map in the game. NOTE: Make sure to initialize this AFTER a main camera has been set.
+    /// </summary>
+    public class MapManager
+    {
+        static TiledMap currentMap;
+        static TiledMapRenderer mapRenderer;
+        static CameraManager cameraManager;
+
+        //--------------------Constructors------------------------
+        public MapManager(Game1 game, string mapPath = "maps/test.tmx")
+        {
+            currentMap = game.Content.Load<TiledMap>(mapPath); //Load the map path given to start the game 
+            mapRenderer = new TiledMapRenderer(game.GraphicsDevice); //Create a renderer to render this map
+            cameraManager = game.Services.GetService<CameraManager>(); //Get the camera
+        }
+
+        //-----------------------Methods--------------------------
+        public void Update(GameTime gameTime)
+        {
+            mapRenderer.Update(currentMap, gameTime);
+        }
+        public void drawMap(Game1 game)
+        {
+            mapRenderer.Draw(currentMap, cameraManager.GetMatrix());
+        }
+
+        public void loadMap(Game1 game, string path)
+        {
+
+        }
+
+        public void resetMap(Game1 game, string path)
+        {
+
+        }
+
+        /// <summary>
+        /// Goes through the current level file and loads all of the collision objects, so that they can be returned and added to the list of active GameObjects
+        /// </summary>
+        /// <returns></returns>
+        public List<GameObject> getCollisionObjects()
+        {
+            List<GameObject> collisionObjects = new List<GameObject>();
+
+            return collisionObjects;
+        }
+
     }
 }
