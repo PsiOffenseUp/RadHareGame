@@ -48,7 +48,6 @@ namespace ECS_01
             base.Initialize();
 
             //DEBUG Map stuff
-            CameraManager.MainCamera = new Camera(); //Create a new camera to be the main one
             mapManager = new MapManager(this, "maps/test.tmx"); //Load the first map
         }
 
@@ -124,8 +123,13 @@ namespace ECS_01
 
             object1.Load();
             floor.Load();
-            
+
             //******************End collision testing*****************
+
+            //**************Map testing****************
+            Extensions.AddService<CameraManager>(serviceManager, this); //Add a camera manager, so that we can get its view matrix later
+
+            //********************End******************
 
             serviceManager.GetService<CameraManager>().SetMainCamera(obj.GetComponent<Camera>());
         }
