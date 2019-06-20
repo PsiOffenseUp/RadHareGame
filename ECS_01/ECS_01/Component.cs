@@ -236,14 +236,14 @@ namespace ECS_01
 
         //Constructors
         public Hitbox() : base() { displacement = new Vector2[4]; displacement[0] = new Vector2(0, 0); displacement[1] = new Vector2(1, 0); displacement[2] = new Vector2(0, 1); displacement[3] = new Vector2(1, 1); vertices = new Vector2[4]; }
-        public Hitbox(Vector2[] vertices, GameObject gameObject = null) : base() { this.displacement = vertices; this.vertices = new Vector2[vertices.Length]; this.gameObject = gameObject; }
+        public Hitbox(Vector2[] displacement, GameObject gameObject = null) : base() { this.displacement = displacement; this.vertices = new Vector2[displacement.Length]; this.gameObject = gameObject; }
     }
 
     /// <summary>
     /// Component class to handle an object having physics. This includes having gravity and friction, but not collision. Giving
     /// an object collision can be done with the CollisionComponent class.
     /// </summary>
-    public class PhysicsManager : Component
+    public class PhysicsComponent : Component
     {
         //Member variables
         private float gravity; //How fast the object will fall. Basically, the number of pixels it will fall per frame.
@@ -278,7 +278,7 @@ namespace ECS_01
         #endregion
 
         //Constructors
-        public PhysicsManager() : base() { this.gravity = 1.0f; this.airFriction = 1.0f; this.groundFriction = 1.0f; velocity = new Vector2(0.0f, 0.0f); }
+        public PhysicsComponent(float gravity = 1.0f, float airFriction = 1.0f, float groundFriction = 1.0f) : base() { this.gravity = gravity; this.airFriction = airFriction; this.groundFriction = groundFriction; velocity = new Vector2(0.0f, 0.0f); }
 
     }
 
@@ -290,7 +290,7 @@ namespace ECS_01
     {
         //-----------------------------------------Member variables--------------------------------------
         bool isSolid;
-        PhysicsManager physics; //Reference to a PhysicsManager component for the game object
+        PhysicsComponent physics; //Reference to a PhysicsManager component for the game object
         Hitbox hitbox;
 
         public List<GameObject> collidingObjects{ get; private set; } //List of all objects currently with this component's parent colliding on this frame
@@ -441,8 +441,8 @@ namespace ECS_01
 
         //---------------------------------------------------Constructors-----------------------------------------------------
         public CollisionComponent() : base() { this.isSolid = false; collidingObjects = new List<GameObject>(); }
-        public CollisionComponent (PhysicsManager physics, Hitbox hitbox) : base() { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; collidingObjects = new List<GameObject>(); }
-        public CollisionComponent(GameObject parent, bool isSolid = false) : base() { this.physics = parent.GetComponent<PhysicsManager>(); this.hitbox = parent.GetComponent<Hitbox>(); this.isSolid = isSolid; gameObject = parent; collidingObjects = new List<GameObject>(); } //This constructor should get relevant component references from its parent
+        public CollisionComponent (PhysicsComponent physics, Hitbox hitbox) : base() { this.physics = physics; this.isSolid = true; this.hitbox = hitbox; collidingObjects = new List<GameObject>(); }
+        public CollisionComponent(GameObject parent, bool isSolid = false) : base() { this.physics = parent.GetComponent<PhysicsComponent>(); this.hitbox = parent.GetComponent<Hitbox>(); this.isSolid = isSolid; gameObject = parent; collidingObjects = new List<GameObject>(); } //This constructor should get relevant component references from its parent
 
     }
     #endregion

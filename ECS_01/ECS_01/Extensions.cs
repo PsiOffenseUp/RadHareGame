@@ -59,6 +59,7 @@ namespace ECS_01
         /// <param name="component"></param>
         public static void AddComponent(this GameObject o, Component component)
         {
+            component.gameObject = o;
             o.Components.Add(component);
         }
         /// <summary>

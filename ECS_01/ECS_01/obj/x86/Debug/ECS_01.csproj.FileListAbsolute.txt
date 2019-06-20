@@ -64,7 +64,6 @@ F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpD
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.XInput.dll
-F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Framework.xml
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.xml
@@ -73,7 +72,6 @@ F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpD
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.XInput.xml
-F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\obj\x86\Debug\ECS_01.csprojAssemblyReference.cache
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\obj\x86\Debug\ECS_01.csproj.CoreCompileInputs.cache
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\obj\x86\Debug\ECS_01.csproj.CopyComplete
@@ -94,5 +92,8 @@ F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGa
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Tiled.pdb
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Extended.Tiled.xml
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Newtonsoft.Json.xml
-F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\maps\test.xnb
 F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\P6yozhP.xnb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\maps\test_map.xnb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\maps\test.tmx
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\Content\maps\test.xnb
+F:\Documents\BoogalooGame\RadHareGame\ECS_01\ECS_01\bin\Windows\x86\Debug\MonoGame.Framework.dll

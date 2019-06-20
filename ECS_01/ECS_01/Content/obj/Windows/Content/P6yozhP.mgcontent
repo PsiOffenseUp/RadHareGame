@@ -3,11 +3,11 @@
   <SourceFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/P6yozhP.png</SourceFile>
   <SourceTime>2019-06-07T13:56:15.8377502-07:00</SourceTime>
   <DestFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/Content/P6yozhP.xnb</DestFile>
-  <DestTime>2019-06-16T12:38:45.6140023-07:00</DestTime>
+  <DestTime>2019-06-20T14:35:04.0263492-07:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2018-09-23T14:55:52-07:00</ImporterTime>
+  <ImporterTime>2018-12-08T08:35:54-08:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2018-09-23T14:55:52-07:00</ProcessorTime>
+  <ProcessorTime>2018-12-08T08:35:54-08:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

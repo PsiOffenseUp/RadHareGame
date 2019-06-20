@@ -47,8 +47,13 @@ namespace ECS_01
             // TODO: Add your initialization logic here
             base.Initialize();
 
-            //DEBUG Map stuff
-            mapManager = new MapManager(this, "maps/test.tmx"); //Load the first map
+            //**************DEBUG Map testing****************
+            mapManager = new MapManager(this, "maps/test_map"); //Load the first map
+            Extensions.AddService<CameraManager>(serviceManager, this); //Add a camera manager, so that we can get its view matrix later
+            foreach (GameObject gameObj in mapManager.getCollisionObjects()) //Add all of the collision objects from the loaded map to the list of GameObjects
+                gameObjects.Add(gameObj);
+
+            //*********************End************************
         }
 
         /// <summary>
@@ -125,11 +130,6 @@ namespace ECS_01
             floor.Load();
 
             //******************End collision testing*****************
-
-            //**************Map testing****************
-            Extensions.AddService<CameraManager>(serviceManager, this); //Add a camera manager, so that we can get its view matrix later
-
-            //********************End******************
 
             serviceManager.GetService<CameraManager>().SetMainCamera(obj.GetComponent<Camera>());
         }

@@ -3,11 +3,11 @@
   <SourceFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/Test_CobbleStoneTile.png</SourceFile>
   <SourceTime>2019-05-21T13:26:10.8832487-07:00</SourceTime>
   <DestFile>F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/Content/Test_CobbleStoneTile.xnb</DestFile>
-  <DestTime>2019-05-24T16:03:39.8409248-07:00</DestTime>
+  <DestTime>2019-06-20T14:35:04.069347-07:00</DestTime>
   <Importer>TextureImporter</Importer>
-  <ImporterTime>2018-09-23T14:55:52-07:00</ImporterTime>
+  <ImporterTime>2018-12-08T08:35:54-08:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
-  <ProcessorTime>2018-09-23T14:55:52-07:00</ProcessorTime>
+  <ProcessorTime>2018-12-08T08:35:54-08:00</ProcessorTime>
   <Parameters>
     <Key>ColorKeyColor</Key>
     <Value>255,0,255,255</Value>

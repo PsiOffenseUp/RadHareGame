@@ -1,0 +1,8 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/maps/test.tmx","F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/maps/test.xnb","TiledMapProcessor","TiledMapContent",21293,30013,0.399995
+"F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/maps/test_map.tmx","F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/maps/test_map.xnb","TiledMapProcessor","TiledMapContent",21293,30013,0.018001
+"F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/MissingTexture.png","F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/MissingTexture.xnb","TextureProcessor","Texture2DContent",460,4181,0.3720002
+"F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/P6yozhP.png","F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/P6yozhP.xnb","TextureProcessor","Texture2DContent",97636,3356413,0.1570001
+"F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Pressed.png","F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/Test_Button_Pressed.xnb","TextureProcessor","Texture2DContent",985,80085,0.0160076
+"F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/Test_Button_Unpressed.png","F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/Test_Button_Unpressed.xnb","TextureProcessor","Texture2DContent",956,80085,0.0159924
+"F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/Test_CobbleStoneTile.png","F:/Documents/BoogalooGame/RadHareGame/ECS_01/ECS_01/Content/bin/Windows/Test_CobbleStoneTile.xnb","TextureProcessor","Texture2DContent",329,1109,0.01

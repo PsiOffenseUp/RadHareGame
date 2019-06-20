@@ -128,6 +128,8 @@ namespace ECS_01
         public List<GameObject> Children;
         public GameObject Parent;
 
+        //--------------------------------------Constructors-------------------------------
+
         public GameObject()
         {
             transform = new Transform(this);

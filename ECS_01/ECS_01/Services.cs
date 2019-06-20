@@ -196,7 +196,7 @@ namespace ECS_01
         static CameraManager cameraManager;
 
         //--------------------Constructors------------------------
-        public MapManager(Game1 game, string mapPath = "maps/test")
+        public MapManager(Game1 game, string mapPath = "maps/test_map")
         {
             currentMap = game.Content.Load<TiledMap>(mapPath); //Load the map path given to start the game 
             mapRenderer = new TiledMapRenderer(game.GraphicsDevice); //Create a renderer to render this map
@@ -210,15 +210,7 @@ namespace ECS_01
         }
         public void drawMap(Game1 game)
         {
-            //try
-            //{
-                mapRenderer.Draw(currentMap, cameraManager.GetMatrix());
-            /*}
-
-            catch(Exception e)
-            {
-                mapRenderer.Draw(currentMap, new Matrix());
-            }*/
+           mapRenderer.Draw(currentMap, cameraManager.GetMatrix());
         }
 
         public void loadMap(Game1 game, string path)
@@ -232,12 +224,48 @@ namespace ECS_01
         }
 
         /// <summary>
-        /// Goes through the current level file and loads all of the collision objects, so that they can be returned and added to the list of active GameObjects
+        /// Goes through the current level file and loads all of the collision objects, so that they can be returned and added to the list of active GameObjects. Note that all collision object must be on a layer
+        /// named "collision" that is set to be an object layer, and not a normal tile layer (normal tiles don't have a position member).
         /// </summary>
         /// <returns></returns>
         public List<GameObject> getCollisionObjects()
         {
             List<GameObject> collisionObjects = new List<GameObject>();
+
+            TiledMapObjectLayer objectLayer = currentMap.GetLayer<TiledMapObjectLayer>("collision"); //Get the collision layer to start with
+
+            TiledMapLayer debugLayer = currentMap.GetLayer<TiledMapLayer>("collision");
+            Console.WriteLine(debugLayer.ToString());
+
+            GameObject tempObject; //Make an object reference to hold objects we'll construct later, and then add properties to
+            try
+            {
+                foreach (TiledMapPolygonObject tile in objectLayer.Objects) //Go through all of the tiles in the map
+                {
+                    tempObject = new GameObject();
+                    tempObject.transform.SetPosition(tile.Position); //Set the collision object's position
+
+                    //Get the vertices of this collision object
+                    Vector2[] vertices;
+                    vertices = new Vector2[tile.Points.Count()]; //Set the vertices to be the same count as that of the tile object's
+                    for (int i = 0; i < tile.Points.Count(); i++)
+                        vertices[i] = new Vector2(tile.Points[i].X, tile.Points[i].Y); //The Points are already the displacement from an origin, so this will match the Hitbox constructor later
+
+                    Hitbox hitbox = new Hitbox(vertices, tempObject); //Create a hitbox for this tile
+                    tempObject.AddComponent(hitbox); //Give the tile the hitbox
+                    tempObject.AddComponent(new CollisionComponent(null, hitbox)); //Add collision to the tile with the given hitbox and no physics component
+
+                    collisionObjects.Add(tempObject); //Now that the tile object has collision and a hitbox mask, add it to the list of GameObjects that we want to return
+                }
+            }
+
+            catch(Exception e) //In case the collision layer is null
+            {
+                Console.WriteLine("Error encountered in getCollisionObjects(): " + e.Message);
+            }
+
+            //DEBUG Let's make sure that it's correctly adding the tile objects
+            Console.WriteLine("Number of collision objects = " + collisionObjects.Count);
 
             return collisionObjects;
         }

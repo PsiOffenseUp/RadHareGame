@@ -19,6 +19,11 @@
 /processor:
 /build:maps/test.tmx
 
+#begin maps/test_map.tmx
+/importer:
+/processor:
+/build:maps/test_map.tmx
+
 #begin MissingTexture.png
 /importer:TextureImporter
 /processor:TextureProcessor
